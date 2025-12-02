@@ -65,7 +65,9 @@ Points à peaufiner
 
 Limitations connues / TODO
 --------------------------
-- Mapping slots ADAU1979 à valider sur le hardware réel.
-- Volume actuellement en float, potentielle migration en Q31 plus tard.
-- Vérification PLL ajoutée.
-- SAI horloges générées uniquement par le bloc RX.
+- Mapping exact des slots TDM ADAU1979 à valider sur le hardware réel (voir registre SAI_SLOTn et datasheet).
+- Volume logiciel actuellement en float ; une migration vers du Q31 pourra être envisagée plus tard pour optimiser le DSP.
+- Vérifier et ajuster les valeurs de PLL/horloges SAI (PLL3, NODIV, MCLK) en fonction de cfg/mcuconf.h.
+- Compléter la stratégie d’erreur (hors chSysHalt) pour les détections I2C (DEVID, PLL lock) en vue d’une V1 produit.
+
+La configuration V4 effectue maintenant une vérification de la PLL des ADAU1979 et du DEVID0 sur chacun des deux codecs ; en cas d’échec, le système s’arrête via chSysHalt().
