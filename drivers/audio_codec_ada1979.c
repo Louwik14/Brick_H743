@@ -13,9 +13,11 @@
 /* Registres ADAU1979 (extraits du datasheet)                                 */
 /* -------------------------------------------------------------------------- */
 
-#define ADAU1979_REG_PLL_CTRL0        0x00U
-#define ADAU1979_REG_PLL_CTRL1        0x01U
-#define ADAU1979_REG_BLOCK_POWER_SAI  0x03U
+#define ADAU1979_REG_PLL_CTRL0        0x00U /* M_POWER : bit0 = master power-up. */
+#define ADAU1979_REG_PLL_CTRL1        0x01U /* PLL_CONTROL : MCS[2:0] sélectionne la fréquence MCLK. */
+#define ADAU1979_REG_PLL_CTRL2        0x02U /* Réservé mais écrit explicitement pour verrouiller la séquence PLL. */
+#define ADAU1979_REG_PLL_CTRL3        0x03U /* Réservé mais écrit explicitement pour verrouiller la séquence PLL. */
+#define ADAU1979_REG_BLOCK_POWER_SAI  0x04U
 #define ADAU1979_REG_BLOCK_POWER_ADC  0x04U
 #define ADAU1979_REG_SAI_CTRL0        0x05U
 #define ADAU1979_REG_SAI_CTRL1        0x06U
@@ -29,8 +31,12 @@
 #define ADAU1979_REG_DEVID0           0xF0U
 
 /* Bits utiles (se référer au datasheet pour les combinaisons détaillées). */
-#define ADAU1979_PLL_ENABLE           (1U << 0)
-#define ADAU1979_PLL_LOCKED           (1U << 1)
+#define ADAU1979_PLL_MASTER_POWER     (1U << 0)
+#define ADAU1979_PLL_LOCKED           (1U << 7)
+#define ADAU1979_PLL_MUTE_ON_UNLOCK   (1U << 6)
+#define ADAU1979_PLL_CLK_FROM_LRCLK   (1U << 4)
+#define ADAU1979_PLL_MCS_256FS        0x01U
+#define ADAU1979_PLL_MCS_512FS        0x03U
 #define ADAU1979_ADC_ENABLE_ALL       0x0FU
 #define ADAU1979_SAI_MASTER           (1U << 7)
 #define ADAU1979_SAI_MODE_TDM         (2U << 5)
@@ -133,8 +139,17 @@ void adau1979_set_default_config(void) {
     adau1979_broadcast_write(ADAU1979_REG_BLOCK_POWER_SAI, 0x00U);
     adau1979_broadcast_write(ADAU1979_REG_BLOCK_POWER_ADC, 0x00U);
 
-    /* Active la PLL interne synchronisée sur MCLK maître (cf. datasheet table PLL_CTRLx). */
-    adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL0, ADAU1979_PLL_ENABLE);
+    /*
+     * Horloge : MCLK = 12.288 MHz fourni par SAI (256 × Fs avec Fs = 48 kHz, ratio choisi pour
+     * que BCLK corresponde exactement au TDM 8×32 bits = 256 cycles/frame).
+     * Datasheet Table 9 (PLL and Clock) : MCS = 0b001 pour 256 × Fs => MCLKIN = 12.288 MHz.
+     * PLL_CONTROL[6] laissé à 1 (mute sur déverrouillage) ; source PLL = MCLK (CLK_S = 0).
+     */
+    adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL0, ADAU1979_PLL_MASTER_POWER);
+    adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL1,
+                             (uint8_t)(ADAU1979_PLL_MUTE_ON_UNLOCK | ADAU1979_PLL_MCS_256FS));
+    adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL2, 0x00U);
+    adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL3, 0x00U);
     adau1979_wait_pll_locked();
 
     /* Les ADAU1979 sont esclaves : le H743 génère BCLK/LRCLK. Mode TDM 8 slots, 24 bits MSB-first. */

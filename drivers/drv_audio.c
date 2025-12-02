@@ -250,10 +250,16 @@ static void audio_hw_configure_sai(void) {
     rccEnableSAI1(true);
     rccResetSAI1();
 
+    /*
+     * Horloges audio : PLL3_P = 49.152 MHz (mcuconf.h) -> MCLK = PLL3_P / 4 = 12.288 MHz.
+     * BCLK = MCLK (TDM 256 bits) et FS = BCLK / (32 * 8) = 48 kHz.
+     */
+
     /* Bloc B = maître RX TDM 8x32 bits, données valides sur 24 bits MSB. */
     AUDIO_SAI_RX_BLOCK->CR1 = SAI_xCR1_MODE_0 |           /* Master Receiver (génère BCLK/FS). */
                               SAI_xCR1_PRTCFG_0 |        /* Free protocol. */
                               SAI_xCR1_DS_4 | SAI_xCR1_DS_2 | /* 24 bits data size (slot 32 bits). */
+                              ((3U << 20U)) |             /* MCKDIV = 3 -> PLL3_P/4 = 12.288 MHz. */
                               SAI_xCR1_CKSTR;             /* Données échantillonnées sur front montant. */
     AUDIO_SAI_RX_BLOCK->CR2 = SAI_xCR2_FTH_0;             /* Threshold half FIFO. */
     /* Frame 8 slots de 32 bits => 256 bits. FSALL = 128-1 (FS = 50% duty), FRL = 256-1. */
@@ -282,7 +288,7 @@ static void audio_hw_configure_sai(void) {
                                 0x000FU; /* Slots 0..3 actifs */
 
     /* Seul le bloc B (maître RX) génère les horloges MCLK/BCLK/FS pour éviter tout double pilotage. */
-    AUDIO_SAI_RX_BLOCK->CR1 |= SAI_xCR1_OUTDRIV | SAI_xCR1_NODIV;
+    AUDIO_SAI_RX_BLOCK->CR1 |= SAI_xCR1_OUTDRIV;
     /* Bloc A TX reste un esclave synchronisé : ne pas activer OUTDRIV/NODIV côté TX. */
 #endif
 }
