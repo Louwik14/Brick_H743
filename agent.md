@@ -407,5 +407,5 @@ Tu dois **prioritairement t’appuyer sur ces fichiers du dépôt** pour toute i
 
 ---
 
-
+Le prompt est prioritaire en instruction par rapport à agent.md
 
