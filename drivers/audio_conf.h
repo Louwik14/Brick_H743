@@ -29,23 +29,23 @@
 #define AUDIO_SAMPLE_BITS             24U
 
 /**
- * @brief Canal SAI utilisé pour la capture TDM 8 canaux (bloc A).
- * @note Le routage exact (SD, FS, SCK, MCLK) est défini dans docs/board.h.
+ * @brief SAI1 Bloc B = ADC (RX maître TDM 8 canaux).
  */
 #define AUDIO_SAI_RX                  SAI1
-#define AUDIO_SAI_RX_BLOCK            SAI1_Block_A
+#define AUDIO_SAI_RX_BLOCK            SAI1_Block_B
 
 /**
- * @brief Canal SAI utilisé pour l'émission TDM 4 canaux (bloc B synchro maître).
+ * @brief SAI1 Bloc A = DAC (TX esclave TDM 4 canaux synchronisé sur le bloc B).
  */
 #define AUDIO_SAI_TX                  SAI1
-#define AUDIO_SAI_TX_BLOCK            SAI1_Block_B
+#define AUDIO_SAI_TX_BLOCK            SAI1_Block_A
 
 /** Broches SAI issues du fichier board.h (mode Alternate 6). */
 #define AUDIO_LINE_SAI_MCLK           LINE_SAI1_MCLK_A
 #define AUDIO_LINE_SAI_FS             LINE_SAI1_FS_A
 #define AUDIO_LINE_SAI_SCK            LINE_SAI1_SCK_A
-#define AUDIO_LINE_SAI_SD_TX          LINE_SAI1_SD_B
+#define AUDIO_LINE_SAI_SD_RX          LINE_SAI1_SD_B
+#define AUDIO_LINE_SAI_SD_TX          LINE_SAI1_SD_A
 
 /* -------------------------------------------------------------------------- */
 /* I2C et périphériques externes                                              */
@@ -54,8 +54,25 @@
 /** Bus I2C dédié aux codecs ADAU1979 (voir board.h pour le câblage exact). */
 #define AUDIO_I2C_DRIVER              I2CD3
 
-/** Adresse 7 bits par défaut des ADAU1979 (cf. datasheet, section TWI Address). */
-#define ADAU1979_I2C_ADDRESS          0x11U
+/** Adresses 7 bits des deux ADAU1979 (config strap ADDR0/ADDR1). */
+#define ADAU1979_I2C_ADDRESS_0        0x11U
+#define ADAU1979_I2C_ADDRESS_1        0x12U
+
+/* -------------------------------------------------------------------------- */
+/* DMA (DMAMUX)                                                               */
+/* -------------------------------------------------------------------------- */
+
+/* Streams DMA à ajuster selon le schéma exact (DMA1/2 + stream). */
+#define AUDIO_SAI_RX_DMA_STREAM       STM32_DMA_STREAM_ID(1, 0)
+#define AUDIO_SAI_TX_DMA_STREAM       STM32_DMA_STREAM_ID(1, 1)
+
+/* Requests DMAMUX : valeurs issues du RM0433, section DMAMUX. */
+#define AUDIO_SAI_RX_DMA_REQUEST      87U  /* SAI1_B */
+#define AUDIO_SAI_TX_DMA_REQUEST      86U  /* SAI1_A */
+
+/* Priorité DMA (0 = basse, 3 = très haute). */
+#define AUDIO_SAI_RX_DMA_PRIORITY     2U
+#define AUDIO_SAI_TX_DMA_PRIORITY     2U
 
 /* -------------------------------------------------------------------------- */
 /* Options de pile/threads                                                    */
@@ -80,5 +97,10 @@ typedef int32_t audio_buffer_t[AUDIO_FRAMES_PER_BUFFER][AUDIO_NUM_INPUT_CHANNELS
  * @brief Buffer de sortie TDM 4 canaux.
  */
 typedef int32_t audio_out_buffer_t[AUDIO_FRAMES_PER_BUFFER][AUDIO_NUM_OUTPUT_CHANNELS];
+
+/**
+ * @brief Bloc audio SPI-LINK : 4 cartouches, 4 canaux chacune.
+ */
+typedef int32_t spilink_audio_block_t[4][AUDIO_FRAMES_PER_BUFFER][4];
 
 #endif /* AUDIO_CONF_H */

@@ -41,8 +41,11 @@
 #define ADAU1979_VOLUME_REG_BASE      0x19U
 #define ADAU1979_VOLUME_REG_COUNT     4U
 
-static I2CDriver *audio_i2c = NULL;
-static uint8_t adau1979_i2c_addr = ADAU1979_I2C_ADDRESS;
+static I2CDriver *audio_i2c = &AUDIO_I2C_DRIVER;
+static const uint8_t adau1979_addresses[2] = {
+    ADAU1979_I2C_ADDRESS_0,
+    ADAU1979_I2C_ADDRESS_1
+};
 
 static const I2CConfig adau1979_default_i2c_cfg = {
     .timingr = 0x10909CEC, /* 400 kHz @ 64 MHz APB (à ajuster selon mcuconf/clock). */
@@ -54,112 +57,80 @@ static const I2CConfig adau1979_default_i2c_cfg = {
 /* Helpers I2C                                                                */
 /* -------------------------------------------------------------------------- */
 
-static msg_t adau1979_write_reg(uint8_t reg, uint8_t value) {
+static msg_t adau1979_write_reg(uint8_t addr, uint8_t reg, uint8_t value) {
     uint8_t txbuf[2] = {reg, value};
-    return i2cMasterTransmitTimeout(audio_i2c, adau1979_i2c_addr, txbuf, sizeof(txbuf), NULL, 0, TIME_MS2I(10));
+    return i2cMasterTransmitTimeout(audio_i2c, addr, txbuf, sizeof(txbuf), NULL, 0, TIME_MS2I(10));
 }
 
-static msg_t adau1979_read_reg(uint8_t reg, uint8_t *value) {
-    return i2cMasterTransmitTimeout(audio_i2c, adau1979_i2c_addr, &reg, 1, value, 1, TIME_MS2I(10));
+static msg_t adau1979_read_reg(uint8_t addr, uint8_t reg, uint8_t *value) {
+    return i2cMasterTransmitTimeout(audio_i2c, addr, &reg, 1, value, 1, TIME_MS2I(10));
+}
+
+static msg_t adau1979_broadcast_write(uint8_t reg, uint8_t value) {
+    msg_t st = HAL_RET_SUCCESS;
+    for (size_t i = 0; i < 2; ++i) {
+        st |= adau1979_write_reg(adau1979_addresses[i], reg, value);
+    }
+    return st;
 }
 
 /* -------------------------------------------------------------------------- */
 /* API publique                                                               */
 /* -------------------------------------------------------------------------- */
 
-void audio_codec_ada1979_init(I2CDriver *i2cp, const I2CConfig *i2cfg) {
-    audio_i2c = i2cp;
-    if (audio_i2c == NULL) {
-        return;
-    }
-
-    const I2CConfig *cfg = (i2cfg != NULL) ? i2cfg : &adau1979_default_i2c_cfg;
-
+void adau1979_init(void) {
     if (audio_i2c->state == I2C_STOP) {
-        i2cStart(audio_i2c, cfg);
+        i2cStart(audio_i2c, &adau1979_default_i2c_cfg);
     }
 }
 
-msg_t audio_codec_ada1979_configure_tdm(void) {
-    if (audio_i2c == NULL) {
-        return HAL_RET_PARAMETER;
-    }
-
-    msg_t status = HAL_RET_SUCCESS;
-
-    /* Désactivation totale avant reconfiguration. */
-    status = adau1979_write_reg(ADAU1979_REG_BLOCK_POWER_SAI, 0x00U);
-    if (status != HAL_RET_SUCCESS) {
-        return status;
-    }
+void adau1979_set_default_config(void) {
+    /* Réinitialise l'alimentation SAI/ADC pour éviter toute capture parasite. */
+    adau1979_broadcast_write(ADAU1979_REG_BLOCK_POWER_SAI, 0x00U);
+    adau1979_broadcast_write(ADAU1979_REG_BLOCK_POWER_ADC, 0x00U);
 
     /* Active la PLL interne synchronisée sur MCLK maître (cf. datasheet table PLL_CTRLx). */
-    status = adau1979_write_reg(ADAU1979_REG_PLL_CTRL0, ADAU1979_PLL_ENABLE);
-    if (status != HAL_RET_SUCCESS) {
-        return status;
-    }
+    adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL0, ADAU1979_PLL_ENABLE);
 
-    /* Mode TDM 8 slots, 24 bits MSB-first, BCLK/LRCLK pilotés par le STM32 (master). */
-    status = adau1979_write_reg(ADAU1979_REG_SAI_CTRL0,
-                                ADAU1979_SAI_MASTER | ADAU1979_SAI_MODE_TDM | ADAU1979_SAI_WORD24);
-    if (status != HAL_RET_SUCCESS) {
-        return status;
-    }
+    /* Les ADAU1979 sont esclaves : le H743 génère BCLK/LRCLK. Mode TDM 8 slots, 24 bits MSB-first. */
+    adau1979_broadcast_write(ADAU1979_REG_SAI_CTRL0,
+                             ADAU1979_SAI_MODE_TDM | ADAU1979_SAI_WORD24);
 
-    /* Mappe les 4 canaux de chaque codec sur 8 slots TDM (0..7). */
-    status = adau1979_write_reg(ADAU1979_REG_SAI_SLOT0, 0x00U); /* Slot 0 = CH0 */
-    status |= adau1979_write_reg(ADAU1979_REG_SAI_SLOT1, 0x21U); /* Slot 2 = CH1 */
-    status |= adau1979_write_reg(ADAU1979_REG_SAI_SLOT2, 0x42U); /* Slot 4 = CH2 */
-    status |= adau1979_write_reg(ADAU1979_REG_SAI_SLOT3, 0x63U); /* Slot 6 = CH3 */
-    if (status != HAL_RET_SUCCESS) {
-        return status;
-    }
+    /* Slot mapping :
+     *  - Codec 0 -> slots 0,2,4,6
+     *  - Codec 1 -> slots 1,3,5,7
+     * Registres SAI_SLOTn codent "slot number" dans les bits [7:4] et canal dans [3:0].
+     */
+    adau1979_write_reg(adau1979_addresses[0], ADAU1979_REG_SAI_SLOT0, 0x00U);
+    adau1979_write_reg(adau1979_addresses[0], ADAU1979_REG_SAI_SLOT1, 0x21U);
+    adau1979_write_reg(adau1979_addresses[0], ADAU1979_REG_SAI_SLOT2, 0x42U);
+    adau1979_write_reg(adau1979_addresses[0], ADAU1979_REG_SAI_SLOT3, 0x63U);
+
+    adau1979_write_reg(adau1979_addresses[1], ADAU1979_REG_SAI_SLOT0, 0x10U);
+    adau1979_write_reg(adau1979_addresses[1], ADAU1979_REG_SAI_SLOT1, 0x31U);
+    adau1979_write_reg(adau1979_addresses[1], ADAU1979_REG_SAI_SLOT2, 0x52U);
+    adau1979_write_reg(adau1979_addresses[1], ADAU1979_REG_SAI_SLOT3, 0x73U);
 
     /* Active les ADC et la section SAI après le mapping. */
-    status = adau1979_write_reg(ADAU1979_REG_BLOCK_POWER_ADC, ADAU1979_ADC_ENABLE_ALL);
-    status |= adau1979_write_reg(ADAU1979_REG_BLOCK_POWER_SAI, 0x0FU);
-    if (status != HAL_RET_SUCCESS) {
-        return status;
-    }
+    adau1979_broadcast_write(ADAU1979_REG_BLOCK_POWER_ADC, ADAU1979_ADC_ENABLE_ALL);
+    adau1979_broadcast_write(ADAU1979_REG_BLOCK_POWER_SAI, 0x0FU);
 
     /* Démute le flux numérique. */
-    status = adau1979_write_reg(ADAU1979_REG_MISC_CTRL, ADAU1979_MISC_UNMUTE);
-    return status;
+    adau1979_broadcast_write(ADAU1979_REG_MISC_CTRL, ADAU1979_MISC_UNMUTE);
 }
 
-msg_t audio_codec_ada1979_set_volume(float volume_db) {
-    if (audio_i2c == NULL) {
-        return HAL_RET_PARAMETER;
+void adau1979_mute(bool en) {
+    for (size_t i = 0; i < 2; ++i) {
+        uint8_t misc = 0U;
+        if (adau1979_read_reg(adau1979_addresses[i], ADAU1979_REG_MISC_CTRL, &misc) != HAL_RET_SUCCESS) {
+            continue;
+        }
+        if (en) {
+            misc &= (uint8_t)~ADAU1979_MISC_UNMUTE;
+        } else {
+            misc |= ADAU1979_MISC_UNMUTE;
+        }
+        adau1979_write_reg(adau1979_addresses[i], ADAU1979_REG_MISC_CTRL, misc);
     }
-
-    /* Convertit le gain en pas de 0.5 dB, borné entre -127.5 dB et 0 dB. */
-    if (volume_db > 0.0f) {
-        volume_db = 0.0f;
-    }
-    if (volume_db < -127.5f) {
-        volume_db = -127.5f;
-    }
-    uint8_t step = (uint8_t)((-volume_db) * 2.0f); /* 0 => 0dB, 0xFF => -127.5dB */
-
-    msg_t status = HAL_RET_SUCCESS;
-    for (uint8_t i = 0; i < ADAU1979_VOLUME_REG_COUNT; ++i) {
-        status |= adau1979_write_reg(ADAU1979_VOLUME_REG_BASE + i, step);
-    }
-    return status;
-}
-
-msg_t audio_codec_ada1979_set_mute(bool mute) {
-    uint8_t misc = 0;
-    msg_t st = adau1979_read_reg(ADAU1979_REG_MISC_CTRL, &misc);
-    if (st != HAL_RET_SUCCESS) {
-        return st;
-    }
-
-    if (mute) {
-        misc &= (uint8_t)~ADAU1979_MISC_UNMUTE;
-    } else {
-        misc |= ADAU1979_MISC_UNMUTE;
-    }
-    return adau1979_write_reg(ADAU1979_REG_MISC_CTRL, misc);
 }
 

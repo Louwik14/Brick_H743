@@ -11,34 +11,18 @@
 #include "audio_conf.h"
 
 /**
- * @brief Initialise l'interface de contrôle I2C des ADAU1979.
- *
- * @param[in] i2cp     Pointeur vers le driver I2C configuré (horloge, pins).
- * @param[in] i2cfg    Configuration du bus (peut être NULL pour utiliser la config par défaut).
+ * @brief Initialise l'interface de contrôle I2C et les deux codecs ADAU1979.
  */
-void audio_codec_ada1979_init(I2CDriver *i2cp, const I2CConfig *i2cfg);
+void adau1979_init(void);
 
 /**
- * @brief Place les deux ADAU1979 en mode TDM 8 canaux 24 bits / 48 kHz.
- *
- * La fonction configure l'horloge, active la PLL interne synchronisée sur MCLK,
- * positionne les slots TDM et active les entrées.
- *
- * @return HAL status du dernier échange I2C (HAL_RET_SUCCESS en cas de succès).
+ * @brief Configuration par défaut : TDM 8 canaux, 24 bits, 48 kHz, codecs esclaves.
  */
-msg_t audio_codec_ada1979_configure_tdm(void);
+void adau1979_set_default_config(void);
 
 /**
- * @brief Ajuste le volume numérique global des ADC (atténuateur intégré).
- *
- * @param[in] volume_db Atténuation en dB (0 dB = unity). Les valeurs sont
- *                      limitées aux bornes supportées par le codec.
+ * @brief Met les deux codecs en mute numérique (ou réactive).
  */
-msg_t audio_codec_ada1979_set_volume(float volume_db);
-
-/**
- * @brief Met les ADAU1979 en mute ou les réactive.
- */
-msg_t audio_codec_ada1979_set_mute(bool mute);
+void adau1979_mute(bool en);
 
 #endif /* AUDIO_CODEC_ADA1979_H */
