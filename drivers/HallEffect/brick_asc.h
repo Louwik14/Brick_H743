@@ -4,11 +4,14 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <string.h>
 #include <stddef.h>
+
+#define BRICK_ASC_MAX_FACTOR 16U
 
 struct brick_asc {
   uint32_t sum;
+  uint16_t buffer[BRICK_ASC_MAX_FACTOR];
+  uint8_t head;
   uint8_t count;
   uint8_t factor;
 };
