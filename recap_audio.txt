@@ -37,6 +37,15 @@ Configuration SAI/DMA finale
   - TX : AUDIO_SAI_TX_DMA_STREAM (DMAMUX req 86 SAI1_A), priorité 2, M2P, 32 bits, CIRC + HT/TC interrupt, transaction = 2×16×4 samples.
 - IRQ DMA : callbacks mettent à jour audio_in_ready_index / audio_out_ready_index et signalent le thread via chBSemSignalI().
 
+Horloges audio (V5)
+------------------
+- Source horloge SAI : PLL3_P = 49.152 MHz (STM32H743)
+- MCLK = 12.288 MHz (PLL3_P / 4)
+- BCLK = 12.288 MHz
+- FS   = 48 kHz
+- PLL ADAU1979 configurée explicitement pour MCLK=12.288 MHz
+- Synchronisation H7 ↔ ADAU1979 désormais 100 % déterministe
+
 Latence théorique
 -----------------
 - Taille bloc : 16 échantillons @ 48 kHz → 333 µs par demi-buffer.
@@ -59,7 +68,6 @@ Points à peaufiner
 ------------------
 - Vérifier/ajuster le mapping précis des slots TDM (registre SAI_SLOTx) selon le routage audio réel des ADAU1979.
 - Valider les numéros exacts de stream/DMAMUX pour SAI1_A / SAI1_B en fonction du schéma (AUDIO_SAI_RX_DMA_STREAM / REQUEST).
-- Vérifier les valeurs de PLL/horloges SAI par rapport aux sélecteurs PLL3 définis dans cfg/mcuconf.h (NODIV, MCLK).
 - Positionner la ligne de mute casque (AUDIO_HP_MUTE_LINE) sur le GPIO exact du TPA6138A2.
 - Intégrer le driver dans drivers_init_all() quand le pipeline audio doit être démarré au boot.
 
@@ -67,7 +75,6 @@ Limitations connues / TODO
 --------------------------
 - Mapping exact des slots TDM ADAU1979 à valider sur le hardware réel (voir registre SAI_SLOTn et datasheet).
 - Volume logiciel actuellement en float ; une migration vers du Q31 pourra être envisagée plus tard pour optimiser le DSP.
-- Vérifier et ajuster les valeurs de PLL/horloges SAI (PLL3, NODIV, MCLK) en fonction de cfg/mcuconf.h.
 - Compléter la stratégie d’erreur (hors chSysHalt) pour les détections I2C (DEVID, PLL lock) en vue d’une V1 produit.
 
 La configuration V4 effectue maintenant une vérification de la PLL des ADAU1979 et du DEVID0 sur chacun des deux codecs ; en cas d’échec, le système s’arrête via chSysHalt().
