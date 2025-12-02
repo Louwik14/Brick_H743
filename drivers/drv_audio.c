@@ -188,7 +188,7 @@ void __attribute__((weak)) drv_audio_process_block(const int32_t              *a
 
     (void)spi_in;
     if (spi_out != NULL) {
-        memset(spi_out, 0, sizeof(spilink_audio_block_t));
+        memset(spi_out, 0, sizeof(spi_out_buffers));
     }
 }
 
@@ -283,7 +283,7 @@ static void audio_hw_configure_sai(void) {
 
     /* Seul le bloc B (maître RX) génère les horloges MCLK/BCLK/FS pour éviter tout double pilotage. */
     AUDIO_SAI_RX_BLOCK->CR1 |= SAI_xCR1_OUTDRIV | SAI_xCR1_NODIV;
-    /* Bloc A reste un esclave synchrone strict (pas de OUTDRIV côté TX). */
+    /* Bloc A TX reste un esclave synchronisé : ne pas activer OUTDRIV/NODIV côté TX. */
 #endif
 }
 
