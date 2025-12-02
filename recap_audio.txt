@@ -1,0 +1,52 @@
+Pipeline audio Brick H743
+========================
+
+Sources et destinations
+----------------------
+- 2× ADAU1979 (4 canaux chacun) chaînés en TDM 8 canaux → SAI1 bloc A (RX, maître pour BCLK/LRCLK/MCLK).
+- 4 canaux retour vers DAC PCM4104 (sortie ligne + casque) via SAI1 bloc B (TX synchro, slots 4×32 bits).
+- Cartouches SPI-LINK : API de pull/push de blocs audio exposée par drv_audio.c pour mixer ou router.
+
+Format interne
+--------------
+- Échantillons int32_t, 24 bits significatifs (poids fort).
+- Taille de bloc fixe : AUDIO_FRAMES_PER_BUFFER = 16 frames par canal.
+- Buffers statiques ping/pong :
+  - audio_in_buffers[2][16][8]
+  - audio_out_buffers[2][16][4]
+- Ping/pong contrôlé par interruptions DMA half/full et sémaphore binaire côté thread temps réel.
+
+Ordre des canaux
+----------------
+- Entrée (ADAU1979) : slots TDM 0..7 mappés sur CH0..CH3 codec #1 puis CH0..CH3 codec #2. L’ordre exact des capteurs/entrées physiques est à verrouiller selon le schéma (datasheet ADAU1979, registre SAI_SLOTx).
+- Sortie (PCM4104) : 4 slots TX. Convention proposée :
+  - Slot 0 : Ligne L
+  - Slot 1 : Ligne R
+  - Slot 2 : Casque L
+  - Slot 3 : Casque R
+
+Latence théorique
+-----------------
+- Taille bloc : 16 échantillons @ 48 kHz → 333 µs par demi-buffer.
+- Pipeline double-buffer (RX half/full + TX half/full) → latence minimale ~0.66 ms côté traitement (sans compter FIFO SAI/DMA et latence codec).
+
+Insertion DSP
+-------------
+- Fonction faible drv_audio_process_block(const int32_t* in, int32_t* out, size_t frames) appelée dans le thread audio à chaque demi-buffer.
+- C’est l’endroit pour insérer mixage, routage, et futurs FX (Mutable Instruments, etc.).
+- Les callbacks SPI-LINK (pull/push) permettent d’injecter/récupérer les flux cartouches avant ou après traitement.
+
+Rôle des fichiers
+-----------------
+- drivers/audio_conf.h : constantes globales (fréquence, tailles, lignes SAI, bus I2C).
+- drivers/audio_codec_ada1979.[ch] : configuration I2C des deux ADAU1979 (PLL, slots TDM, volume/mute).
+- drivers/audio_codec_pcm4104.[ch] : gestion du mute matériel du DAC/ampli casque, préparation des lignes SAI TX.
+- drivers/drv_audio.[ch] : buffers ping/pong, thread temps réel, hook DSP, stubs SPI-LINK, configuration SAI/DMA.
+
+Points à peaufiner
+------------------
+- Vérifier/ajuster le mapping précis des slots TDM (ADAU1979_REG_SAI_SLOTx) selon le routage audio réel.
+- Compléter la configuration SAI/DMA avec les bons stream/requests DMA1/MDMA et les interruptions associées.
+- Valider les valeurs de PLL/horloges SAI par rapport aux sélecteurs PLL3 définis dans cfg/mcuconf.h.
+- Positionner la ligne de mute casque (AUDIO_HP_MUTE_LINE) sur le GPIO exact du TPA6138A2.
+- Intégrer le driver dans drivers_init_all() quand le pipeline audio doit être démarré au boot.
