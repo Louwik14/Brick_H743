@@ -78,3 +78,13 @@ Limitations connues / TODO
 - Compléter la stratégie d’erreur (hors chSysHalt) pour les détections I2C (DEVID, PLL lock) en vue d’une V1 produit.
 
 La configuration V4 effectue maintenant une vérification de la PLL des ADAU1979 et du DEVID0 sur chacun des deux codecs ; en cas d’échec, le système s’arrête via chSysHalt().
+
+V6 – Ajout de la matrice de mix MAIN/CUE
+---------------------------------------
+- Bus logiques internes : MAIN_L/MAIN_R pour la sortie ligne, CUE_L/CUE_R pour la sortie casque.
+- Matrice de routage par piste (4 pistes stéréo, ADC0/1 puis ADC2/3 puis ADC4/5 puis ADC6/7) : chaque piste peut être envoyée vers MAIN, vers CUE, vers les deux ou mutée.
+- Gains par destination (MAIN et CUE) clampés entre 0.0 et 1.0, initialisés à 1.0 avec routage activé uniquement vers MAIN au boot.
+- Mixage réalisé dans drv_audio_process_block : accumulation stéréo MAIN et CUE, soft-clip/limiteur pour éviter la saturation int32, application du volume maître, écriture sur les 4 slots DAC (0/1 = MAIN, 2/3 = CUE).
+- Casque : reçoit désormais un mix dédié (bus CUE) permettant une pré-écoute indépendante du bus principal.
+- Limites actuelles : pas de panoramique individuel, pas d'EQ, pas de mute solo différencié par destination, pas de sends.
+- Points d'extension futurs : insertion des effets après la sommation par bus, ajout d'un pan par piste avant sommation, implémentation de sends/returns vers des effets ou des sorties cartouches SPI-LINK.
