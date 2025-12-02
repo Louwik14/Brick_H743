@@ -40,6 +40,8 @@
 
 #define ADAU1979_VOLUME_REG_BASE      0x19U
 #define ADAU1979_VOLUME_REG_COUNT     4U
+#define ADAU1979_DEVID0_EXPECTED      0x79U
+#define ADAU1979_PLL_LOCK_TIMEOUT_MS  20U
 
 static I2CDriver *audio_i2c = &AUDIO_I2C_DRIVER;
 static const uint8_t adau1979_addresses[2] = {
@@ -74,6 +76,47 @@ static msg_t adau1979_broadcast_write(uint8_t reg, uint8_t value) {
     return st;
 }
 
+static void adau1979_verify_devid(void) {
+    for (size_t i = 0; i < 2; ++i) {
+        uint8_t devid = 0U;
+        if (adau1979_read_reg(adau1979_addresses[i], ADAU1979_REG_DEVID0, &devid) != HAL_RET_SUCCESS) {
+            chSysHalt("ADAU1979 DEVID read");
+        }
+        if (devid != ADAU1979_DEVID0_EXPECTED) {
+            chSysHalt("ADAU1979 DEVID mismatch");
+        }
+    }
+}
+
+static void adau1979_wait_pll_locked(void) {
+    systime_t start = chVTGetSystemTimeX();
+    const systime_t timeout = TIME_MS2I(ADAU1979_PLL_LOCK_TIMEOUT_MS);
+
+    while (true) {
+        bool locked = true;
+        for (size_t i = 0; i < 2; ++i) {
+            uint8_t pll1 = 0U;
+            if (adau1979_read_reg(adau1979_addresses[i], ADAU1979_REG_PLL_CTRL1, &pll1) != HAL_RET_SUCCESS) {
+                locked = false;
+                break;
+            }
+            if ((pll1 & ADAU1979_PLL_LOCKED) == 0U) {
+                locked = false;
+                break;
+            }
+        }
+
+        if (locked) {
+            return;
+        }
+
+        if (chVTTimeElapsedSinceX(start) >= timeout) {
+            chSysHalt("ADAU1979 PLL unlock");
+        }
+        chThdSleepMilliseconds(1);
+    }
+}
+
 /* -------------------------------------------------------------------------- */
 /* API publique                                                               */
 /* -------------------------------------------------------------------------- */
@@ -82,6 +125,7 @@ void adau1979_init(void) {
     if (audio_i2c->state == I2C_STOP) {
         i2cStart(audio_i2c, &adau1979_default_i2c_cfg);
     }
+    adau1979_verify_devid();
 }
 
 void adau1979_set_default_config(void) {
@@ -91,6 +135,7 @@ void adau1979_set_default_config(void) {
 
     /* Active la PLL interne synchronisée sur MCLK maître (cf. datasheet table PLL_CTRLx). */
     adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL0, ADAU1979_PLL_ENABLE);
+    adau1979_wait_pll_locked();
 
     /* Les ADAU1979 sont esclaves : le H743 génère BCLK/LRCLK. Mode TDM 8 slots, 24 bits MSB-first. */
     adau1979_broadcast_write(ADAU1979_REG_SAI_CTRL0,

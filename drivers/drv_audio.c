@@ -40,6 +40,11 @@ static const stm32_dma_stream_t *sai_tx_dma = NULL;
 /* Nombre d'échantillons transférés par transaction (ping + pong). */
 #define AUDIO_DMA_IN_SAMPLES   (AUDIO_FRAMES_PER_BUFFER * AUDIO_NUM_INPUT_CHANNELS * 2U)
 #define AUDIO_DMA_OUT_SAMPLES  (AUDIO_FRAMES_PER_BUFFER * AUDIO_NUM_OUTPUT_CHANNELS * 2U)
+/*
+ * Les tableaux [2][frames][channels] sont vus par le DMA comme un buffer
+ * linéaire unique : interruption Half-Transfer => index 0 (ping),
+ * interruption Transfer-Complete => index 1 (pong).
+ */
 
 /* -------------------------------------------------------------------------- */
 /* Prototypes internes                                                        */
@@ -162,11 +167,11 @@ void drv_audio_set_master_volume(float vol) {
 /* Hook DSP faible                                                            */
 /* -------------------------------------------------------------------------- */
 
-void __attribute__((weak)) drv_audio_process_block(const int32_t *adc_in,
-                                                   const int32_t *spi_in,
-                                                   int32_t       *dac_out,
-                                                   int32_t       *spi_out,
-                                                   size_t         frames) {
+void __attribute__((weak)) drv_audio_process_block(const int32_t              *adc_in,
+                                                   const spilink_audio_block_t spi_in,
+                                                   int32_t                    *dac_out,
+                                                   spilink_audio_block_t       spi_out,
+                                                   size_t                      frames) {
     /* Pass-through par défaut : copie les 4 premiers canaux ADC vers le DAC,
      * mute SPI out et ignore SPI in. */
     const int32_t *adc_ptr = adc_in;
@@ -182,9 +187,8 @@ void __attribute__((weak)) drv_audio_process_block(const int32_t *adc_in,
     }
 
     (void)spi_in;
-    (void)spi_out;
     if (spi_out != NULL) {
-        memset(spi_out, 0, sizeof(spi_out_buffers));
+        memset(spi_out, 0, sizeof(spilink_audio_block_t));
     }
 }
 
@@ -224,14 +228,14 @@ static THD_FUNCTION(audioThread, arg) {
         }
 
         drv_audio_process_block(in_buf,
-                                 (const int32_t *)spi_in_buffers,
+                                 spi_in_buffers,
                                  out_buf,
-                                 (int32_t *)spi_out_buffers,
+                                 spi_out_buffers,
                                  frames);
 
         /* Exporte le flux vers les cartouches si besoin. */
         if (spilink_push_cb != NULL) {
-            spilink_push_cb((const int32_t (*)[AUDIO_FRAMES_PER_BUFFER][4])spi_out_buffers, frames);
+            spilink_push_cb(spi_out_buffers, frames);
         }
     }
 }
@@ -277,9 +281,9 @@ static void audio_hw_configure_sai(void) {
                                 ((AUDIO_NUM_OUTPUT_CHANNELS - 1U) << SAI_xSLOTR_NBSLOT_Pos) |
                                 0x000FU; /* Slots 0..3 actifs */
 
-    /* Génère MCLK (NODIV=0 => MCLK = SCK/4). Ajuster via mcuconf PLL3 si besoin. */
+    /* Seul le bloc B (maître RX) génère les horloges MCLK/BCLK/FS pour éviter tout double pilotage. */
     AUDIO_SAI_RX_BLOCK->CR1 |= SAI_xCR1_OUTDRIV | SAI_xCR1_NODIV;
-    AUDIO_SAI_TX_BLOCK->CR1 |= SAI_xCR1_OUTDRIV | SAI_xCR1_NODIV;
+    /* Bloc A reste un esclave synchrone strict (pas de OUTDRIV côté TX). */
 #endif
 }
 

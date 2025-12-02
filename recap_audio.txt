@@ -62,3 +62,10 @@ Points à peaufiner
 - Vérifier les valeurs de PLL/horloges SAI par rapport aux sélecteurs PLL3 définis dans cfg/mcuconf.h (NODIV, MCLK).
 - Positionner la ligne de mute casque (AUDIO_HP_MUTE_LINE) sur le GPIO exact du TPA6138A2.
 - Intégrer le driver dans drivers_init_all() quand le pipeline audio doit être démarré au boot.
+
+Limitations connues / TODO
+--------------------------
+- Mapping slots ADAU1979 à valider sur le hardware réel.
+- Volume actuellement en float, potentielle migration en Q31 plus tard.
+- Vérification PLL ajoutée.
+- SAI horloges générées uniquement par le bloc RX.
