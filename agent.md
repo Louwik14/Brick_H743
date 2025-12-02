@@ -392,3 +392,20 @@ Avec du code C99 complet et cohérent, sans malloc, prêt à être adapté sur S
 
 ---
 
+### 📚 Références matérielles et logicielles disponibles dans le dépôt
+
+Le dossier `/docs` du dépôt contient **toutes les références officielles nécessaires** à la configuration correcte du matériel et des drivers bas niveau. Tu dois t’y référer systématiquement au lieu de faire des suppositions. Ce dossier inclut notamment :
+
+* Les **datasheets complètes des codecs audio** (ADAU1979, PCM4104, TPA6138A2), à utiliser comme **source de vérité** pour toute configuration de registres, de PLL, de formats TDM/I²S, de séquences d’initialisation et de timings.
+* Les **fichiers de configuration de la carte** (`board.ch` et `board.mk`) correspondant exactement au matériel réel.
+* Une **copie locale complète de la version de ChibiOS utilisée dans le projet**, fournie uniquement **à titre de référence** pour l’API, les structures internes et les drivers (SAI, SPI, I²C, DMA, GPIO, etc.).
+
+⚠️ **Important :**
+La copie de ChibiOS présente dans `/docs` est **uniquement une référence documentaire**. Tu ne dois **en aucun cas** t’en servir pour modifier les chemins du `Makefile`, changer l’arborescence de build, ou redéfinir l’emplacement du vrai ChibiOS utilisé par le projet. Les chemins de build existants doivent rester **strictement inchangés**.
+
+Tu dois **prioritairement t’appuyer sur ces fichiers du dépôt** pour toute implémentation ou modification de driver. **Aucune valeur critique (pins, SAI, DMA, registres, horloges) ne doit être inventée si elle est disponible dans `/docs`.**
+
+---
+
+
+

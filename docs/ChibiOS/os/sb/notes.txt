@@ -1,0 +1,21 @@
+*** SB-related notes and ideas ***
+
+* Use und#xxx instruction for syscall instead of svc#xxx.
+  + Faster context switch.
+  * Requires to enable USBFAULTENA and give UsageFault a priority.
+    + Enable all other vectors and make a proper handler finally.
+  - Needs to deal with the CFSR multiple status bits, probably slower than
+    doing syscalls through SVCALL.
+
+* Dynamic sandbox allocation and execution.
+  ? Need a way to get the SB required size from the elf file.
+    ? Sum of the ALLOC regions sizes.
+      ? MSH needs extra space to load-call applications, how is that
+        decided?
+  * Fork/exec API to allow SBs to spawn other SBs.
+    + No separate fork and exec, single API doing both for simplicity.
+    + VFS settings and file handles would be inherited.
+    + VIO settings would not be inherited.
+    + Environment variables would be inherited.
+    + MSH could spawn separate SBs instead of load-call.
+      + Could do both, 2 different ways to launch applications.
