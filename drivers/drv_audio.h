@@ -28,6 +28,8 @@ int32_t (*drv_audio_get_spi_out_buffers(void))[AUDIO_FRAMES_PER_BUFFER][4];
 size_t   drv_audio_get_spi_frames(void);
 
 void drv_audio_set_master_volume(float vol);
+void drv_audio_set_route(uint8_t track, bool to_main, bool to_cue);
+void drv_audio_set_route_gain(uint8_t track, float gain_main, float gain_cue);
 
 /* Hook faible pour le traitement DSP. */
 __attribute__((weak)) void drv_audio_process_block(

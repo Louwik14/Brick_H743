@@ -28,6 +28,15 @@ static drv_spilink_push_cb_t spilink_push_cb = NULL;
 /* Volume maître flottant (0.0 -> silence, 1.0 -> unity). */
 static float audio_master_volume = 1.0f;
 
+typedef struct {
+    float gain_main;
+    float gain_cue;
+    bool  to_main;
+    bool  to_cue;
+} audio_route_t;
+
+static audio_route_t g_audio_routes[4];
+
 /* -------------------------------------------------------------------------- */
 /* Synchronisation des DMA                                                    */
 /* -------------------------------------------------------------------------- */
@@ -40,6 +49,7 @@ static const stm32_dma_stream_t *sai_tx_dma = NULL;
 /* Nombre d'échantillons transférés par transaction (ping + pong). */
 #define AUDIO_DMA_IN_SAMPLES   (AUDIO_FRAMES_PER_BUFFER * AUDIO_NUM_INPUT_CHANNELS * 2U)
 #define AUDIO_DMA_OUT_SAMPLES  (AUDIO_FRAMES_PER_BUFFER * AUDIO_NUM_OUTPUT_CHANNELS * 2U)
+#define AUDIO_INT24_MAX_F      8388607.0f
 /*
  * Les tableaux [2][frames][channels] sont vus par le DMA comme un buffer
  * linéaire unique : interruption Half-Transfer => index 0 (ping),
@@ -53,6 +63,8 @@ static const stm32_dma_stream_t *sai_tx_dma = NULL;
 static void audio_hw_configure_sai(void);
 static void audio_dma_start(void);
 static void audio_dma_stop(void);
+static void audio_routes_reset_defaults(void);
+static float soft_clip(float x);
 
 static void audio_dma_rx_cb(void *p, uint32_t flags);
 static void audio_dma_tx_cb(void *p, uint32_t flags);
@@ -75,6 +87,7 @@ void drv_audio_init(void) {
     memset(audio_out_buffers, 0, sizeof(audio_out_buffers));
     memset(spi_in_buffers, 0, sizeof(spi_in_buffers));
     memset(spi_out_buffers, 0, sizeof(spi_out_buffers));
+    audio_routes_reset_defaults();
 
     /* Les GPIO SAI sont déjà configurés via board.h. */
     audio_hw_configure_sai();
@@ -163,6 +176,56 @@ void drv_audio_set_master_volume(float vol) {
     audio_master_volume = vol;
 }
 
+void drv_audio_set_route(uint8_t track, bool to_main, bool to_cue) {
+    if (track >= 4U) {
+        return;
+    }
+
+    g_audio_routes[track].to_main = to_main;
+    g_audio_routes[track].to_cue = to_cue;
+}
+
+static float clamp_0_1(float v) {
+    if (v < 0.0f) {
+        return 0.0f;
+    }
+    if (v > 1.0f) {
+        return 1.0f;
+    }
+    return v;
+}
+
+void drv_audio_set_route_gain(uint8_t track, float gain_main, float gain_cue) {
+    if (track >= 4U) {
+        return;
+    }
+
+    g_audio_routes[track].gain_main = clamp_0_1(gain_main);
+    g_audio_routes[track].gain_cue = clamp_0_1(gain_cue);
+}
+
+static void audio_routes_reset_defaults(void) {
+    for (uint8_t t = 0U; t < 4U; ++t) {
+        g_audio_routes[t].gain_main = 1.0f;
+        g_audio_routes[t].gain_cue = 1.0f;
+        g_audio_routes[t].to_main = true;
+        g_audio_routes[t].to_cue = false;
+    }
+}
+
+static float soft_clip(float x) {
+    const float threshold = 0.95f;
+    if (x > threshold) {
+        const float excess = x - threshold;
+        return threshold + (excess / (1.0f + (excess * excess)));
+    }
+    if (x < -threshold) {
+        const float excess = x + threshold;
+        return -threshold + (excess / (1.0f + (excess * excess)));
+    }
+    return x;
+}
+
 /* -------------------------------------------------------------------------- */
 /* Hook DSP faible                                                            */
 /* -------------------------------------------------------------------------- */
@@ -172,21 +235,58 @@ void __attribute__((weak)) drv_audio_process_block(const int32_t              *a
                                                    int32_t                    *dac_out,
                                                    spilink_audio_block_t       spi_out,
                                                    size_t                      frames) {
-    /* Pass-through par défaut : copie les 4 premiers canaux ADC vers le DAC,
-     * mute SPI out et ignore SPI in. */
+    (void)spi_in;
+
+    const float inv_scale = 1.0f / AUDIO_INT24_MAX_F;
+    float master = audio_master_volume;
+    if (master < 0.0f) {
+        master = 0.0f;
+    }
+
     const int32_t *adc_ptr = adc_in;
     int32_t *dac_ptr = dac_out;
+
     for (size_t n = 0; n < frames; ++n) {
-        for (size_t ch = 0; ch < AUDIO_NUM_OUTPUT_CHANNELS; ++ch) {
-            size_t src_ch = (ch < AUDIO_NUM_INPUT_CHANNELS) ? ch : 0U;
-            int32_t sample = adc_ptr[src_ch];
-            dac_ptr[ch] = (int32_t)((float)sample * audio_master_volume);
+        float main_l = 0.0f;
+        float main_r = 0.0f;
+        float cue_l  = 0.0f;
+        float cue_r  = 0.0f;
+
+        for (uint8_t track = 0U; track < 4U; ++track) {
+            const audio_route_t *route = &g_audio_routes[track];
+            size_t base = (size_t)track * 2U;
+            float in_l = (float)adc_ptr[base] * inv_scale;
+            float in_r = (float)adc_ptr[base + 1U] * inv_scale;
+
+            if (route->to_main) {
+                main_l += in_l * route->gain_main;
+                main_r += in_r * route->gain_main;
+            }
+            if (route->to_cue) {
+                cue_l += in_l * route->gain_cue;
+                cue_r += in_r * route->gain_cue;
+            }
         }
+
+        main_l = soft_clip(main_l);
+        main_r = soft_clip(main_r);
+        cue_l = soft_clip(cue_l);
+        cue_r = soft_clip(cue_r);
+
+        main_l = soft_clip(main_l * master);
+        main_r = soft_clip(main_r * master);
+        cue_l = soft_clip(cue_l * master);
+        cue_r = soft_clip(cue_r * master);
+
+        dac_ptr[0] = (int32_t)(main_l * AUDIO_INT24_MAX_F);
+        dac_ptr[1] = (int32_t)(main_r * AUDIO_INT24_MAX_F);
+        dac_ptr[2] = (int32_t)(cue_l * AUDIO_INT24_MAX_F);
+        dac_ptr[3] = (int32_t)(cue_r * AUDIO_INT24_MAX_F);
+
         adc_ptr += AUDIO_NUM_INPUT_CHANNELS;
         dac_ptr += AUDIO_NUM_OUTPUT_CHANNELS;
     }
 
-    (void)spi_in;
     if (spi_out != NULL) {
         memset(spi_out, 0, sizeof(spi_out_buffers));
     }
