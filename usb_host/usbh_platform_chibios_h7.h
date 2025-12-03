@@ -18,8 +18,6 @@ USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef *phost);
 USBH_StatusTypeDef USBH_LL_DeInit(USBH_HandleTypeDef *phost);
 USBH_StatusTypeDef USBH_LL_Start(USBH_HandleTypeDef *phost);
 USBH_StatusTypeDef USBH_LL_Stop(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef USBH_LL_Connect(USBH_HandleTypeDef *phost);
-USBH_StatusTypeDef USBH_LL_Disconnect(USBH_HandleTypeDef *phost);
 USBH_SpeedTypeDef  USBH_LL_GetSpeed(USBH_HandleTypeDef *phost);
 USBH_StatusTypeDef USBH_LL_ResetPort(USBH_HandleTypeDef *phost);
 uint32_t           USBH_LL_GetLastXferSize(USBH_HandleTypeDef *phost, uint8_t pipe);
@@ -36,9 +34,6 @@ USBH_StatusTypeDef USBH_LL_SubmitURB(USBH_HandleTypeDef *phost, uint8_t pipe,
 USBH_URBStateTypeDef USBH_LL_GetURBState(USBH_HandleTypeDef *phost, uint8_t pipe);
 USBH_StatusTypeDef USBH_LL_SetToggle(USBH_HandleTypeDef *phost, uint8_t pipe, uint8_t toggle);
 uint8_t USBH_LL_GetToggle(USBH_HandleTypeDef *phost, uint8_t pipe);
-
-void USBH_LL_SetTimer(USBH_HandleTypeDef *phost, uint32_t time);
-void USBH_LL_IncTimer(USBH_HandleTypeDef *phost);
 void USBH_Delay(uint32_t Delay);
 
 uint32_t usbh_platform_get_reset_count(void);

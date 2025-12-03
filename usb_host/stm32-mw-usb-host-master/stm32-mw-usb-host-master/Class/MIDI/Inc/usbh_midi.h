@@ -12,6 +12,13 @@ extern "C" {
 
 #include "usbh_core.h"
 #include <stdbool.h>
+#include <stdint.h>
+
+#if defined(__GNUC__)
+#define USBH_MIDI_DMA_ALIGN __attribute__((aligned(32)))
+#else
+#define USBH_MIDI_DMA_ALIGN
+#endif
 
 #define USB_AUDIO_CLASS              0x01U
 #define USB_AUDIO_SUBCLASS_MIDISTREAMING 0x03U
@@ -38,10 +45,10 @@ typedef struct
   uint8_t              interface;
   MIDI_PipeStateTypeDef in_state;
   MIDI_PipeStateTypeDef out_state;
-  uint8_t              in_packet[USBH_MIDI_MAX_PACKET];
-  uint8_t              out_packet[USBH_MIDI_MAX_PACKET];
-  uint8_t              rx_buffer[USBH_MIDI_RX_QUEUE_SIZE][USBH_MIDI_EVENT_SIZE];
-  uint8_t              tx_buffer[USBH_MIDI_TX_QUEUE_SIZE][USBH_MIDI_EVENT_SIZE];
+  uint8_t              in_packet[USBH_MIDI_MAX_PACKET] USBH_MIDI_DMA_ALIGN;
+  uint8_t              out_packet[USBH_MIDI_MAX_PACKET] USBH_MIDI_DMA_ALIGN;
+  uint8_t              rx_buffer[USBH_MIDI_RX_QUEUE_SIZE][USBH_MIDI_EVENT_SIZE] USBH_MIDI_DMA_ALIGN;
+  uint8_t              tx_buffer[USBH_MIDI_TX_QUEUE_SIZE][USBH_MIDI_EVENT_SIZE] USBH_MIDI_DMA_ALIGN;
   uint16_t             rx_head;
   uint16_t             rx_tail;
   uint16_t             tx_head;

@@ -12,6 +12,11 @@
 3. `USBH_LL_Start` starts the real controller; `USBH_LL_Stop` halts it cleanly. `USBH_LL_ResetPort` issues a hardware reset and increments a reset counter for diagnostics.
 4. VBUS control is a no-op: `USBH_LL_DriverVBUS` intentionally does nothing because power is always present.
 
+### Cache / DMA safety on STM32H743
+- All URB submissions now clean or invalidate the D-Cache in `USBH_LL_SubmitURB` based on transfer direction, and completed IN transfers are invalidated in `USBH_LL_GetURBState` before the stack reads data.
+- MIDI bulk buffers (`in_packet`, `out_packet`, RX/TX rings) are 32-byte aligned to match the cache line size.
+- These measures prevent stale or dirty cache lines when the HCD DMA engine reads or writes MIDI payloads.
+
 ## Enumeration and class binding
 1. `usb_host_midi_init()` creates the USB Host core with `USBH_Init`, registers the MIDI class, starts the host, and spawns the ChibiOS thread `usb_host_thread`.
 2. The thread calls `USBH_Process` every millisecond to drive enumeration and class state machines.
