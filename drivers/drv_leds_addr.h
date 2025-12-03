@@ -5,6 +5,7 @@
 #include "brick_config.h"
 #include "hal.h"
 #include <stdint.h>
+#include <stdbool.h>
 
 /* Nombre total de LEDs adressables */
 #define NUM_ADRESS_LEDS   BRICK_NUM_WS2812_LEDS
@@ -90,12 +91,33 @@ extern led_state_t drv_leds_addr_state[NUM_ADRESS_LEDS];
  *                              API
  * ======================================================================= */
 
+/** Driver init (mutex, timer, BDMA). */
 void drv_leds_addr_init(void);
+
+/**
+ * Encode le buffer LED et lance un transfert DMA non bloquant.
+ * Protégé par mutex + flag busy pour éviter les re-entrées.
+ */
 void drv_leds_addr_update(void);
+
+/** Accès thread-safe au buffer GRB logique. */
 void drv_leds_addr_set_rgb(int index, uint8_t r, uint8_t g, uint8_t b);
 void drv_leds_addr_set_color(int index, led_color_t color);
 void drv_leds_addr_clear(void);
+
+/**
+ * Met à jour l'état logique (mode + couleur) avec protection mutex.
+ */
 void drv_leds_addr_set(int index, led_color_t color, led_mode_t mode);
+
+/**
+ * Rendu complet (modes, blink) + déclenchement DMA si libre.
+ */
 void drv_leds_addr_render(void);
+
+/* Diagnostic temps réel, toutes thread-safe / non bloquantes. */
+bool drv_leds_addr_is_busy(void);
+uint32_t drv_leds_addr_error_count(void);
+uint32_t drv_leds_addr_last_frame_time_us(void);
 
 #endif /* DRV_LEDS_ADDR_H */
