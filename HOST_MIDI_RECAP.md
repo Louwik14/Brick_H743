@@ -18,7 +18,7 @@
 - These measures prevent stale or dirty cache lines when the HCD DMA engine reads or writes MIDI payloads.
 
 ## Enumeration and class binding
-1. USB Host memory is **fully static**: `USBH_malloc`/`USBH_free` map to a 32-byte aligned pool (`USBH_STATIC_MEM_SIZE`, default 16384 bytes) reset on every host restart to avoid heap fragmentation.
+1. USB Host memory is **fully static**: `USBH_malloc`/`USBH_free` map to a 32-byte aligned pool (`USBH_STATIC_MEM_SIZE`, default 16384 bytes) reset on every host restart to avoid heap fragmentation. An explicit OOM counter tracks allocation failures and is cleared with each allocator reset; devices presenting oversized descriptors may therefore be rejected but the event remains observable via this counter.
 2. `usb_host_midi_init()` clears the allocator and MIDI FIFO, starts the host core, and spawns the ChibiOS thread `usb_host_thread`.
 3. The thread calls `USBH_Process` every **250 µs** to drive enumeration and class state machines with lower latency.
 4. The MIDI class searches the configuration descriptor for the first Audio/MIDIStreaming interface (Class 0x01 / SubClass 0x03) and requires exactly one Bulk IN and one Bulk OUT endpoint.

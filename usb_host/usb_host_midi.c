@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "usb_host_midi.h"
+#include "usbh_conf.h"
 #include "usbh_core.h"
 #include "usbh_midi.h"
 #include "usbh_platform_chibios_h7.h"
@@ -234,6 +235,14 @@ static void usb_host_poll_midi(void)
 
 static void usb_host_restart(void)
 {
+  uint32_t oom_count = USBH_static_get_oom_count();
+
+  if (oom_count > 0U)
+  {
+    usb_error_count++;
+    USBH_ErrLog("USBH static pool OOM since last reset: %lu", (unsigned long)oom_count);
+  }
+
   reset_requested = false;
   midi_ready = false;
   device_attached = false;

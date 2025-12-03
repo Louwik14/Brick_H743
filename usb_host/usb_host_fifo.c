@@ -21,10 +21,11 @@ static volatile uint32_t midi_overflow_total = 0U;
 
 bool usb_host_fifo_push(const uint8_t packet[4])
 {
-  uint16_t local_head = midi_head;
+  uint16_t local_head = __atomic_load_n(&midi_head, __ATOMIC_RELAXED);
+  uint16_t local_tail = __atomic_load_n(&midi_tail, __ATOMIC_ACQUIRE);
   uint16_t next_head = (local_head + 1U) & USB_HOST_MIDI_FIFO_MASK;
 
-  if (next_head == midi_tail)
+  if (next_head == local_tail)
   {
     midi_overflow_total++;
     return false;
@@ -37,7 +38,7 @@ bool usb_host_fifo_push(const uint8_t packet[4])
 
 bool usb_host_fifo_pop(uint8_t packet[4])
 {
-  uint16_t local_tail = midi_tail;
+  uint16_t local_tail = __atomic_load_n(&midi_tail, __ATOMIC_RELAXED);
   uint16_t local_head = __atomic_load_n(&midi_head, __ATOMIC_ACQUIRE);
 
   if (local_head == local_tail)
@@ -46,7 +47,7 @@ bool usb_host_fifo_pop(uint8_t packet[4])
   }
 
   memcpy(packet, midi_fifo[local_tail].data, sizeof(midi_fifo[local_tail].data));
-  midi_tail = (local_tail + 1U) & USB_HOST_MIDI_FIFO_MASK;
+  __atomic_store_n(&midi_tail, (local_tail + 1U) & USB_HOST_MIDI_FIFO_MASK, __ATOMIC_RELEASE);
   return true;
 }
 
@@ -57,6 +58,6 @@ uint32_t usb_host_fifo_overflow_total(void)
 
 void usb_host_fifo_reset(void)
 {
-  midi_head = 0U;
-  midi_tail = 0U;
+  __atomic_store_n(&midi_head, 0U, __ATOMIC_RELEASE);
+  __atomic_store_n(&midi_tail, 0U, __ATOMIC_RELEASE);
 }
