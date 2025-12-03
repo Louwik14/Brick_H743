@@ -37,6 +37,28 @@
  */
 extern volatile bool usb_midi_tx_ready;
 
+static inline bool midi_usb_ready(void) {
+  bool ready;
+  osalSysLock();
+  ready = usb_midi_tx_ready;
+  osalSysUnlock();
+  return ready;
+}
+
+/* Nettoyage/invalidations D-Cache pour les buffers USB (OTG FS accède au D2). */
+#if defined(STM32H7xx) && defined(STM32_DCACHE_ENABLED)
+static inline void midi_usb_flush_tx_cache(const void *addr, size_t len) {
+  const size_t cache_line = 32U;
+  uintptr_t start = (uintptr_t)addr & ~(cache_line - 1U);
+  uintptr_t end = (uintptr_t)addr + len;
+  SCB_CleanDCache_by_Addr((uint32_t *)start, (int32_t)(end - start));
+}
+#else
+static inline void midi_usb_flush_tx_cache(const void *addr, size_t len) {
+  (void)addr; (void)len;
+}
+#endif
+
 /* ====================================================================== */
 /*                         CONFIGURATION / ÉTAT                            */
 /* ====================================================================== */
@@ -95,11 +117,19 @@ static inline void midi_usb_queue_decrement(void) {
   osalSysUnlock();
 }
 
+static inline void midi_usb_start_tx(const uint8_t *buffer, size_t len) {
+  midi_usb_flush_tx_cache(buffer, len);
+  osalSysLock();
+  usbStartTransmitI(&USBD1, MIDI_EP_IN, buffer, len);
+  osalSysUnlock();
+}
+
 /**
  * @brief Sémaphore “endpoint libre”.
  * @details Signalé dans le callback d’EP IN (ex. `ep2_in_cb()` côté `usbcfg.c`).
  */
 binary_semaphore_t tx_sem;
+binary_semaphore_t sof_sem;
 
 /** @brief Statistiques globales de transmission MIDI (USB/DIN). */
 midi_tx_stats_t midi_tx_stats = {0};
@@ -162,12 +192,11 @@ static THD_FUNCTION(thdMidiUsbTx, arg) {
       buf[n++] = (uint8_t)( msg        & 0xFF);
 
       if (n == sizeof(buf)) {
-        if (usb_midi_tx_ready) {
+        const bool ready = midi_usb_ready();
+        if (ready) {
           const systime_t tw = TIME_MS2I(MIDI_USB_TX_WAIT_MS);
           if (chBSemWaitTimeout(&tx_sem, tw) == MSG_OK) {
-            osalSysLock();
-            usbStartTransmitI(&USBD1, MIDI_EP_IN, buf, n);
-            osalSysUnlock();
+            midi_usb_start_tx(buf, n);
             midi_tx_stats.tx_sent_batched++;
           } else {
             /* Endpoint non réarmé à temps : abandon contrôlé du lot. */
@@ -178,14 +207,14 @@ static THD_FUNCTION(thdMidiUsbTx, arg) {
         }
         n = 0;
       }
-    } else if (n > 0) {
-      /* Flush du lot partiel après courte période d'inactivité. */
-      if (usb_midi_tx_ready) {
+    } else if (n > 0U) {
+      /* Flush du lot partiel déclenché sur le prochain SOF ou après timeout. */
+      chBSemWaitTimeout(&sof_sem, TIME_MS2I(1));
+      const bool ready = midi_usb_ready();
+      if (ready) {
         const systime_t tw = TIME_MS2I(MIDI_USB_TX_WAIT_MS);
         if (chBSemWaitTimeout(&tx_sem, tw) == MSG_OK) {
-          osalSysLock();
-          usbStartTransmitI(&USBD1, MIDI_EP_IN, buf, n);
-          osalSysUnlock();
+          midi_usb_start_tx(buf, n);
           midi_tx_stats.tx_sent_batched++;
         } else {
           midi_tx_stats.usb_not_ready_drops += n / 4;
@@ -217,6 +246,7 @@ void midi_init(void) {
   midi_usb_queue_high_water = 0;
   chMBObjectInit(&midi_usb_mb, midi_usb_queue, MIDI_USB_QUEUE_LEN);
   chBSemObjectInit(&tx_sem, true);
+  chBSemObjectInit(&sof_sem, true);
   chThdCreateStatic(waMidiUsbTx, sizeof(waMidiUsbTx),
                     MIDI_USB_TX_PRIO, thdMidiUsbTx, NULL);
 }
@@ -259,14 +289,6 @@ static void post_mb_or_drop(msg_t m, bool force_drop_oldest) {
   }
 }
 
-/**
- * @brief Micro-attente maximale (µs) tolérée pour envoyer une Note (endpoint opportuniste).
- * @details Si l’EP n’est pas saisi dans ce délai, le paquet partira via la mailbox (agrégé).
- */
-#ifndef MIDI_NOTE_MICROWAIT_US
-#define MIDI_NOTE_MICROWAIT_US  80
-#endif
-
 /* ====================================================================== */
 /*                       TRANSMISSION USB (PROTOCOLE)                     */
 /* ====================================================================== */
@@ -278,9 +300,9 @@ static void post_mb_or_drop(msg_t m, bool force_drop_oldest) {
  * - Mappage correct du **CIN** selon le type de message (NoteOn=0x9, CC=0xB, Realtime=0xF, etc.),
  * - Zéro-padding pour les messages courts (1 ou 2 octets),
  * - Priorité aux **Realtime** :
- *   - `0xF8` (Clock) : micro-attente plus longue pour envoi immédiat si possible,
- *   - `FA/FB/FC/FE/FF` : micro-attente courte, sinon fallback mailbox avec politique configurable,
- * - Pour les **Notes** : petite fenêtre d’envoi direct (`MIDI_NOTE_MICROWAIT_US`), sinon agrégation.
+ *   - `0xF8` (Clock) : tentative immédiate, sinon file pour flush au prochain SOF,
+ *   - `FA/FB/FC/FE/FF` : idem.
+ * - Pour les **Notes** : tentative immédiate (sans attente active), sinon agrégation.
  *
  * @param msg Pointeur vers le message MIDI (status + data).
  * @param len Taille du message en octets (1 à 3 selon le type).
@@ -312,9 +334,8 @@ static void send_usb(const uint8_t *msg, size_t len) {
     packet[0]=cable|0x0F; packet[1]=st;
 
     if (st==0xF8){
-      systime_t tw=TIME_US2I(1000);
-      if (usb_midi_tx_ready && chBSemWaitTimeout(&tx_sem, tw)==MSG_OK){
-        osalSysLock(); usbStartTransmitI(&USBD1, MIDI_EP_IN, packet, 4); osalSysUnlock();
+      if (midi_usb_ready() && chBSemWaitTimeout(&tx_sem, TIME_IMMEDIATE)==MSG_OK){
+        midi_usb_start_tx(packet, 4);
         midi_tx_stats.tx_sent_immediate++;
       } else {
         msg_t m=((msg_t)packet[0]<<24)|((msg_t)packet[1]<<16)|((msg_t)packet[2]<<8)|packet[3];
@@ -324,9 +345,8 @@ static void send_usb(const uint8_t *msg, size_t len) {
     }
 
     if (st==0xFA || st==0xFB || st==0xFC || st==0xFE || st==0xFF){
-      systime_t tw=TIME_US2I(50);
-      if (usb_midi_tx_ready && chBSemWaitTimeout(&tx_sem, tw)==MSG_OK){
-        osalSysLock(); usbStartTransmitI(&USBD1, MIDI_EP_IN, packet, 4); osalSysUnlock();
+      if (midi_usb_ready() && chBSemWaitTimeout(&tx_sem, TIME_IMMEDIATE)==MSG_OK){
+        midi_usb_start_tx(packet, 4);
         midi_tx_stats.tx_sent_immediate++;
       } else {
         midi_tx_stats.rt_other_enq_fallback++;
@@ -344,9 +364,8 @@ static void send_usb(const uint8_t *msg, size_t len) {
   else { packet[0]=cable|0x0F; packet[1]=len>0?msg[0]:0; packet[2]=len>1?msg[1]:0; packet[3]=len>2?msg[2]:0; }
 
   if (is_note){
-    const systime_t tw=TIME_US2I(MIDI_NOTE_MICROWAIT_US);
-    if (usb_midi_tx_ready && chBSemWaitTimeout(&tx_sem, tw)==MSG_OK){
-      osalSysLock(); usbStartTransmitI(&USBD1, MIDI_EP_IN, packet, 4); osalSysUnlock();
+    if (midi_usb_ready() && chBSemWaitTimeout(&tx_sem, TIME_IMMEDIATE)==MSG_OK){
+      midi_usb_start_tx(packet, 4);
       midi_tx_stats.tx_sent_immediate++; return;
     }
   }
@@ -445,24 +464,18 @@ void midi_clock(midi_dest_t d){
 }
 
 void midi_start(midi_dest_t d){
-  (void)d;
   uint8_t m[1]={0xFA};
-  send_usb(m,1);
-  send_uart(m,1);
+  midi_send(d,m,1);
 }
 
 void midi_continue(midi_dest_t d){
-  (void)d;
   uint8_t m[1]={0xFB};
-  send_usb(m,1);
-  send_uart(m,1);
+  midi_send(d,m,1);
 }
 
 void midi_stop(midi_dest_t d){
-  (void)d;
   uint8_t m[1]={0xFC};
-  send_usb(m,1);
-  send_uart(m,1);
+  midi_send(d,m,1);
 }
 
 void midi_active_sensing(midi_dest_t d){

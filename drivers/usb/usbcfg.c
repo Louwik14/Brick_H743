@@ -32,6 +32,20 @@
 #include "usbcfg.h"
 #include "ch.h"         /* chBSemSignalI */
 #include <stdint.h>
+#include <stddef.h>
+
+#if defined(STM32H7xx) && defined(STM32_DCACHE_ENABLED)
+static inline void usb_dcache_invalidate(void *addr, size_t len) {
+  const size_t cache_line = 32U;
+  uintptr_t start = (uintptr_t)addr & ~(cache_line - 1U);
+  uintptr_t end = (uintptr_t)addr + len;
+  SCB_InvalidateDCache_by_Addr((uint32_t *)start, (int32_t)(end - start));
+}
+#else
+static inline void usb_dcache_invalidate(void *addr, size_t len) {
+  (void)addr; (void)len;
+}
+#endif
 
 /** @brief Indique si l’interface USB-MIDI est prête pour la transmission. */
 volatile bool usb_midi_tx_ready = false;
@@ -154,8 +168,11 @@ static const USBDescriptor strings[] = {
 static USBInEndpointState   ep2_in_state;   /**< État runtime EP2 IN  */
 static USBOutEndpointState  ep1_out_state;  /**< État runtime EP1 OUT */
 
-/** @brief Buffer de réception de 4 octets (1 paquet MIDI). */
-static uint8_t rx_pkt[4];
+/**
+ * @brief Buffer de réception de 4 octets (1 paquet MIDI).
+ * @note Aligné sur 32 octets pour compatibilité D-Cache Cortex-M7.
+ */
+static uint8_t rx_pkt[4] __attribute__((aligned(32)));
 
 /**
  * @brief Callback OUT (EP1) — réarme la réception de paquets MIDI.
@@ -164,6 +181,7 @@ static uint8_t rx_pkt[4];
  */
 static void ep1_out_cb(USBDriver *usbp, usbep_t ep) {
   (void)ep;
+  usb_dcache_invalidate(rx_pkt, sizeof rx_pkt);
   usbStartReceiveI(usbp, MIDI_EP_OUT, rx_pkt, sizeof rx_pkt);
 }
 
@@ -176,7 +194,8 @@ static void ep1_out_cb(USBDriver *usbp, usbep_t ep) {
  * Appelle `chBSemSignalI()` sur le sémaphore `tx_sem` défini dans `midi.c`
  * pour réveiller le thread d’émission.
  */
-extern binary_semaphore_t tx_sem;  /* défini dans midi.c */
+extern binary_semaphore_t tx_sem;   /* défini dans midi.c */
+extern binary_semaphore_t sof_sem;  /* défini dans midi.c */
 static void ep2_in_cb(USBDriver *usbp, usbep_t ep) {
   (void)usbp; (void)ep;
   chBSemSignalI(&tx_sem);
@@ -243,20 +262,22 @@ static const USBDescriptor *get_descriptor(USBDriver *usbp,
 static void usb_event(USBDriver *usbp, usbevent_t event) {
   switch (event) {
     case USB_EVENT_CONFIGURED:
-      osalSysLock();
+      osalSysLockFromISR();
       usbInitEndpointI(usbp, MIDI_EP_OUT, &ep1_out_cfg);
       usbInitEndpointI(usbp, MIDI_EP_IN,  &ep2_in_cfg);
+      usb_dcache_invalidate(rx_pkt, sizeof rx_pkt);
       usbStartReceiveI(usbp, MIDI_EP_OUT, rx_pkt, sizeof rx_pkt);
       usb_midi_tx_ready = true;
       chBSemSignalI(&tx_sem);
-      osalSysUnlock();
+      osalSysUnlockFromISR();
       break;
 
     case USB_EVENT_RESET:
     case USB_EVENT_UNCONFIGURED:
     case USB_EVENT_SUSPEND:
-      /* Pas besoin de verrou ici : lecture/écriture booléenne atomique. */
+      osalSysLockFromISR();
       usb_midi_tx_ready = false;
+      osalSysUnlockFromISR();
       break;
 
     default:
@@ -269,6 +290,7 @@ static void usb_event(USBDriver *usbp, usbevent_t event) {
  */
 static void sof_handler(USBDriver *usbp) {
   (void)usbp;
+  chBSemSignalI(&sof_sem);
 }
 
 /* ====================================================================== */

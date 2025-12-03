@@ -16,6 +16,10 @@
 #include "usbcfg.h"          // Descripteurs et configuration USB
 #include <stdbool.h>
 
+#ifndef USB_FORCE_NOVBUS
+#define USB_FORCE_NOVBUS  0
+#endif
+
 /* ====================================================================== */
 /*                            VARIABLES EXTERNES                          */
 /* ====================================================================== */
@@ -50,8 +54,10 @@ void usb_device_start(void) {
     usbStart(&USBD1, &usbcfg);
 
     /* 3. Forçage du mode "device" (désactivation VBUS sensing) */
-    USBD1.otg->GCCFG |=  USB_OTG_GCCFG_NOVBUSSENS;
-    USBD1.otg->GCCFG &= ~(USB_OTG_GCCFG_VBUSBSEN | USB_OTG_GCCFG_VBUSASEN);
+    if (USB_FORCE_NOVBUS) {
+        USBD1.otg->GCCFG |=  USB_OTG_GCCFG_NOVBUSSENS;
+        USBD1.otg->GCCFG &= ~(USB_OTG_GCCFG_VBUSBSEN | USB_OTG_GCCFG_VBUSASEN);
+    }
 
     /* 4. Connexion logique sur le bus */
     usbConnectBus(&USBD1);

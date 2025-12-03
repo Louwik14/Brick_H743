@@ -1,0 +1,26 @@
+Corrections réalisées
+- Protection temps réel de usb_midi_tx_ready avec osalSysLockFromISR/osalSysUnlockFromISR dans les callbacks USB (CONFIGURED/RESET/SUSPEND) pour éviter toute condition de course entre ISR et thread.
+- Routage logique rétabli pour midi_start/midi_stop/midi_continue via midi_send() en respectant le midi_dest_t fourni par l’application.
+- Chemin USB optimisé : tentatives TX immédiates non bloquantes (TIME_IMMEDIATE) pour les messages realtime/notes, sinon mise en file et flush déclenché sur SOF par le thread dédié (pas de micro-attentes actives).
+- SOF désormais utilisé pour déclencher le vidage du buffer USB agrégé (sémaphore sof_sem) et réduire le jitter sur les paquets partiels.
+- Ajout d’une option conditionnelle USB_FORCE_NOVBUS pour contrôler le forçage de NOVBUSSENS dans usb_device_start().
+- Hygiène D-Cache Cortex-M7 : alignement du buffer RX USB, invalidation systématique avant réarmement, et hook de flush TX avant usbStartTransmitI() pour sécuriser les accès DMA/USB.
+- Mailbox USB toujours protégée, compteurs high-water conservés, aucune attente active ajoutée.
+
+Impact sur la latence et le jitter
+- Suppression des micro-attentes bloquantes : les messages realtime/notes ne bloquent plus le CPU et sont soit envoyés immédiatement, soit programmés pour le SOF suivant, limitant la dérive temporelle.
+- Utilisation du sémaphore de SOF pour flusher rapidement les buffers partiels garantit une latence plafonnée à l’intervalle de trame USB (1 ms) sans polling actif.
+- Les envois batchés conservent le timeout court (MIDI_USB_TX_WAIT_MS) mais sans attente inutile côté producteur, réduisant le jitter perçu.
+
+Comportement d’envoi USB après correction
+- Tentative immédiate d’accaparement de tx_sem : en cas de succès, usbStartTransmitI() est lancé avec flush D-Cache.
+- Si l’endpoint est occupé ou l’USB non prêt, le paquet est posté dans la mailbox (politique drop-oldest configurable) puis expédié lors du prochain passage du thread, forcé au plus tard par l’interruption SOF.
+- Les lots complets (64 octets) partent dès qu’ils sont pleins ; les lots partiels sont envoyés au SOF suivant ou après un court timeout sans spinner.
+
+Rôle des threads / sémaphores / callbacks
+- Thread MIDI_USB_TX : agrège les paquets depuis la mailbox, attend tx_sem pour lancer usbStartTransmitI(), et utilise sof_sem (signale par SOF) pour flusher les lots partiels sans polling.
+- Sémaphore tx_sem : signalé en ISR (ep2_in_cb) lorsque l’IN est libre ; utilisé par le thread et par les chemins rapides pour tenter un envoi immédiat.
+- Sémaphore sof_sem : signalé à chaque SOF ; réveille le thread pour expédier les buffers incomplets et limiter la latence.
+- Callback USB_EVENT_CONFIGURED : initialise les endpoints, invalide le buffer RX, réarme la réception, marque usb_midi_tx_ready sous verrou ISR, et libère tx_sem.
+- Callback EP1 OUT : invalide D-Cache du buffer RX puis relance la réception sans bloquer.
+- Callback EP2 IN : réveille le producteur via tx_sem pour le cycle suivant.
