@@ -6,6 +6,7 @@
 #include "usbh_platform_chibios_h7.h"
 #include "usbh_ioreq.h"
 #include "hal.h"
+#include "stm32h7xx_hal_hcd_ex.h"
 #include <stddef.h>
 #include <stdint.h>
 
