@@ -22,7 +22,7 @@ USE_CPPOPT = -fno-rtti
 USE_LINK_GC = yes
 USE_LDOPT =
 USE_LTO = no
-USE_VERBOSE_COMPILE = yes
+USE_VERBOSE_COMPILE = no
 USE_SMART_BUILD = yes
 
 ##############################################################################

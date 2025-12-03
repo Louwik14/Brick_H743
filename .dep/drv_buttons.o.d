@@ -7,9 +7,10 @@ build/obj/drv_buttons.o: drivers/drv_buttons.c drivers/drv_buttons.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_intsup.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_stdint.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdbool.h \
- docs/ChibiOS/os/rt/include/ch.h docs/ChibiOS/os/license/chlicense.h \
- docs/ChibiOS/os/license/chversion.h docs/ChibiOS/os/license/chcustomer.h \
- cfg/chconf.h docs/ChibiOS/os/rt/include/chchecks.h \
+ drivers/drivers.h docs/ChibiOS/os/rt/include/ch.h \
+ docs/ChibiOS/os/license/chlicense.h docs/ChibiOS/os/license/chversion.h \
+ docs/ChibiOS/os/license/chcustomer.h cfg/chconf.h \
+ docs/ChibiOS/os/rt/include/chchecks.h \
  docs/ChibiOS/os/rt/include/chrestrictions.h \
  docs/ChibiOS/os/rt/include/chearly.h \
  docs/ChibiOS/os/common/ports/ARM-common/include/chtypes.h \
@@ -56,8 +57,8 @@ build/obj/drv_buttons.o: drivers/drv_buttons.c drivers/drv_buttons.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdarg.h \
  docs/ChibiOS/os/oslib/include/chjobs.h \
  docs/ChibiOS/os/oslib/include/chfactory.h \
- docs/ChibiOS/os/rt/include/chdynamic.h docs/ChibiOS/os/hal/include/hal.h \
- docs/ChibiOS/os/hal/osal/rt-nil/osal.h \
+ docs/ChibiOS/os/rt/include/chdynamic.h drivers/brick_config.h \
+ docs/ChibiOS/os/hal/include/hal.h docs/ChibiOS/os/hal/osal/rt-nil/osal.h \
  docs/ChibiOS/os/hal/boards/CUSTOM_H743IIT6/board.h cfg/halconf.h \
  cfg/mcuconf.h docs/ChibiOS/os/hal/ports/STM32/STM32H7xx/hal_lld.h \
  docs/ChibiOS/os/hal/ports/STM32/STM32H7xx/stm32_registry.h \
@@ -123,7 +124,9 @@ build/obj/drv_buttons.o: drivers/drv_buttons.c drivers/drv_buttons.h \
  docs/ChibiOS/os/hal/ports/STM32/LLD/SYSTICKv1/hal_st_lld.h \
  docs/ChibiOS/os/hal/include/hal_mmc_spi.h \
  docs/ChibiOS/os/hal/include/hal_serial_usb.h \
- docs/ChibiOS/os/hal/include/hal_usb_cdc.h drivers/brick_config.h
+ docs/ChibiOS/os/hal/include/hal_usb_cdc.h drivers/drv_display.h \
+ ui/font.h drivers/drv_leds_addr.h drivers/drv_encoders.h \
+ drivers/drv_pots.h
 drivers/drv_buttons.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdint.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdint.h:
@@ -133,6 +136,7 @@ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\inclu
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_intsup.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_stdint.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdbool.h:
+drivers/drivers.h:
 docs/ChibiOS/os/rt/include/ch.h:
 docs/ChibiOS/os/license/chlicense.h:
 docs/ChibiOS/os/license/chversion.h:
@@ -194,6 +198,7 @@ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-ea
 docs/ChibiOS/os/oslib/include/chjobs.h:
 docs/ChibiOS/os/oslib/include/chfactory.h:
 docs/ChibiOS/os/rt/include/chdynamic.h:
+drivers/brick_config.h:
 docs/ChibiOS/os/hal/include/hal.h:
 docs/ChibiOS/os/hal/osal/rt-nil/osal.h:
 docs/ChibiOS/os/hal/boards/CUSTOM_H743IIT6/board.h:
@@ -264,4 +269,8 @@ docs/ChibiOS/os/hal/ports/STM32/LLD/SYSTICKv1/hal_st_lld.h:
 docs/ChibiOS/os/hal/include/hal_mmc_spi.h:
 docs/ChibiOS/os/hal/include/hal_serial_usb.h:
 docs/ChibiOS/os/hal/include/hal_usb_cdc.h:
-drivers/brick_config.h:
+drivers/drv_display.h:
+ui/font.h:
+drivers/drv_leds_addr.h:
+drivers/drv_encoders.h:
+drivers/drv_pots.h:

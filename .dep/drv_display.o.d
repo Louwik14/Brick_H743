@@ -124,7 +124,8 @@ build/obj/drv_display.o: drivers/drv_display.c drivers/drv_display.h \
  docs/ChibiOS/os/hal/include/hal_mmc_spi.h \
  docs/ChibiOS/os/hal/include/hal_serial_usb.h \
  docs/ChibiOS/os/hal/include/hal_usb_cdc.h drivers/brick_config.h \
- ui/font.h \
+ ui/font.h drivers/drivers.h drivers/drv_leds_addr.h \
+ drivers/drv_buttons.h drivers/drv_encoders.h drivers/drv_pots.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\string.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_ansi.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\newlib.h \
@@ -283,6 +284,11 @@ docs/ChibiOS/os/hal/include/hal_serial_usb.h:
 docs/ChibiOS/os/hal/include/hal_usb_cdc.h:
 drivers/brick_config.h:
 ui/font.h:
+drivers/drivers.h:
+drivers/drv_leds_addr.h:
+drivers/drv_buttons.h:
+drivers/drv_encoders.h:
+drivers/drv_pots.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\string.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_ansi.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\newlib.h:
