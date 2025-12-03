@@ -85,10 +85,10 @@ __attribute__((weak)) void midi_internal_receive(const uint8_t *msg, size_t len)
 #endif
 
 /**
- * @brief Périphérique série utilisé pour la sortie DIN MIDI (UART2).
- * @details Mapping Nucleo-144 STM32F429ZI : PA2=TX, PA3=RX.
+ * @brief Périphérique série utilisé pour la sortie DIN MIDI.
+ * @details Déplacé dans brick_config.h pour faciliter le portage carte.
  */
-#define MIDI_UART   &SD2   /* PA2=TX, PA3=RX */
+#define MIDI_UART   BRICK_MIDI_UART
 
 /**
  * @brief Taille de la file (mailbox) de messages USB-MIDI (en éléments de 32 bits).
@@ -114,6 +114,7 @@ static CCM_DATA mailbox_t midi_usb_rx_mb;
 static CCM_DATA msg_t     midi_usb_rx_queue[MIDI_USB_RX_QUEUE_LEN];
 static uint16_t midi_usb_rx_queue_fill = 0;
 static uint16_t midi_usb_rx_queue_high_water = 0;
+volatile uint32_t midi_usb_rx_drops = 0;
 
 static inline void midi_usb_queue_increment(void) {
   osalSysLock();
@@ -135,6 +136,7 @@ static inline void midi_usb_queue_decrement(void) {
 }
 
 static inline void midi_usb_rx_queue_increment_i(void) {
+  osalDbgAssert(osalIsSystemLocked(), "RX counter must be locked");
   if (midi_usb_rx_queue_fill < MIDI_USB_RX_QUEUE_LEN) {
     midi_usb_rx_queue_fill++;
     if (midi_usb_rx_queue_fill > midi_usb_rx_queue_high_water) {
@@ -144,11 +146,10 @@ static inline void midi_usb_rx_queue_increment_i(void) {
 }
 
 static inline void midi_usb_rx_queue_decrement(void) {
-  osalSysLock();
+  osalDbgAssert(osalIsSystemLocked(), "RX counter must be locked");
   if (midi_usb_rx_queue_fill > 0U) {
     midi_usb_rx_queue_fill--;
   }
-  osalSysUnlock();
 }
 
 static inline void midi_usb_start_tx(const uint8_t *buffer, size_t len) {
@@ -172,16 +173,22 @@ void midi_usb_rx_submit_from_isr(const uint8_t *packet, size_t len) {
   }
 
   for (size_t i = 0; i < packets; i++) {
-    msg_t m = ((msg_t)packet[0] << 24) |
-              ((msg_t)packet[1] << 16) |
-              ((msg_t)packet[2] << 8)  |
-              ((msg_t)packet[3]);
-
-    if (chMBPostI(&midi_usb_rx_mb, m) == MSG_OK) {
-      midi_usb_rx_queue_increment_i();
-      midi_rx_stats.usb_rx_enqueued++;
-    } else {
+    if (midi_usb_rx_queue_fill >= MIDI_USB_RX_QUEUE_LEN) {
+      midi_usb_rx_drops++;
       midi_rx_stats.usb_rx_drops++;
+    } else {
+      msg_t m = ((msg_t)packet[0] << 24) |
+                ((msg_t)packet[1] << 16) |
+                ((msg_t)packet[2] << 8)  |
+                ((msg_t)packet[3]);
+
+      if (chMBPostI(&midi_usb_rx_mb, m) == MSG_OK) {
+        midi_usb_rx_queue_increment_i();
+        midi_rx_stats.usb_rx_enqueued++;
+      } else {
+        midi_usb_rx_drops++;
+        midi_rx_stats.usb_rx_drops++;
+      }
     }
     packet += 4U;
   }
@@ -320,6 +327,7 @@ void midi_init(void) {
   midi_usb_queue_high_water = 0;
   midi_usb_rx_queue_fill = 0;
   midi_usb_rx_queue_high_water = 0;
+  midi_usb_rx_drops = 0;
   chMBObjectInit(&midi_usb_mb, midi_usb_queue, MIDI_USB_QUEUE_LEN);
   chMBObjectInit(&midi_usb_rx_mb, midi_usb_rx_queue, MIDI_USB_RX_QUEUE_LEN);
   chBSemObjectInit(&tx_sem, true);
@@ -447,7 +455,9 @@ static void midi_process_usb_rx(void) {
 
   while ((processed < max_burst) &&
          (chMBFetchTimeout(&midi_usb_rx_mb, &raw, TIME_IMMEDIATE) == MSG_OK)) {
+    osalSysLock();
     midi_usb_rx_queue_decrement();
+    osalSysUnlock();
 
     uint8_t pkt[4];
     pkt[0] = (uint8_t)((raw >> 24) & 0xFF);
@@ -741,4 +751,5 @@ uint16_t midi_usb_rx_high_watermark(void) {
 void midi_stats_reset(void){
   midi_tx_stats=(midi_tx_stats_t){0};
   midi_rx_stats=(midi_rx_stats_t){0};
+  midi_usb_rx_drops = 0;
 }

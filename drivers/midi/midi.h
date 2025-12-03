@@ -97,6 +97,9 @@ typedef struct {
 /** @brief Statistiques globales de réception MIDI. */
 extern midi_rx_stats_t midi_rx_stats;
 
+/** @brief Compteur de paquets USB-MIDI rejetés faute de place (RX). */
+extern volatile uint32_t midi_usb_rx_drops;
+
 /**
  * @struct midi_msg_t
  * @brief Message MIDI décodé (1 à 3 octets).
