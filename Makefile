@@ -111,7 +111,10 @@ $(STM32_HAL_DIR)/Src/stm32h7xx_hal_gpio.c \
 $(STM32_HAL_DIR)/Src/stm32h7xx_hal_rcc.c \
 $(STM32_HAL_DIR)/Src/stm32h7xx_hal_pwr.c \
 $(STM32_HAL_DIR)/Src/stm32h7xx_hal_pwr_ex.c \
-$(STM32_HAL_DIR)/Src/stm32h7xx_hal_hcd.c
+$(STM32_HAL_DIR)/Src/stm32h7xx_hal_hcd.c \
+$(STM32_HAL_DIR)/Src/stm32h7xx_hal_hcd_ex.c \
+$(STM32_HAL_DIR)/Src/stm32h7xx_hal_flash.c \
+$(STM32_HAL_DIR)/Src/stm32h7xx_hal_flash_ex.c
 
 ##############################################################################
 # CMSIS (TES CHEMINS)

@@ -125,7 +125,7 @@ static USBH_StatusTypeDef USBH_MIDI_InterfaceInit(USBH_HandleTypeDef *phost)
   for (uint8_t idx = 0U; idx < itf_desc->bNumEndpoints; idx++)
   {
     USBH_EpDescTypeDef *ep_desc = &itf_desc->Ep_Desc[idx];
-    if ((ep_desc->bmAttributes & USB_EP_TYPE_MASK) == USB_EP_TYPE_BULK)
+    if ((ep_desc->bmAttributes & 0x03U) == USB_EP_TYPE_BULK)
     {
       if ((ep_desc->bEndpointAddress & 0x80U) == 0x80U)
       {

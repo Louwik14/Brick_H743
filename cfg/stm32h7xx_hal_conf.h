@@ -5,6 +5,7 @@
 #define HAL_RCC_MODULE_ENABLED
 #define HAL_GPIO_MODULE_ENABLED
 #define HAL_HCD_MODULE_ENABLED
+#define HAL_FLASH_MODULE_ENABLED
 #define HAL_PWR_MODULE_ENABLED
 #define HAL_CORTEX_MODULE_ENABLED
 
@@ -22,6 +23,7 @@
 #define PREFETCH_ENABLE         0U
 #define INSTRUCTION_CACHE_ENABLE 1U
 #define DATA_CACHE_ENABLE       1U
+#define USE_FULL_ASSERT         0U
 
 #define USE_HAL_HCD_REGISTER_CALLBACKS 0U
 
@@ -37,6 +39,11 @@
 
 #ifdef HAL_HCD_MODULE_ENABLED
 #include "stm32h7xx_hal_hcd.h"
+#endif
+
+#ifdef HAL_FLASH_MODULE_ENABLED
+#include "stm32h7xx_hal_flash.h"
+#include "stm32h7xx_hal_flash_ex.h"
 #endif
 
 #ifdef HAL_PWR_MODULE_ENABLED
