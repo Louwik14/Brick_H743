@@ -1,4 +1,5 @@
 #include "drv_display.h"
+#include "drivers.h"
 #include "ch.h"
 #include "hal.h"
 #include "brick_config.h"
@@ -44,17 +45,25 @@ static inline void dc_data(void) { palSetLine  (LINE_SPI5_DC_OLED); }
 /* ====================================================================== */
 
 static void send_cmd(uint8_t cmd) {
+    chMtxLock(&spi5_mutex);
+
     dc_cmd();
     palClearLine(LINE_SPI5_CS_OLED);
     spiSend(&SPID5, 1, &cmd);
     palSetLine(LINE_SPI5_CS_OLED);
+
+    chMtxUnlock(&spi5_mutex);
 }
 
 static void send_data(const uint8_t *data, size_t len) {
+    chMtxLock(&spi5_mutex);
+
     dc_data();
     palClearLine(LINE_SPI5_CS_OLED);
     spiSend(&SPID5, len, data);
     palSetLine(LINE_SPI5_CS_OLED);
+
+    chMtxUnlock(&spi5_mutex);
 }
 
 /* ====================================================================== */
