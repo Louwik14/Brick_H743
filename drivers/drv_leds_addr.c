@@ -2,20 +2,17 @@
 #include "ch.h"
 #include "hal.h"
 #include "stm32h7xx.h"
+#include "stm32_bdma.h"
 
 /* ================= CONFIG ================= */
 
 #define TIM_WS              TIM8
 #define TIM_WS_CH           2
 
-#define WS_BDMA             BDMA1_Channel0
+#define WS_BDMA             STM32_BDMA1_STREAM0
 
 #ifndef STM32_BDMA1_CH0_PRIORITY
 #define STM32_BDMA1_CH0_PRIORITY STM32_IRQ_EXTI0_PRIORITY
-#endif
-
-#ifndef BDMA_Channel0_IRQn
-#define BDMA_Channel0_IRQn BDMA1_Channel0_IRQn
 #endif
 
 #define TIMER_CLOCK         200000000U
@@ -43,9 +40,8 @@ static volatile uint32_t led_dma_errors = 0;
 static volatile uint32_t last_frame_time_us = 0;
 static volatile systime_t last_frame_start = 0;
 
-#if LED_TOTAL_SLOTS > (sizeof(pwm_buffer) / sizeof(pwm_buffer[0]))
-#error "pwm_buffer too small for configured LED payload"
-#endif
+_Static_assert((LED_TOTAL_SLOTS <= (sizeof(pwm_buffer) / sizeof(pwm_buffer[0]))),
+               "pwm_buffer too small for configured LED payload");
 
 /* ================= TIM8 INIT ================= */
 
@@ -70,27 +66,30 @@ static inline void ws_tim_resync(void) {
     TIM_WS->CNT = 0;
 }
 
+static inline uint32_t ws_bdma_get_status(const stm32_bdma_stream_t *bdma) {
+    return (bdma->bdma->ISR >> bdma->shift) & STM32_BDMA_ISR_MASK;
+}
+
 /* ================= BDMA INIT ================= */
 
 static void ws_bdma_init(void) {
     rccEnableBDMA1(true);
 
-    BDMA1->IFCR = BDMA_ISR_GIF0;
+    const stm32_bdma_stream_t *const bdma = WS_BDMA;
 
-    WS_BDMA->CCR = 0;
-    WS_BDMA->CPAR  = (uint32_t)&TIM_WS->CCR2;
-    WS_BDMA->CM0AR = (uint32_t)pwm_buffer;
-    WS_BDMA->CNDTR = 0;
+    bdmaStreamDisable(bdma);
+    bdmaStreamSetPeripheral(bdma, &TIM_WS->CCR2);
+    bdmaStreamSetMemory(bdma, pwm_buffer);
+    bdmaStreamSetTransactionSize(bdma, 0U);
+    bdmaStreamSetMode(bdma,
+                      STM32_BDMA_CR_MINC |
+                      STM32_BDMA_CR_DIR_M2P |
+                      STM32_BDMA_CR_PSIZE_HWORD |
+                      STM32_BDMA_CR_MSIZE_HWORD |
+                      STM32_BDMA_CR_TCIE |
+                      STM32_BDMA_CR_TEIE);
 
-    WS_BDMA->CCR =
-        BDMA_CCR_MINC  |      /* incr mémoire */
-        BDMA_CCR_DIR   |      /* mem -> periph */
-        BDMA_CCR_PSIZE_0 |    /* 16 bits */
-        BDMA_CCR_MSIZE_0 |    /* 16 bits */
-        BDMA_CCR_TCIE |
-        BDMA_CCR_TEIE;
-
-    nvicEnableVector(BDMA_Channel0_IRQn, STM32_BDMA1_CH0_PRIORITY);
+    nvicEnableVector(STM32_BDMA1_CH0_NUMBER, STM32_BDMA1_CH0_PRIORITY);
 }
 
 /* ================= WS2812 ENCODAGE ================= */
@@ -120,31 +119,48 @@ static void ws_prepare_buffer(void) {
 static inline void ws_dma_start_locked(void) {
     ws_tim_resync();
 
-    BDMA1->IFCR = BDMA_ISR_GIF0 | BDMA_ISR_TEIF0 | BDMA_ISR_TCIF0;
-    WS_BDMA->CCR &= ~BDMA_CCR_EN;
+    const stm32_bdma_stream_t *const bdma = WS_BDMA;
 
-    WS_BDMA->CM0AR = (uint32_t)pwm_buffer;
-    WS_BDMA->CNDTR = LED_TOTAL_SLOTS;
+    bdmaStreamDisable(bdma);
+    bdmaStreamClearInterrupt(bdma);
+    bdmaStreamSetMemory(bdma, pwm_buffer);
+    bdmaStreamSetTransactionSize(bdma, LED_TOTAL_SLOTS);
+    bdmaStreamSetMode(bdma,
+                      STM32_BDMA_CR_MINC |
+                      STM32_BDMA_CR_DIR_M2P |
+                      STM32_BDMA_CR_PSIZE_HWORD |
+                      STM32_BDMA_CR_MSIZE_HWORD |
+                      STM32_BDMA_CR_TCIE |
+                      STM32_BDMA_CR_TEIE);
 
     const size_t pwm_bytes = LED_PWM_BUFFER_SIZE * sizeof(uint16_t);
     SCB_CleanDCache_by_Addr((uint32_t *)pwm_buffer, (int32_t)((pwm_bytes + 31U) & ~31U));
 
     led_dma_busy = true;
     last_frame_start = chVTGetSystemTimeX();
-    WS_BDMA->CCR |= BDMA_CCR_EN;
+    bdmaStreamEnable(bdma);
 }
 
 static inline void ws_dma_restart_on_error_i(void) {
-    BDMA1->IFCR = BDMA_ISR_GIF0 | BDMA_ISR_TEIF0 | BDMA_ISR_TCIF0;
-    WS_BDMA->CCR &= ~BDMA_CCR_EN;
+    const stm32_bdma_stream_t *const bdma = WS_BDMA;
+
+    bdmaStreamDisable(bdma);
+    bdmaStreamClearInterrupt(bdma);
 
     ws_tim_resync();
 
-    WS_BDMA->CM0AR = (uint32_t)pwm_buffer;
-    WS_BDMA->CNDTR = LED_TOTAL_SLOTS;
+    bdmaStreamSetMemory(bdma, pwm_buffer);
+    bdmaStreamSetTransactionSize(bdma, LED_TOTAL_SLOTS);
     led_dma_busy = true;
     last_frame_start = chVTGetSystemTimeX();
-    WS_BDMA->CCR |= BDMA_CCR_EN;
+    bdmaStreamSetMode(bdma,
+                      STM32_BDMA_CR_MINC |
+                      STM32_BDMA_CR_DIR_M2P |
+                      STM32_BDMA_CR_PSIZE_HWORD |
+                      STM32_BDMA_CR_MSIZE_HWORD |
+                      STM32_BDMA_CR_TCIE |
+                      STM32_BDMA_CR_TEIE);
+    bdmaStreamEnable(bdma);
 }
 
 /* ================= API ================= */
@@ -248,13 +264,14 @@ void drv_leds_addr_render(void) {
     chMtxUnlock(&leds_mutex);
 }
 
-OSAL_IRQ_HANDLER(BDMA_Channel0_IRQHandler) {
+OSAL_IRQ_HANDLER(STM32_BDMA1_CH0_HANDLER) {
     OSAL_IRQ_PROLOGUE();
 
-    uint32_t isr = BDMA1->ISR;
+    const stm32_bdma_stream_t *const bdma = WS_BDMA;
+    const uint32_t flags = ws_bdma_get_status(bdma);
 
-    if ((isr & BDMA_ISR_TEIF0) != 0U) {
-        BDMA1->IFCR = BDMA_ISR_GIF0 | BDMA_ISR_TEIF0;
+    if ((flags & STM32_BDMA_ISR_TEIF) != 0U) {
+        bdmaStreamClearInterrupt(bdma);
         chSysLockFromISR();
         led_dma_errors++;
         chSysUnlockFromISR();
@@ -263,11 +280,11 @@ OSAL_IRQ_HANDLER(BDMA_Channel0_IRQHandler) {
         return;
     }
 
-    if ((isr & BDMA_ISR_TCIF0) != 0U) {
-        BDMA1->IFCR = BDMA_ISR_GIF0 | BDMA_ISR_TCIF0;
+    if ((flags & STM32_BDMA_ISR_TCIF) != 0U) {
+        bdmaStreamClearInterrupt(bdma);
         chSysLockFromISR();
         led_dma_busy = false;
-        last_frame_time_us = (uint32_t)ST2US(chVTTimeElapsedSinceX(last_frame_start));
+        last_frame_time_us = TIME_I2US(chVTTimeElapsedSinceX(last_frame_start));
         chSysUnlockFromISR();
     }
 

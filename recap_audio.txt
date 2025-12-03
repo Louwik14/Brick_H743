@@ -110,3 +110,8 @@ V10 – Durcissement du driver de potentiomètres (ADC1 + MUX)
 - Filtre IIR léger (`pots_filt`) appliqué à chaque conversion pour lisser le jitter tout en conservant la réactivité.
 - Vérification systématique du retour `adcConvert`; en cas d'erreur, la dernière valeur valide est conservée et un compteur interne `adc_error_count` est incrémenté.
 - Le MUX analogique est remis en état neutre après chaque balayage complet pour éviter les couplages parasites entre canaux.
+
+V11 – Maintenance BDMA/LEDs (STM32H743 + ChibiOS)
+------------------------------------------------
+- Driver WS2812 porté sur les symboles BDMA ChibiOS (base BDMA, stream 0) pour compiler proprement sur H743.
+- ISR BDMA fiabilisée via les macros `bdmaStream*`, suppression des accès directs à BDMA1->ISR/IFCR et conversion temps en µs via `TIME_I2US`.
