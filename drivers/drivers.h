@@ -18,6 +18,8 @@
 #include "brick_config.h"
 #include "hal.h"
 
+extern mutex_t spi5_mutex;
+
 /* === Sous-modules inclus === */
 /**
  * @brief Drivers matériels composant le système Brick.

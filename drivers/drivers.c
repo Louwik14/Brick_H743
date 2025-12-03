@@ -6,7 +6,11 @@
 
 #include "drivers.h"
 
+mutex_t spi5_mutex;
+
 void drivers_init_all(void) {
+    chMtxObjectInit(&spi5_mutex);
+
     drv_display_init();
     drv_leds_addr_init();
     drv_buttons_start();

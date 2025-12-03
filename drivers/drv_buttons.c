@@ -1,4 +1,5 @@
 #include "drv_buttons.h"
+#include "drivers.h"
 #include "ch.h"
 #include "hal.h"
 #include "brick_config.h"
@@ -63,6 +64,8 @@ static void buttons_read_shiftreg(void) {
 
     uint8_t rx[3] = {0};
 
+    chMtxLock(&spi5_mutex);
+
     /* CS actif bas */
     palClearLine(LINE_SPI5_CS_SR);
 
@@ -71,6 +74,8 @@ static void buttons_read_shiftreg(void) {
 
     /* CS inactif */
     palSetLine(LINE_SPI5_CS_SR);
+
+    chMtxUnlock(&spi5_mutex);
 
     buttons_raw[0] = rx[0];
     buttons_raw[1] = rx[1];
