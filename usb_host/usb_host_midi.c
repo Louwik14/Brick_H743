@@ -32,8 +32,11 @@ static MAILBOX_DECL(rx_mailbox, rx_queue_buf, USB_HOST_MIDI_RX_MAILBOX_SIZE);
 static msg_t tx_queue_buf[USB_HOST_MIDI_TX_MAILBOX_SIZE];
 static MAILBOX_DECL(tx_mailbox, tx_queue_buf, USB_HOST_MIDI_TX_MAILBOX_SIZE);
 
-static bool device_attached = false;
-static bool midi_ready = false;
+static volatile bool device_attached = false;
+static volatile bool midi_ready = false;
+static uint32_t rx_overflow = 0U;
+static uint32_t tx_overflow = 0U;
+static uint32_t reset_events = 0U;
 
 static usb_host_midi_device_callback_t attach_cb = NULL;
 static usb_host_midi_device_callback_t detach_cb = NULL;
@@ -96,7 +99,13 @@ bool usb_host_midi_send_event(const uint8_t *packet4)
   }
 
   (void)memcpy(msg.bytes, packet4, 4U);
-  return chMBPostTimeout(&tx_mailbox, msg.msg, TIME_IMMEDIATE) == MSG_OK;
+  if (chMBPostTimeout(&tx_mailbox, msg.msg, TIME_IMMEDIATE) != MSG_OK)
+  {
+    tx_overflow++;
+    return false;
+  }
+
+  return true;
 }
 
 void usb_host_midi_register_attach_callback(usb_host_midi_device_callback_t cb)
@@ -143,6 +152,8 @@ static void USBH_UserProcess(USBH_HandleTypeDef *pHost, uint8_t id)
       break;
 
     case HOST_USER_DISCONNECTION:
+      reset_events++;
+      /* fallthrough */
     default:
       device_attached = false;
       midi_ready = false;
@@ -171,6 +182,7 @@ static void pump_rx_events(void)
     (void)memcpy(msg.bytes, packet, 4U);
     if (chMBPostTimeout(&rx_mailbox, msg.msg, TIME_IMMEDIATE) != MSG_OK)
     {
+      rx_overflow++;
       break; /* mailbox full; drop until consumer catches up */
     }
   }
@@ -189,8 +201,7 @@ static void pump_tx_events(void)
   {
     if (!USBH_MIDI_WriteEvent(&hUsbHostFS, msg.bytes))
     {
-      /* could not queue into class buffer, reinsert and exit */
-      (void)chMBPostTimeout(&tx_mailbox, msg.msg, TIME_IMMEDIATE);
+      tx_overflow++;
       break;
     }
   }
