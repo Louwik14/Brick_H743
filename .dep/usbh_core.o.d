@@ -39,6 +39,9 @@ build/obj/usbh_core.o: \
  drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_gpio_ex.h \
  drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_hcd.h \
  drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_ll_usb.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_flash.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_flash_ex.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_flash_ex.h \
  drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_pwr.h \
  drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_pwr_ex.h \
  drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_cortex.h \
@@ -97,6 +100,9 @@ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_gpio.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_gpio_ex.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_hcd.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_ll_usb.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_flash.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_flash_ex.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_flash_ex.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_pwr.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_pwr_ex.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_cortex.h:
