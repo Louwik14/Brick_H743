@@ -5,7 +5,6 @@
 
 #include "usbh_platform_chibios_h7.h"
 #include "usbh_ioreq.h"
-#include "hal.h"
 #include "stm32h7xx_hal_hcd_ex.h"
 #include <stddef.h>
 #include <stdint.h>
@@ -172,7 +171,24 @@ uint32_t USBH_LL_GetLastXferSize(USBH_HandleTypeDef *phost, uint8_t pipe)
 USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8_t state)
 {
   (void)phost;
-  (void)state;
+
+  if (state == 0U)
+  {
+    /* Nominally "turn off" VBUS.
+     * On this board, VBUS is always powered and there is no control GPIO,
+     * so we only give some time for the bus to settle.
+     */
+    chThdSleepMilliseconds(5);
+  }
+  else
+  {
+    /* Nominally "turn on" VBUS.
+     * VBUS is always present here, but the USB Host stack expects a delay
+     * before starting the port reset and enumeration sequence.
+     */
+    chThdSleepMilliseconds(100);
+  }
+
   return USBH_OK;
 }
 
