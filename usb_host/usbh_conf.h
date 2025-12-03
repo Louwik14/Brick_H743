@@ -18,7 +18,7 @@
 #define USBH_MAX_NUM_SUPPORTED_CLASS          1U
 #define USBH_MAX_SIZE_CONFIGURATION           0x200U
 #define USBH_MAX_DATA_BUFFER                  0x200U
-#define USBH_DEBUG_LEVEL                      0U
+#define USBH_DEBUG_LEVEL                      2U
 #define USBH_USE_OS                           0U
 #define USBH_IN_NAK_PROCESS                   0U
 

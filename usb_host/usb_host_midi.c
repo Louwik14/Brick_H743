@@ -4,7 +4,6 @@
  */
 
 #include "ch.h"
-#include "hal.h"
 #include "usb_host_midi.h"
 #include "usbh_core.h"
 #include "usbh_midi.h"
@@ -122,4 +121,10 @@ uint32_t usb_host_midi_tx_overflow(void)
 uint32_t usb_host_midi_reset_count(void)
 {
   return usbh_platform_get_reset_count();
+}
+
+void Error_Handler(void)
+{
+  /* Halt the system on HAL assert or other fatal error. */
+  chSysHalt("HAL Error");
 }
