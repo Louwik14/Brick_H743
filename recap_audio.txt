@@ -88,3 +88,11 @@ V6 – Ajout de la matrice de mix MAIN/CUE
 - Casque : reçoit désormais un mix dédié (bus CUE) permettant une pré-écoute indépendante du bus principal.
 - Limites actuelles : pas de panoramique individuel, pas d'EQ, pas de mute solo différencié par destination, pas de sends.
 - Points d'extension futurs : insertion des effets après la sommation par bus, ajout d'un pan par piste avant sommation, implémentation de sends/returns vers des effets ou des sorties cartouches SPI-LINK.
+
+V8 – Hardening STM32H743 : D-Cache, DMA et robustesse live
+----------------------------------------------------------
+- Le D-Cache du H743 rend le DMA dangereux si les buffers résident en RAM cacheable : les écritures DMA RX peuvent être invisibles pour le CPU et les lectures DMA TX peuvent lire des données obsolètes.
+- Tous les buffers DMA audio (RX/TX SAI et SPI-LINK) sont désormais placés en RAM non cacheable via l'attribut `AUDIO_DMA_BUFFER_ATTR` pointant sur la section `.ram_d2` alignée sur 32 bytes. Le linker/MPU doivent configurer cette section en non cacheable (documenté, sans modification dans cette passe).
+- Le DMA RX écrit directement en RAM non cachée et le DMA TX lit directement en RAM non cachée : plus d'incohérence possible entre cache et périphérique pour les flux audio live.
+- Les callbacks DMA RX/TX détectent explicitement les erreurs TEIF, DMEIF et FEIF et appellent immédiatement `chSysHalt("AUDIO DMA ERROR")` avant toute mise à jour d'index.
+- Un halt franc est préféré à un bruit ou glitch destructeur en live : on coupe le son immédiatement plutôt que de propager un état incohérent.
