@@ -91,7 +91,9 @@ INCDIR += $(USB_HOST_APP_DIR)
 USB_HOST_MW_DIR := ./usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master
 
 # Core USB Host
-CSRC   += $(wildcard $(USB_HOST_MW_DIR)/Core/Src/*.c)
+USB_HOST_CORE_SRC := $(wildcard $(USB_HOST_MW_DIR)/Core/Src/*.c)
+USB_HOST_CORE_SRC := $(filter-out $(USB_HOST_MW_DIR)/Core/Src/usbh_conf_template.c,$(USB_HOST_CORE_SRC))
+CSRC   += $(USB_HOST_CORE_SRC)
 INCDIR += $(USB_HOST_MW_DIR)/Core/Inc
 
 # Classe MIDI uniquement
@@ -107,6 +109,7 @@ CSRC += \
 $(STM32_HAL_DIR)/Src/stm32h7xx_hal.c \
 $(STM32_HAL_DIR)/Src/stm32h7xx_hal_gpio.c \
 $(STM32_HAL_DIR)/Src/stm32h7xx_hal_rcc.c \
+$(STM32_HAL_DIR)/Src/stm32h7xx_hal_pwr.c \
 $(STM32_HAL_DIR)/Src/stm32h7xx_hal_pwr_ex.c \
 $(STM32_HAL_DIR)/Src/stm32h7xx_hal_hcd.c
 
