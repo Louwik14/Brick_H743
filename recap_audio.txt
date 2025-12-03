@@ -96,3 +96,10 @@ V8 – Hardening STM32H743 : D-Cache, DMA et robustesse live
 - Le DMA RX écrit directement en RAM non cachée et le DMA TX lit directement en RAM non cachée : plus d'incohérence possible entre cache et périphérique pour les flux audio live.
 - Les callbacks DMA RX/TX détectent explicitement les erreurs TEIF, DMEIF et FEIF et appellent immédiatement `chSysHalt("AUDIO DMA ERROR")` avant toute mise à jour d'index.
 - Un halt franc est préféré à un bruit ou glitch destructeur en live : on coupe le son immédiatement plutôt que de propager un état incohérent.
+
+V9 – Driver WS2812 (TIM8 + BDMA) durci
+--------------------------------------
+- Buffer PWM aligné 32 bytes et placé en `.ram_d2` non cacheable pour éviter toute incohérence D-Cache/BDMA sur H743.
+- Mutex global, flag busy et compteur d'erreurs pour rendre render/update thread-safe et empêcher les re-entrances pendant un transfert.
+- BDMA CH0 configuré avec interruptions TC/TE, callback d'erreur qui désactive/relance proprement le flux et re-synchronise TIM8 sans bloquer le système.
+- Reset WS2812 garanti (>100 µs) via 80 slots à 800 kHz ; ajout de mesures de durée de frame et d'une API de diagnostic (busy/erreurs/temps µs) utilisable en live.
