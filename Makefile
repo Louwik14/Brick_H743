@@ -66,27 +66,69 @@ include $(CHIBIOS)/os/common/ports/ARMv7-M/compilers/GCC/mk/port.mk
 include $(CHIBIOS)/tools/mk/autobuild.mk
 
 ##############################################################################
-# Sources
+# Sources (Base projet)
 ##############################################################################
 CSRC = $(ALLCSRC) \
        main.c \
        $(wildcard drivers/*.c) \
-       $(wildcard ui/*.c) \
+       $(wildcard ui/*.c)
 
-CPPSRC = $(ALLCPPSRC)
-ASMSRC = $(ALLASMSRC)
+CPPSRC  = $(ALLCPPSRC)
+ASMSRC  = $(ALLASMSRC)
 ASMXSRC = $(ALLXASMSRC)
+
+##############################################################################
+# USB HOST MIDI - Code applicatif
+##############################################################################
+USB_HOST_APP_DIR := ./usb_host
+
+CSRC   += $(wildcard $(USB_HOST_APP_DIR)/*.c)
+INCDIR += $(USB_HOST_APP_DIR)
+
+##############################################################################
+# STM32 MW USB HOST MIDDLEWARE (dans usb_host/)
+##############################################################################
+USB_HOST_MW_DIR := ./usb_host/stm32-mw-usb-host-master
+
+# Core USB Host
+CSRC   += $(wildcard $(USB_HOST_MW_DIR)/Core/Src/*.c)
+INCDIR += $(USB_HOST_MW_DIR)/Core/Inc
+
+# Classe MIDI uniquement
+CSRC   += $(wildcard $(USB_HOST_MW_DIR)/Class/MIDI/Src/*.c)
+INCDIR += $(USB_HOST_MW_DIR)/Class/MIDI/Inc
+
+##############################################################################
+# STM32 HAL (REQUIS POUR USB HOST - TES CHEMINS)
+##############################################################################
+STM32_HAL_DIR := ./drivers/stm32h7xx-hal-driver
+
+CSRC += \
+$(STM32_HAL_DIR)/Src/stm32h7xx_hal.c \
+$(STM32_HAL_DIR)/Src/stm32h7xx_hal_gpio.c \
+$(STM32_HAL_DIR)/Src/stm32h7xx_hal_rcc.c \
+$(STM32_HAL_DIR)/Src/stm32h7xx_hal_pwr_ex.c \
+$(STM32_HAL_DIR)/Src/stm32h7xx_hal_hcd.c \
+$(STM32_HAL_DIR)/Src/stm32h7xx_hal_otgfs.c
+
+##############################################################################
+# CMSIS (TES CHEMINS)
+##############################################################################
+INCDIR += \
+./drivers/stm32h7xx-hal-driver/Inc \
+./drivers/CMSIS/Include \
+./drivers/CMSIS/Device/ST/STM32H7xx/Include
 
 ##############################################################################
 # Includes
 ##############################################################################
-INCDIR = $(CONFDIR) $(ALLINC)
-UINCDIR = cfg drivers ui 
+INCDIR += $(CONFDIR) $(ALLINC)
+UINCDIR = cfg drivers ui usb_host
 
 ##############################################################################
 # Defines
 ##############################################################################
-UDEFS = 
+UDEFS =
 UADEFS =
 
 ##############################################################################
