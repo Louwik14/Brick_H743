@@ -41,11 +41,11 @@ USBH_ClassTypeDef  USBH_MIDI_Class =
   */
 static USBH_StatusTypeDef USBH_MIDI_InterfaceInit(USBH_HandleTypeDef *phost)
 {
-  uint8_t interface;
-  MIDI_HandleTypeDef *midi;
+  uint8_t interface = USBH_FindInterface(phost, USB_AUDIO_CLASS_CODE, USB_MIDISTREAMING_SUBCLASS_CODE, 0U);
+  MIDI_HandleTypeDef *midi = NULL;
   uint8_t ep_index;
-
-  interface = USBH_FindInterface(phost, USB_AUDIO_CLASS_CODE, USB_MIDISTREAMING_SUBCLASS_CODE, 0U);
+  bool have_in = false;
+  bool have_out = false;
 
   if (!MIDI_IsInterfaceValid(phost, interface))
   {
@@ -69,8 +69,10 @@ static USBH_StatusTypeDef USBH_MIDI_InterfaceInit(USBH_HandleTypeDef *phost)
   midi->interface_index = interface;
   midi->rx_state = MIDI_IDLE;
   midi->tx_state = MIDI_IDLE;
+  midi->InPipe = 0xFFU;
+  midi->OutPipe = 0xFFU;
+  phost->pActiveClass->pData = (void *)midi;
 
-  /* Parse endpoints */
   for (ep_index = 0U; ep_index < phost->device.CfgDesc.Itf_Desc[interface].bNumEndpoints; ep_index++)
   {
     USBH_EpDescTypeDef *ep_desc = &phost->device.CfgDesc.Itf_Desc[interface].Ep_Desc[ep_index];
@@ -79,31 +81,45 @@ static USBH_StatusTypeDef USBH_MIDI_InterfaceInit(USBH_HandleTypeDef *phost)
       if ((ep_desc->bEndpointAddress & 0x80U) != 0U)
       {
         midi->InEp = ep_desc->bEndpointAddress;
-        midi->InEpSize = ep_desc->wMaxPacketSize;
+        midi->InEpSize = (uint16_t)MIN(ep_desc->wMaxPacketSize, USBH_MIDI_MAX_PACKET_SIZE);
+        have_in = true;
       }
       else
       {
         midi->OutEp = ep_desc->bEndpointAddress;
-        midi->OutEpSize = ep_desc->wMaxPacketSize;
+        midi->OutEpSize = (uint16_t)MIN(ep_desc->wMaxPacketSize, USBH_MIDI_MAX_PACKET_SIZE);
+        have_out = true;
       }
     }
   }
 
-  if ((midi->InEp == 0U) || (midi->OutEp == 0U))
+  if (!have_in || !have_out)
   {
     USBH_DbgLog("%s Missing MIDI bulk endpoints", phost->pActiveClass->Name);
     (void)USBH_free(midi);
+    phost->pActiveClass->pData = NULL;
     return USBH_FAIL;
   }
 
   midi->InPipe = USBH_AllocPipe(phost, midi->InEp);
   midi->OutPipe = USBH_AllocPipe(phost, midi->OutEp);
 
-  /* Open pipes */
-  (void)USBH_OpenPipe(phost, midi->InPipe, midi->InEp, phost->device.address,
-                      phost->device.speed, USB_EP_TYPE_BULK, midi->InEpSize);
-  (void)USBH_OpenPipe(phost, midi->OutPipe, midi->OutEp, phost->device.address,
-                      phost->device.speed, USB_EP_TYPE_BULK, midi->OutEpSize);
+  if ((midi->InPipe == 0xFFU) || (midi->OutPipe == 0xFFU))
+  {
+    USBH_DbgLog("%s Failed to allocate pipes", phost->pActiveClass->Name);
+    (void)USBH_free(midi);
+    phost->pActiveClass->pData = NULL;
+    return USBH_FAIL;
+  }
+
+  if ((USBH_OpenPipe(phost, midi->InPipe, midi->InEp, phost->device.address,
+                     phost->device.speed, USB_EP_TYPE_BULK, midi->InEpSize) != USBH_OK) ||
+      (USBH_OpenPipe(phost, midi->OutPipe, midi->OutEp, phost->device.address,
+                     phost->device.speed, USB_EP_TYPE_BULK, midi->OutEpSize) != USBH_OK))
+  {
+    (void)USBH_MIDI_InterfaceDeInit(phost);
+    return USBH_FAIL;
+  }
 
   USBH_LL_SetToggle(phost, midi->InPipe, 0U);
   USBH_LL_SetToggle(phost, midi->OutPipe, 0U);
@@ -121,19 +137,24 @@ static USBH_StatusTypeDef USBH_MIDI_InterfaceDeInit(USBH_HandleTypeDef *phost)
 
   if (midi != NULL)
   {
-    if (midi->InPipe != 0U)
+    if (midi->InPipe != 0xFFU)
     {
       (void)USBH_ClosePipe(phost, midi->InPipe);
       (void)USBH_FreePipe(phost, midi->InPipe);
-      midi->InPipe = 0U;
+      midi->InPipe = 0xFFU;
     }
 
-    if (midi->OutPipe != 0U)
+    if (midi->OutPipe != 0xFFU)
     {
       (void)USBH_ClosePipe(phost, midi->OutPipe);
       (void)USBH_FreePipe(phost, midi->OutPipe);
-      midi->OutPipe = 0U;
+      midi->OutPipe = 0xFFU;
     }
+
+    midi->rx_head = midi->rx_tail = 0U;
+    midi->tx_head = midi->tx_tail = 0U;
+    midi->rx_state = MIDI_IDLE;
+    midi->tx_state = MIDI_IDLE;
 
     (void)USBH_free(midi);
     phost->pActiveClass->pData = NULL;
@@ -181,12 +202,21 @@ static USBH_StatusTypeDef USBH_MIDI_SOFProcess(USBH_HandleTypeDef *phost)
   */
 bool USBH_MIDI_IsReady(USBH_HandleTypeDef *phost)
 {
-  if ((phost == NULL) || (phost->gState != HOST_CLASS))
+  MIDI_HandleTypeDef *midi;
+
+  if ((phost == NULL) || (phost->gState != HOST_CLASS) ||
+      (phost->pActiveClass != &USBH_MIDI_Class))
   {
     return false;
   }
 
-  return (phost->pActiveClass != NULL) && (phost->pActiveClass->pData != NULL);
+  midi = (MIDI_HandleTypeDef *)phost->pActiveClass->pData;
+  if (midi == NULL)
+  {
+    return false;
+  }
+
+  return (midi->InPipe != 0xFFU) && (midi->OutPipe != 0xFFU);
 }
 
 /**
@@ -229,10 +259,48 @@ void USBH_MIDI_EncodeShortMessage(uint8_t cable, uint8_t status,
                                   uint8_t data1, uint8_t data2,
                                   uint8_t *packet4)
 {
-  uint8_t cin = (status >> 4) & 0x0FU;
-  uint8_t header = ((cable & 0x0FU) << 4) | (cin & 0x0FU);
+  uint8_t cin;
 
-  packet4[0] = header;
+  switch (status & 0xF0U)
+  {
+    case 0x80U: cin = 0x8U; break; /* Note Off  */
+    case 0x90U: cin = 0x9U; break; /* Note On   */
+    case 0xA0U: cin = 0xAU; break; /* Poly AT   */
+    case 0xB0U: cin = 0xBU; break; /* CC        */
+    case 0xC0U: cin = 0xCU; data2 = 0U; break; /* Program   */
+    case 0xD0U: cin = 0xDU; data2 = 0U; break; /* Channel Pressure */
+    case 0xE0U: cin = 0xEU; break; /* Pitch Bend */
+    default:
+      if (status == 0xF1U)
+      {
+        cin = 0x2U;
+        data2 = 0U;
+      }
+      else if (status == 0xF2U)
+      {
+        cin = 0x3U;
+      }
+      else if (status == 0xF3U)
+      {
+        cin = 0x2U;
+        data2 = 0U;
+      }
+      else if (status == 0xF6U)
+      {
+        cin = 0x5U;
+        data1 = 0U;
+        data2 = 0U;
+      }
+      else /* Real-time or fallback single-byte */
+      {
+        cin = 0xFU;
+        data1 = 0U;
+        data2 = 0U;
+      }
+      break;
+  }
+
+  packet4[0] = (uint8_t)(((cable & 0x0FU) << 4) | (cin & 0x0FU));
   packet4[1] = status;
   packet4[2] = data1;
   packet4[3] = data2;
@@ -259,10 +327,20 @@ static void MIDI_ProcessReception(USBH_HandleTypeDef *phost, MIDI_HandleTypeDef 
   uint32_t xfer_size;
   uint32_t offset;
 
+  if ((midi == NULL) || (midi->InPipe == 0xFFU))
+  {
+    return;
+  }
+
   if (midi->rx_state == MIDI_IDLE)
   {
     (void)USBH_BulkReceiveData(phost, midi->rx_buf, midi->InEpSize, midi->InPipe);
     midi->rx_state = MIDI_TRANSFER;
+    return;
+  }
+  else if (midi->rx_state == MIDI_ERROR)
+  {
+    midi->rx_state = MIDI_IDLE;
     return;
   }
 
@@ -294,6 +372,11 @@ static void MIDI_ProcessReception(USBH_HandleTypeDef *phost, MIDI_HandleTypeDef 
   {
     midi->rx_state = MIDI_ERROR;
   }
+  else if (urb_state == USBH_URB_STALL)
+  {
+    (void)USBH_ClrFeature(phost, midi->InEp);
+    midi->rx_state = MIDI_IDLE;
+  }
 }
 
 static void MIDI_ProcessTransmission(USBH_HandleTypeDef *phost, MIDI_HandleTypeDef *midi)
@@ -301,6 +384,11 @@ static void MIDI_ProcessTransmission(USBH_HandleTypeDef *phost, MIDI_HandleTypeD
   USBH_URBStateTypeDef urb_state;
   uint16_t tx_count = 0U;
   uint8_t packet[4];
+
+  if ((midi == NULL) || (midi->OutPipe == 0xFFU))
+  {
+    return;
+  }
 
   switch (midi->tx_state)
   {
@@ -319,6 +407,7 @@ static void MIDI_ProcessTransmission(USBH_HandleTypeDef *phost, MIDI_HandleTypeD
       {
         (void)USBH_BulkSendData(phost, midi->tx_buf, tx_count, midi->OutPipe, 1U);
         midi->tx_state = MIDI_TRANSFER;
+        midi->pending_tx_packets = (uint16_t)(tx_count / 4U);
       }
       break;
 
@@ -326,17 +415,26 @@ static void MIDI_ProcessTransmission(USBH_HandleTypeDef *phost, MIDI_HandleTypeD
       urb_state = USBH_LL_GetURBState(phost, midi->OutPipe);
       if (urb_state == USBH_URB_DONE)
       {
-        midi->tx_packets++;
+        midi->tx_packets += midi->pending_tx_packets;
+        midi->pending_tx_packets = 0U;
         midi->tx_state = MIDI_IDLE;
       }
       else if (urb_state == USBH_URB_NOTREADY)
       {
+        midi->pending_tx_packets = 0U;
         midi->tx_state = MIDI_IDLE;
       }
       else if (urb_state == USBH_URB_ERROR)
       {
         midi->tx_dropped++;
+        midi->pending_tx_packets = 0U;
         midi->tx_state = MIDI_ERROR;
+      }
+      else if (urb_state == USBH_URB_STALL)
+      {
+        (void)USBH_ClrFeature(phost, midi->OutEp);
+        midi->pending_tx_packets = 0U;
+        midi->tx_state = MIDI_IDLE;
       }
       break;
 

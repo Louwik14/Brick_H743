@@ -11,6 +11,7 @@ extern "C" {
 #endif
 
 #include "usbh_core.h"
+#include <stdbool.h>
 
 /**
  * @brief Maximum number of bulk endpoints supported by the MIDI class.
@@ -86,6 +87,8 @@ typedef struct
   uint32_t             tx_dropped;
   uint32_t             rx_packets;
   uint32_t             tx_packets;
+
+  uint16_t             pending_tx_packets;
 
   uint8_t              interface_index;
 
