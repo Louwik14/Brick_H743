@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccaFAtZz.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -28,7 +28,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
   25              		.type	halInit, %function
   26              	halInit:
   27              	.LFB448:
-  28              		.file 1 "../../../os/hal/src/hal.c"
+  28              		.file 1 "./docs/ChibiOS/os/hal/src/hal.c"
   29              		.loc 1 56 20 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
   55              		.loc 1 105 3 view .LVU9
   56 0016 FFF7FEFF 		bl	sdInit
   57              	.LVL5:
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 2
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccaFAtZz.s 			page 2
 
 
   58              		.loc 1 108 3 view .LVU10
@@ -90,19 +90,19 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
   84              		.size	halInit, .-halInit
   85 0036 00BF     		.text
   86              	.Letext0:
-  87              		.file 2 "../../../os/hal/include/hal_st.h"
-  88              		.file 3 "../../../os/hal/boards/CUSTOM_H743IIT6/board.h"
-  89              		.file 4 "../../../os/hal/include/hal_serial_usb.h"
-  90              		.file 5 "../../../os/hal/include/hal_usb.h"
-  91              		.file 6 "../../../os/hal/include/hal_spi_v2.h"
-  92              		.file 7 "../../../os/hal/include/hal_sdc.h"
-  93              		.file 8 "../../../os/hal/include/hal_serial.h"
-  94              		.file 9 "../../../os/hal/include/hal_pwm.h"
-  95              		.file 10 "../../../os/hal/include/hal_i2c.h"
-  96              		.file 11 "../../../os/hal/include/hal_adc.h"
-  97              		.file 12 "../../../os/hal/ports/STM32/LLD/GPIOv2/hal_pal_lld.h"
-  98              		.file 13 "../../../os/hal/ports/STM32/STM32H7xx/hal_lld.h"
-  99              		.file 14 "../../../os/hal/osal/rt-nil/osal.h"
+  87              		.file 2 "./docs/ChibiOS/os/hal/include/hal_st.h"
+  88              		.file 3 "./docs/ChibiOS/os/hal/boards/CUSTOM_H743IIT6/board.h"
+  89              		.file 4 "./docs/ChibiOS/os/hal/include/hal_serial_usb.h"
+  90              		.file 5 "./docs/ChibiOS/os/hal/include/hal_usb.h"
+  91              		.file 6 "./docs/ChibiOS/os/hal/include/hal_spi_v2.h"
+  92              		.file 7 "./docs/ChibiOS/os/hal/include/hal_sdc.h"
+  93              		.file 8 "./docs/ChibiOS/os/hal/include/hal_serial.h"
+  94              		.file 9 "./docs/ChibiOS/os/hal/include/hal_pwm.h"
+  95              		.file 10 "./docs/ChibiOS/os/hal/include/hal_i2c.h"
+  96              		.file 11 "./docs/ChibiOS/os/hal/include/hal_adc.h"
+  97              		.file 12 "./docs/ChibiOS/os/hal/ports/STM32/LLD/GPIOv2/hal_pal_lld.h"
+  98              		.file 13 "./docs/ChibiOS/os/hal/ports/STM32/STM32H7xx/hal_lld.h"
+  99              		.file 14 "./docs/ChibiOS/os/hal/osal/rt-nil/osal.h"
  100              		.section	.debug_info,"",%progbits
  101              	.Ldebug_info0:
  102 0000 66010000 		.4byte	0x166
@@ -111,14 +111,14 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
  105 0007 04       		.byte	0x4
  106 0008 00000000 		.4byte	.Ldebug_abbrev0
  107 000c 05       		.uleb128 0x5
- 108 000d B4000000 		.4byte	.LASF24
+ 108 000d 9A000000 		.4byte	.LASF24
  109 0011 1D       		.byte	0x1d
- 110 0012 36000000 		.4byte	.LASF25
- 111 0016 7A010000 		.4byte	.LASF26
+ 110 0012 49010000 		.4byte	.LASF25
+ 111 0016 76010000 		.4byte	.LASF26
  112 001a 0C000000 		.4byte	.LLRL0
  113 001e 00000000 		.4byte	0
  114 0022 00000000 		.4byte	.Ldebug_line0
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 3
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccaFAtZz.s 			page 3
 
 
  115 0026 06       		.uleb128 0x6
@@ -136,19 +136,19 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
  127 003b 01       		.uleb128 0x1
  128 003c 08       		.byte	0x8
  129 003d 04       		.byte	0x4
- 130 003e ED010000 		.4byte	.LASF2
+ 130 003e E9010000 		.4byte	.LASF2
  131 0042 01       		.uleb128 0x1
  132 0043 01       		.byte	0x1
  133 0044 06       		.byte	0x6
- 134 0045 CF010000 		.4byte	.LASF3
+ 134 0045 CB010000 		.4byte	.LASF3
  135 0049 01       		.uleb128 0x1
  136 004a 01       		.byte	0x1
  137 004b 08       		.byte	0x8
- 138 004c A1000000 		.4byte	.LASF4
+ 138 004c 87000000 		.4byte	.LASF4
  139 0050 01       		.uleb128 0x1
  140 0051 02       		.byte	0x2
  141 0052 05       		.byte	0x5
- 142 0053 63010000 		.4byte	.LASF5
+ 142 0053 0B020000 		.4byte	.LASF5
  143 0057 01       		.uleb128 0x1
  144 0058 02       		.byte	0x2
  145 0059 07       		.byte	0x7
@@ -156,36 +156,36 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
  147 005e 01       		.uleb128 0x1
  148 005f 04       		.byte	0x4
  149 0060 05       		.byte	0x5
- 150 0061 DB010000 		.4byte	.LASF7
+ 150 0061 D7010000 		.4byte	.LASF7
  151 0065 01       		.uleb128 0x1
  152 0066 04       		.byte	0x4
  153 0067 07       		.byte	0x7
- 154 0068 60000000 		.4byte	.LASF8
+ 154 0068 46000000 		.4byte	.LASF8
  155 006c 01       		.uleb128 0x1
  156 006d 08       		.byte	0x8
  157 006e 07       		.byte	0x7
- 158 006f 7A000000 		.4byte	.LASF9
+ 158 006f 60000000 		.4byte	.LASF9
  159 0073 01       		.uleb128 0x1
  160 0074 01       		.byte	0x1
  161 0075 08       		.byte	0x8
- 162 0076 AF000000 		.4byte	.LASF10
+ 162 0076 95000000 		.4byte	.LASF10
  163 007a 01       		.uleb128 0x1
  164 007b 01       		.byte	0x1
  165 007c 02       		.byte	0x2
- 166 007d 74010000 		.4byte	.LASF11
+ 166 007d 70010000 		.4byte	.LASF11
  167 0081 04       		.uleb128 0x4
- 168 0082 54010000 		.4byte	.LASF12
+ 168 0082 3A010000 		.4byte	.LASF12
  169 0086 02       		.byte	0x2
  170 0087 46       		.byte	0x46
  171 0088 03       		.uleb128 0x3
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 4
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccaFAtZz.s 			page 4
 
 
- 172 0089 C5010000 		.4byte	.LASF13
+ 172 0089 C1010000 		.4byte	.LASF13
  173 008d 03       		.byte	0x3
- 174 008e AD06     		.2byte	0x6ad
+ 174 008e AC06     		.2byte	0x6ac
  175 0090 04       		.uleb128 0x4
- 176 0091 F9010000 		.4byte	.LASF14
+ 176 0091 F5010000 		.4byte	.LASF14
  177 0095 04       		.byte	0x4
  178 0096 B0       		.byte	0xb0
  179 0097 03       		.uleb128 0x3
@@ -193,39 +193,39 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
  181 009c 05       		.byte	0x5
  182 009d 5D02     		.2byte	0x25d
  183 009f 03       		.uleb128 0x3
- 184 00a0 99000000 		.4byte	.LASF16
+ 184 00a0 7F000000 		.4byte	.LASF16
  185 00a4 06       		.byte	0x6
  186 00a5 E101     		.2byte	0x1e1
  187 00a7 04       		.uleb128 0x4
- 188 00a8 91000000 		.4byte	.LASF17
+ 188 00a8 77000000 		.4byte	.LASF17
  189 00ac 07       		.byte	0x7
  190 00ad BA       		.byte	0xba
  191 00ae 03       		.uleb128 0x3
- 192 00af 6D010000 		.4byte	.LASF18
+ 192 00af 69010000 		.4byte	.LASF18
  193 00b3 08       		.byte	0x8
  194 00b4 7F01     		.2byte	0x17f
  195 00b6 03       		.uleb128 0x3
- 196 00b7 5B010000 		.4byte	.LASF19
+ 196 00b7 41010000 		.4byte	.LASF19
  197 00bb 09       		.byte	0x9
  198 00bc 1F01     		.2byte	0x11f
  199 00be 04       		.uleb128 0x4
- 200 00bf 58000000 		.4byte	.LASF20
+ 200 00bf 3E000000 		.4byte	.LASF20
  201 00c3 0A       		.byte	0xa
  202 00c4 B0       		.byte	0xb0
  203 00c5 03       		.uleb128 0x3
- 204 00c6 50000000 		.4byte	.LASF21
+ 204 00c6 36000000 		.4byte	.LASF21
  205 00ca 0B       		.byte	0xb
  206 00cb 8001     		.2byte	0x180
  207 00cd 03       		.uleb128 0x3
- 208 00ce 01020000 		.4byte	.LASF22
+ 208 00ce FD010000 		.4byte	.LASF22
  209 00d2 0C       		.byte	0xc
  210 00d3 F201     		.2byte	0x1f2
  211 00d5 04       		.uleb128 0x4
- 212 00d6 B8010000 		.4byte	.LASF23
+ 212 00d6 B4010000 		.4byte	.LASF23
  213 00da 0D       		.byte	0xd
  214 00db BC       		.byte	0xbc
  215 00dc 07       		.uleb128 0x7
- 216 00dd 72000000 		.4byte	.LASF27
+ 216 00dd 58000000 		.4byte	.LASF27
  217 00e1 01       		.byte	0x1
  218 00e2 38       		.byte	0x38
  219 00e3 06       		.byte	0x6
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
  226 00f3 06000000 		.4byte	.LVL0
  227 00f7 D5000000 		.4byte	0xd5
  228 00fb 02       		.uleb128 0x2
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 5
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccaFAtZz.s 			page 5
 
 
  229 00fc 0A000000 		.4byte	.LVL1
@@ -275,7 +275,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
  260 015a 81000000 		.4byte	0x81
  261 015e 00       		.byte	0
  262 015f 09       		.uleb128 0x9
- 263 0160 E4010000 		.4byte	.LASF28
+ 263 0160 E0010000 		.4byte	.LASF28
  264 0164 0E       		.byte	0xe
  265 0165 1302     		.2byte	0x213
  266 0167 14       		.byte	0x14
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
  283 000c 48       		.uleb128 0x48
  284 000d 00       		.byte	0
  285 000e 7D       		.uleb128 0x7d
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 6
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccaFAtZz.s 			page 6
 
 
  286 000f 01       		.uleb128 0x1
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
  340 0045 1B       		.uleb128 0x1b
  341 0046 0E       		.uleb128 0xe
  342 0047 55       		.uleb128 0x55
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 7
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccaFAtZz.s 			page 7
 
 
  343 0048 17       		.uleb128 0x17
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
  397 007f 00       		.byte	0
  398 0080 00       		.byte	0
  399 0081 09       		.uleb128 0x9
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 8
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccaFAtZz.s 			page 8
 
 
  400 0082 2E       		.uleb128 0x2e
@@ -466,8 +466,8 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
  442              	.Ldebug_ranges3:
  443              		.section	.debug_line,"",%progbits
  444              	.Ldebug_line0:
- 445 0000 CB010000 		.section	.debug_str,"MS",%progbits,1
- 445      03008C01 
+ 445 0000 EF010000 		.section	.debug_str,"MS",%progbits,1
+ 445      0300B001 
  445      00000201 
  445      FB0E0D00 
  445      01010101 
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
  447      7400
  448              	.LASF6:
  449 000e 73686F72 		.ascii	"short unsigned int\000"
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 9
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccaFAtZz.s 			page 9
 
 
  449      7420756E 
@@ -493,138 +493,138 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 1
  453      676E6564 
  453      20696E74 
  453      00
- 454              	.LASF25:
- 455 0036 2E2E2F2E 		.ascii	"../../../os/hal/src/hal.c\000"
- 455      2E2F2E2E 
- 455      2F6F732F 
- 455      68616C2F 
- 455      7372632F 
- 456              	.LASF21:
- 457 0050 61646349 		.ascii	"adcInit\000"
+ 454              	.LASF21:
+ 455 0036 61646349 		.ascii	"adcInit\000"
+ 455      6E697400 
+ 456              	.LASF20:
+ 457 003e 69326349 		.ascii	"i2cInit\000"
  457      6E697400 
- 458              	.LASF20:
- 459 0058 69326349 		.ascii	"i2cInit\000"
- 459      6E697400 
- 460              	.LASF8:
- 461 0060 6C6F6E67 		.ascii	"long unsigned int\000"
- 461      20756E73 
- 461      69676E65 
- 461      6420696E 
- 461      7400
- 462              	.LASF27:
- 463 0072 68616C49 		.ascii	"halInit\000"
- 463      6E697400 
- 464              	.LASF9:
- 465 007a 6C6F6E67 		.ascii	"long long unsigned int\000"
- 465      206C6F6E 
- 465      6720756E 
- 465      7369676E 
- 465      65642069 
- 466              	.LASF17:
- 467 0091 73646349 		.ascii	"sdcInit\000"
+ 458              	.LASF8:
+ 459 0046 6C6F6E67 		.ascii	"long unsigned int\000"
+ 459      20756E73 
+ 459      69676E65 
+ 459      6420696E 
+ 459      7400
+ 460              	.LASF27:
+ 461 0058 68616C49 		.ascii	"halInit\000"
+ 461      6E697400 
+ 462              	.LASF9:
+ 463 0060 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 463      206C6F6E 
+ 463      6720756E 
+ 463      7369676E 
+ 463      65642069 
+ 464              	.LASF17:
+ 465 0077 73646349 		.ascii	"sdcInit\000"
+ 465      6E697400 
+ 466              	.LASF16:
+ 467 007f 73706949 		.ascii	"spiInit\000"
  467      6E697400 
- 468              	.LASF16:
- 469 0099 73706949 		.ascii	"spiInit\000"
- 469      6E697400 
- 470              	.LASF4:
- 471 00a1 756E7369 		.ascii	"unsigned char\000"
- 471      676E6564 
- 471      20636861 
- 471      7200
- 472              	.LASF10:
- 473 00af 63686172 		.ascii	"char\000"
- 473      00
- 474              	.LASF24:
- 475 00b4 474E5520 		.ascii	"GNU C17 11.3.1 20220712 -mcpu=cortex-m7 -mthumb -mf"
- 475      43313720 
- 475      31312E33 
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 10
+ 468              	.LASF4:
+ 469 0087 756E7369 		.ascii	"unsigned char\000"
+ 469      676E6564 
+ 469      20636861 
+ 469      7200
+ 470              	.LASF10:
+ 471 0095 63686172 		.ascii	"char\000"
+ 471      00
+ 472              	.LASF24:
+ 473 009a 474E5520 		.ascii	"GNU C17 11.3.1 20220712 -mcpu=cortex-m7 -mthumb -mf"
+ 473      43313720 
+ 473      31312E33 
+ 473      2E312032 
+ 473      30323230 
+ 474 00cd 6C6F6174 		.ascii	"loat-abi=hard -mfpu=fpv5-d16 -march=armv7e-m+fp.dp "
+ 474      2D616269 
+ 474      3D686172 
+ 474      64202D6D 
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccaFAtZz.s 			page 10
 
 
- 475      2E312032 
- 475      30323230 
- 476 00e7 6C6F6174 		.ascii	"loat-abi=hard -mfpu=fpv5-d16 -march=armv7e-m+fp.dp "
- 476      2D616269 
- 476      3D686172 
- 476      64202D6D 
- 476      6670753D 
- 477 011a 2D676764 		.ascii	"-ggdb -O2 -ffunction-sections -fdata-sections -fno-"
- 477      62202D4F 
- 477      32202D66 
- 477      66756E63 
- 477      74696F6E 
- 478 014d 636F6D6D 		.ascii	"common\000"
- 478      6F6E00
- 479              	.LASF12:
- 480 0154 7374496E 		.ascii	"stInit\000"
- 480      697400
- 481              	.LASF19:
- 482 015b 70776D49 		.ascii	"pwmInit\000"
- 482      6E697400 
- 483              	.LASF5:
- 484 0163 73686F72 		.ascii	"short int\000"
- 484      7420696E 
- 484      7400
- 485              	.LASF18:
- 486 016d 7364496E 		.ascii	"sdInit\000"
- 486      697400
- 487              	.LASF11:
- 488 0174 5F426F6F 		.ascii	"_Bool\000"
- 488      6C00
- 489              	.LASF26:
- 490 017a 433A5C43 		.ascii	"C:\\ChibiStudio\\ChibiOS-master\\demos\\STM32\\CUST"
- 490      68696269 
- 490      53747564 
- 490      696F5C43 
- 490      68696269 
- 491 01a8 4F4D5F48 		.ascii	"OM_H743IIT6_maj\000"
- 491      37343349 
- 491      4954365F 
- 491      6D616A00 
- 492              	.LASF23:
- 493 01b8 68616C5F 		.ascii	"hal_lld_init\000"
- 493      6C6C645F 
- 493      696E6974 
- 493      00
- 494              	.LASF13:
- 495 01c5 626F6172 		.ascii	"boardInit\000"
- 495      64496E69 
- 495      7400
- 496              	.LASF3:
- 497 01cf 7369676E 		.ascii	"signed char\000"
- 497      65642063 
- 497      68617200 
- 498              	.LASF7:
- 499 01db 6C6F6E67 		.ascii	"long int\000"
- 499      20696E74 
+ 474      6670753D 
+ 475 0100 2D676764 		.ascii	"-ggdb -O2 -ffunction-sections -fdata-sections -fno-"
+ 475      62202D4F 
+ 475      32202D66 
+ 475      66756E63 
+ 475      74696F6E 
+ 476 0133 636F6D6D 		.ascii	"common\000"
+ 476      6F6E00
+ 477              	.LASF12:
+ 478 013a 7374496E 		.ascii	"stInit\000"
+ 478      697400
+ 479              	.LASF19:
+ 480 0141 70776D49 		.ascii	"pwmInit\000"
+ 480      6E697400 
+ 481              	.LASF25:
+ 482 0149 2E2F646F 		.ascii	"./docs/ChibiOS/os/hal/src/hal.c\000"
+ 482      63732F43 
+ 482      68696269 
+ 482      4F532F6F 
+ 482      732F6861 
+ 483              	.LASF18:
+ 484 0169 7364496E 		.ascii	"sdInit\000"
+ 484      697400
+ 485              	.LASF11:
+ 486 0170 5F426F6F 		.ascii	"_Bool\000"
+ 486      6C00
+ 487              	.LASF26:
+ 488 0176 433A5C43 		.ascii	"C:\\ChibiStudio\\ChibiOS-master\\demos\\STM32\\CUST"
+ 488      68696269 
+ 488      53747564 
+ 488      696F5C43 
+ 488      68696269 
+ 489 01a4 4F4D5F48 		.ascii	"OM_H743IIT6_maj\000"
+ 489      37343349 
+ 489      4954365F 
+ 489      6D616A00 
+ 490              	.LASF23:
+ 491 01b4 68616C5F 		.ascii	"hal_lld_init\000"
+ 491      6C6C645F 
+ 491      696E6974 
+ 491      00
+ 492              	.LASF13:
+ 493 01c1 626F6172 		.ascii	"boardInit\000"
+ 493      64496E69 
+ 493      7400
+ 494              	.LASF3:
+ 495 01cb 7369676E 		.ascii	"signed char\000"
+ 495      65642063 
+ 495      68617200 
+ 496              	.LASF7:
+ 497 01d7 6C6F6E67 		.ascii	"long int\000"
+ 497      20696E74 
+ 497      00
+ 498              	.LASF28:
+ 499 01e0 6F73616C 		.ascii	"osalInit\000"
+ 499      496E6974 
  499      00
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 11
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccaFAtZz.s 			page 11
 
 
- 500              	.LASF28:
- 501 01e4 6F73616C 		.ascii	"osalInit\000"
- 501      496E6974 
- 501      00
- 502              	.LASF2:
- 503 01ed 6C6F6E67 		.ascii	"long double\000"
- 503      20646F75 
- 503      626C6500 
- 504              	.LASF14:
- 505 01f9 73647549 		.ascii	"sduInit\000"
- 505      6E697400 
- 506              	.LASF22:
- 507 0201 5F70616C 		.ascii	"_pal_lld_init\000"
- 507      5F6C6C64 
- 507      5F696E69 
+ 500              	.LASF2:
+ 501 01e9 6C6F6E67 		.ascii	"long double\000"
+ 501      20646F75 
+ 501      626C6500 
+ 502              	.LASF14:
+ 503 01f5 73647549 		.ascii	"sduInit\000"
+ 503      6E697400 
+ 504              	.LASF22:
+ 505 01fd 5F70616C 		.ascii	"_pal_lld_init\000"
+ 505      5F6C6C64 
+ 505      5F696E69 
+ 505      7400
+ 506              	.LASF5:
+ 507 020b 73686F72 		.ascii	"short int\000"
+ 507      7420696E 
  507      7400
  508              		.ident	"GCC: (Arm GNU Toolchain 11.3.Rel1) 11.3.1 20220712"
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s 			page 12
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccaFAtZz.s 			page 12
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 hal.c
-C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s:19     .text.halInit:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\ccu5FXVs.s:26     .text.halInit:00000000 halInit
+C:\Users\DEVELO~1\AppData\Local\Temp\ccaFAtZz.s:19     .text.halInit:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\ccaFAtZz.s:26     .text.halInit:00000000 halInit
 
 UNDEFINED SYMBOLS
 hal_lld_init

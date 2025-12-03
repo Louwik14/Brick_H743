@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -28,7 +28,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
   25              		.type	nvicInit, %function
   26              	nvicInit:
   27              	.LFB448:
-  28              		.file 1 "../../../os/hal/ports/common/ARMCMx/nvic.c"
+  28              		.file 1 "./docs/ChibiOS/os/hal/ports/common/ARMCMx/nvic.c"
   29              		.loc 1 79 21 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
   55              		.loc 1 87 27 view .LVU9
   56              	.L2:
   57              		.loc 1 88 5 discriminator 3 view .LVU10
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 2
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 2
 
 
   58 0010 05EB8301 		add	r1, r5, r3, lsl #2
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  112 0008 0123     		movs	r3, #1
  113              		.loc 1 109 20 view .LVU25
  114 000a C9B2     		uxtb	r1, r1
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 3
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 3
 
 
  115              		.loc 1 102 50 view .LVU26
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  169 000a 02FA0CF2 		lsl	r2, r2, ip
  170              		.loc 1 127 18 view .LVU42
  171 000e 4FEA501C 		lsr	ip, r0, #5
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 4
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 4
 
 
  172              		.loc 1 133 18 view .LVU43
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  226 000a 7047     		bx	lr
  227              	.L17:
  228              		.align	2
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 5
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 5
 
 
  229              	.L16:
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  283              	.LVL13:
  284              	.LFB453:
  285              		.loc 1 175 33 is_stmt 1 view -0
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 6
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 6
 
 
  286              		.cfi_startproc
@@ -333,7 +333,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  315              	.Letext0:
  316              		.file 2 "c:\\chibistudio\\tools\\gnu tools arm embedded\\11.3 2022.08\\arm-none-eabi\\include\\mac
  317              		.file 3 "c:\\chibistudio\\tools\\gnu tools arm embedded\\11.3 2022.08\\arm-none-eabi\\include\\sys
- 318              		.file 4 "../../../os/common/ext/ARM/CMSIS/Core/Include/core_cm7.h"
+ 318              		.file 4 "./docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/core_cm7.h"
  319              		.section	.debug_info,"",%progbits
  320              	.Ldebug_info0:
  321 0000 77060000 		.4byte	0x677
@@ -344,8 +344,8 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  326 000c 10       		.uleb128 0x10
  327 000d 14000000 		.4byte	.LASF81
  328 0011 1D       		.byte	0x1d
- 329 0012 88030000 		.4byte	.LASF82
- 330 0016 43030000 		.4byte	.LASF83
+ 329 0012 EA020000 		.4byte	.LASF82
+ 330 0016 74030000 		.4byte	.LASF83
  331 001a 18000000 		.4byte	.LLRL9
  332 001e 00000000 		.4byte	0
  333 0022 00000000 		.4byte	.Ldebug_line0
@@ -356,9 +356,9 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  338 002d 05       		.uleb128 0x5
  339 002e 04       		.byte	0x4
  340 002f 07       		.byte	0x7
- 341 0030 C6030000 		.4byte	.LASF0
+ 341 0030 CC030000 		.4byte	.LASF0
  342 0034 05       		.uleb128 0x5
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 7
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 7
 
 
  343 0035 08       		.byte	0x8
@@ -403,7 +403,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  382 007d 05       		.uleb128 0x5
  383 007e 04       		.byte	0x4
  384 007f 07       		.byte	0x7
- 385 0080 16030000 		.4byte	.LASF10
+ 385 0080 47030000 		.4byte	.LASF10
  386 0084 05       		.uleb128 0x5
  387 0085 08       		.byte	0x8
  388 0086 07       		.byte	0x7
@@ -417,8 +417,8 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  396 0097 06       		.uleb128 0x6
  397 0098 8B000000 		.4byte	0x8b
  398 009c 09       		.uleb128 0x9
- 399 009d EF020000 		.4byte	.LASF13
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 8
+ 399 009d 20030000 		.4byte	.LASF13
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 8
 
 
  400 00a1 03       		.byte	0x3
@@ -440,7 +440,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  416 00c1 A501     		.2byte	0x1a5
  417 00c3 6E010000 		.4byte	0x16e
  418 00c7 02       		.uleb128 0x2
- 419 00c8 EA020000 		.4byte	.LASF15
+ 419 00c8 1B030000 		.4byte	.LASF15
  420 00cc A701     		.2byte	0x1a7
  421 00ce 7E010000 		.4byte	0x17e
  422 00d2 00       		.byte	0
@@ -475,10 +475,10 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  451 0118 7E010000 		.4byte	0x17e
  452 011c 8001     		.2byte	0x180
  453 011e 01       		.uleb128 0x1
- 454 011f F8020000 		.4byte	.LASF22
+ 454 011f 29030000 		.4byte	.LASF22
  455 0123 AE01     		.2byte	0x1ae
  456 0125 83010000 		.4byte	0x183
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 9
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 9
 
 
  457 0129 A001     		.2byte	0x1a0
@@ -488,7 +488,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  461 0132 7E010000 		.4byte	0x17e
  462 0136 0002     		.2byte	0x200
  463 0138 01       		.uleb128 0x1
- 464 0139 02030000 		.4byte	.LASF24
+ 464 0139 33030000 		.4byte	.LASF24
  465 013d B001     		.2byte	0x1b0
  466 013f 93010000 		.4byte	0x193
  467 0143 2002     		.2byte	0x220
@@ -500,7 +500,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  473 014d B3010000 		.4byte	0x1b3
  474 0151 0003     		.2byte	0x300
  475 0153 01       		.uleb128 0x1
- 476 0154 0C030000 		.4byte	.LASF25
+ 476 0154 3D030000 		.4byte	.LASF25
  477 0158 B201     		.2byte	0x1b2
  478 015a B8010000 		.4byte	0x1b8
  479 015e F003     		.2byte	0x3f0
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  511 01a8 B3010000 		.4byte	0x1b3
  512 01ac 04       		.uleb128 0x4
  513 01ad 2D000000 		.4byte	0x2d
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 10
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 10
 
 
  514 01b1 EF       		.byte	0xef
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  568 0231 18       		.byte	0x18
  569 0232 02       		.uleb128 0x2
  570 0233 65020000 		.4byte	.LASF33
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 11
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 11
 
 
  571 0237 D001     		.2byte	0x1d0
@@ -630,7 +630,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  597 0275 A8000000 		.4byte	0xa8
  598 0279 38       		.byte	0x38
  599 027a 02       		.uleb128 0x2
- 600 027b BA030000 		.4byte	.LASF39
+ 600 027b C0030000 		.4byte	.LASF39
  601 027f D601     		.2byte	0x1d6
  602 0281 A8000000 		.4byte	0xa8
  603 0285 3C       		.byte	0x3c
@@ -640,7 +640,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  607 028d 79040000 		.4byte	0x479
  608 0291 40       		.byte	0x40
  609 0292 02       		.uleb128 0x2
- 610 0293 BF030000 		.4byte	.LASF41
+ 610 0293 C5030000 		.4byte	.LASF41
  611 0297 D801     		.2byte	0x1d8
  612 0299 AD000000 		.4byte	0xad
  613 029d 48       		.byte	0x48
@@ -650,7 +650,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  617 02a5 AD000000 		.4byte	0xad
  618 02a9 4C       		.byte	0x4c
  619 02aa 02       		.uleb128 0x2
- 620 02ab B3030000 		.4byte	.LASF43
+ 620 02ab B9030000 		.4byte	.LASF43
  621 02af DA01     		.2byte	0x1da
  622 02b1 93040000 		.4byte	0x493
  623 02b5 50       		.byte	0x50
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  625 02b7 FA010000 		.4byte	.LASF44
  626 02bb DB01     		.2byte	0x1db
  627 02bd AD040000 		.4byte	0x4ad
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 12
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 12
 
 
  628 02c1 60       		.byte	0x60
@@ -688,12 +688,12 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  652 02f9 A8000000 		.4byte	0xa8
  653 02fd 84       		.byte	0x84
  654 02fe 02       		.uleb128 0x2
- 655 02ff D3030000 		.4byte	.LASF48
+ 655 02ff D9030000 		.4byte	.LASF48
  656 0303 E101     		.2byte	0x1e1
  657 0305 A8000000 		.4byte	0xa8
  658 0309 88       		.byte	0x88
  659 030a 02       		.uleb128 0x2
- 660 030b F8020000 		.4byte	.LASF22
+ 660 030b 29030000 		.4byte	.LASF22
  661 030f E201     		.2byte	0x1e2
  662 0311 C2040000 		.4byte	0x4c2
  663 0315 8C       		.byte	0x8c
@@ -703,7 +703,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  667 031d A8000000 		.4byte	0xa8
  668 0321 0002     		.2byte	0x200
  669 0323 01       		.uleb128 0x1
- 670 0324 02030000 		.4byte	.LASF24
+ 670 0324 33030000 		.4byte	.LASF24
  671 0328 E401     		.2byte	0x1e4
  672 032a D2040000 		.4byte	0x4d2
  673 032e 0402     		.2byte	0x204
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  682 0344 AD000000 		.4byte	0xad
  683 0348 4402     		.2byte	0x244
  684 034a 01       		.uleb128 0x1
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 13
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 13
 
 
  685 034b 39010000 		.4byte	.LASF51
@@ -726,7 +726,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  687 0351 AD000000 		.4byte	0xad
  688 0355 4802     		.2byte	0x248
  689 0357 01       		.uleb128 0x1
- 690 0358 0C030000 		.4byte	.LASF25
+ 690 0358 3D030000 		.4byte	.LASF25
  691 035c E801     		.2byte	0x1e8
  692 035e B2040000 		.4byte	0x4b2
  693 0362 4C02     		.2byte	0x24c
@@ -776,15 +776,15 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  737 03d3 A8000000 		.4byte	0xa8
  738 03d7 7002     		.2byte	0x270
  739 03d9 01       		.uleb128 0x1
- 740 03da 3C030000 		.4byte	.LASF61
+ 740 03da 6D030000 		.4byte	.LASF61
  741 03de F201     		.2byte	0x1f2
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 14
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 14
 
 
  742 03e0 A8000000 		.4byte	0xa8
  743 03e4 7402     		.2byte	0x274
  744 03e6 01       		.uleb128 0x1
- 745 03e7 28030000 		.4byte	.LASF62
+ 745 03e7 59030000 		.4byte	.LASF62
  746 03eb F301     		.2byte	0x1f3
  747 03ed E2040000 		.4byte	0x4e2
  748 03f1 7802     		.2byte	0x278
@@ -794,7 +794,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  752 03fa A8000000 		.4byte	0xa8
  753 03fe 9002     		.2byte	0x290
  754 0400 01       		.uleb128 0x1
- 755 0401 DE030000 		.4byte	.LASF64
+ 755 0401 E4030000 		.4byte	.LASF64
  756 0405 F501     		.2byte	0x1f5
  757 0407 A8000000 		.4byte	0xa8
  758 040b 9402     		.2byte	0x294
@@ -809,12 +809,12 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  767 0421 A8000000 		.4byte	0xa8
  768 0425 9C02     		.2byte	0x29c
  769 0427 01       		.uleb128 0x1
- 770 0428 81030000 		.4byte	.LASF67
+ 770 0428 B2030000 		.4byte	.LASF67
  771 042c F801     		.2byte	0x1f8
  772 042e A8000000 		.4byte	0xa8
  773 0432 A002     		.2byte	0x2a0
  774 0434 01       		.uleb128 0x1
- 775 0435 32030000 		.4byte	.LASF68
+ 775 0435 63030000 		.4byte	.LASF68
  776 0439 F901     		.2byte	0x1f9
  777 043b B2040000 		.4byte	0x4b2
  778 043f A402     		.2byte	0x2a4
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  796 0469 74040000 		.4byte	0x474
  797 046d 04       		.uleb128 0x4
  798 046e 2D000000 		.4byte	0x2d
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 15
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 15
 
 
  799 0472 01       		.byte	0x1
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  853 04f0 05       		.byte	0x5
  854 04f1 00       		.byte	0
  855 04f2 0B       		.uleb128 0xb
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 16
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 16
 
 
  856 04f3 00000000 		.4byte	.LASF70
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  910 056c 00000000 		.4byte	.LFB452
  911 0570 18000000 		.4byte	.LFE452-.LFB452
  912 0574 01       		.uleb128 0x1
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 17
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 17
 
 
  913 0575 9C       		.byte	0x9c
@@ -988,7 +988,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  937 05ac 01       		.uleb128 0x1
  938 05ad 50       		.byte	0x50
  939 05ae 0E       		.uleb128 0xe
- 940 05af D9030000 		.4byte	.LASF78
+ 940 05af DF030000 		.4byte	.LASF78
  941 05b3 93       		.byte	0x93
  942 05b4 3E       		.byte	0x3e
  943 05b5 9C000000 		.4byte	0x9c
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  967 05f4 0A       		.uleb128 0xa
  968 05f5 6E00     		.ascii	"n\000"
  969 05f7 7D       		.byte	0x7d
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 18
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 18
 
 
  970 05f8 21       		.byte	0x21
@@ -1042,7 +1042,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  988 0623 6F000000 		.4byte	.LLST3
  989 0627 6B000000 		.4byte	.LVUS3
  990 062b 0E       		.uleb128 0xe
- 991 062c D9030000 		.4byte	.LASF78
+ 991 062c DF030000 		.4byte	.LASF78
  992 0630 66       		.byte	0x66
  993 0631 2C       		.byte	0x2c
  994 0632 9C000000 		.4byte	0x9c
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1024 0679 00       		.byte	0
  1025 067a 00       		.byte	0
  1026              		.section	.debug_abbrev,"",%progbits
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 19
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 19
 
 
  1027              	.Ldebug_abbrev0:
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1081 0035 0B       		.uleb128 0xb
  1082 0036 00       		.byte	0
  1083 0037 00       		.byte	0
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 20
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 20
 
 
  1084 0038 05       		.uleb128 0x5
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1138 006e 09       		.uleb128 0x9
  1139 006f 16       		.uleb128 0x16
  1140 0070 00       		.byte	0
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 21
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 21
 
 
  1141 0071 03       		.uleb128 0x3
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1195 00a8 21       		.uleb128 0x21
  1196 00a9 04       		.sleb128 4
  1197 00aa 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 22
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 22
 
 
  1198 00ab 05       		.uleb128 0x5
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1252 00e2 01       		.sleb128 1
  1253 00e3 3B       		.uleb128 0x3b
  1254 00e4 0B       		.uleb128 0xb
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 23
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 23
 
 
  1255 00e5 39       		.uleb128 0x39
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1309 011c 05       		.uleb128 0x5
  1310 011d 00       		.byte	0
  1311 011e 00       		.byte	0
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 24
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 24
 
 
  1312 011f 13       		.uleb128 0x13
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1366 0155 01       		.byte	0x1
  1367 0156 3F       		.uleb128 0x3f
  1368 0157 19       		.uleb128 0x19
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 25
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 25
 
 
  1369 0158 03       		.uleb128 0x3
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1423 001f 01       		.uleb128 0x1
  1424 0020 50       		.byte	0x50
  1425 0021 9F       		.byte	0x9f
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 26
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 26
 
 
  1426 0022 00       		.byte	0
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1480 005b 00       		.uleb128 .LVL7-.LVL7
  1481 005c 14       		.uleb128 .LVL8-.LVL7
  1482 005d 01       		.uleb128 0x1
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 27
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 27
 
 
  1483 005e 50       		.byte	0x50
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1535              	.LVUS0:
  1536 009c 00       		.uleb128 .LVU7
  1537 009d 00       		.uleb128 .LVU18
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 28
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 28
 
 
  1538              	.LLST0:
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1592 0034 18000000 		.4byte	.LFE452-.LFB452
  1593 0038 00000000 		.4byte	.LFB453
  1594 003c 18000000 		.4byte	.LFE453-.LFB453
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 29
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 29
 
 
  1595 0040 00000000 		.4byte	0
@@ -1724,8 +1724,8 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1635              	.Ldebug_ranges3:
  1636              		.section	.debug_line,"",%progbits
  1637              	.Ldebug_line0:
- 1638 0000 C4020000 		.section	.debug_str,"MS",%progbits,1
- 1638      03004801 
+ 1638 0000 D0020000 		.section	.debug_str,"MS",%progbits,1
+ 1638      03005401 
  1638      00000201 
  1638      FB0E0D00 
  1638      01010101 
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1642      5700
  1643              	.LASF23:
  1644 000f 49414252 		.ascii	"IABR\000"
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 30
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 30
 
 
  1644      00
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1667      6E743332 
  1667      5F7400
  1668              	.LASF60:
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 31
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 31
 
 
  1669 0114 44434349 		.ascii	"DCCIMVAC\000"
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1700              	.LASF18:
  1701 0193 52534552 		.ascii	"RSERVED1\000"
  1701      56454431 
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 32
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 32
 
 
  1701      00
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1731      6D48616E 
  1731      646C6572 
  1732              	.LASF27:
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 33
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 33
 
 
  1733 022e 4E564943 		.ascii	"NVIC_Type\000"
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1763      00
  1764              	.LASF76:
  1765 02b7 6E766963 		.ascii	"nvicClearPending\000"
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 34
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 34
 
 
  1765      436C6561 
@@ -2003,110 +2003,110 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 1
  1776              	.LASF66:
  1777 02e5 43414352 		.ascii	"CACR\000"
  1777      00
- 1778              	.LASF15:
- 1779 02ea 49534552 		.ascii	"ISER\000"
- 1779      00
- 1780              	.LASF13:
- 1781 02ef 75696E74 		.ascii	"uint32_t\000"
- 1781      33325F74 
+ 1778              	.LASF82:
+ 1779 02ea 2E2F646F 		.ascii	"./docs/ChibiOS/os/hal/ports/common/ARMCMx/nvic.c\000"
+ 1779      63732F43 
+ 1779      68696269 
+ 1779      4F532F6F 
+ 1779      732F6861 
+ 1780              	.LASF15:
+ 1781 031b 49534552 		.ascii	"ISER\000"
  1781      00
- 1782              	.LASF22:
- 1783 02f8 52455345 		.ascii	"RESERVED3\000"
- 1783      52564544 
- 1783      3300
- 1784              	.LASF24:
- 1785 0302 52455345 		.ascii	"RESERVED4\000"
+ 1782              	.LASF13:
+ 1783 0320 75696E74 		.ascii	"uint32_t\000"
+ 1783      33325F74 
+ 1783      00
+ 1784              	.LASF22:
+ 1785 0329 52455345 		.ascii	"RESERVED3\000"
  1785      52564544 
- 1785      3400
- 1786              	.LASF25:
- 1787 030c 52455345 		.ascii	"RESERVED5\000"
+ 1785      3300
+ 1786              	.LASF24:
+ 1787 0333 52455345 		.ascii	"RESERVED4\000"
  1787      52564544 
- 1787      3500
- 1788              	.LASF10:
- 1789 0316 6C6F6E67 		.ascii	"long unsigned int\000"
- 1789      20756E73 
- 1789      69676E65 
- 1789      6420696E 
- 1789      7400
- 1790              	.LASF62:
- 1791 0328 52455345 		.ascii	"RESERVED7\000"
- 1791      52564544 
- 1791      3700
- 1792              	.LASF68:
- 1793 0332 52455345 		.ascii	"RESERVED8\000"
+ 1787      3400
+ 1788              	.LASF25:
+ 1789 033d 52455345 		.ascii	"RESERVED5\000"
+ 1789      52564544 
+ 1789      3500
+ 1790              	.LASF10:
+ 1791 0347 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1791      20756E73 
+ 1791      69676E65 
+ 1791      6420696E 
+ 1791      7400
+ 1792              	.LASF62:
+ 1793 0359 52455345 		.ascii	"RESERVED7\000"
  1793      52564544 
- 1793      3800
- 1794              	.LASF61:
- 1795 033c 44434349 		.ascii	"DCCISW\000"
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 35
+ 1793      3700
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 35
 
 
- 1795      535700
- 1796              	.LASF83:
- 1797 0343 433A5C43 		.ascii	"C:\\ChibiStudio\\ChibiOS-master\\demos\\STM32\\CUST"
- 1797      68696269 
- 1797      53747564 
- 1797      696F5C43 
- 1797      68696269 
- 1798 0371 4F4D5F48 		.ascii	"OM_H743IIT6_maj\000"
- 1798      37343349 
- 1798      4954365F 
- 1798      6D616A00 
- 1799              	.LASF67:
- 1800 0381 41484253 		.ascii	"AHBSCR\000"
- 1800      435200
- 1801              	.LASF82:
- 1802 0388 2E2E2F2E 		.ascii	"../../../os/hal/ports/common/ARMCMx/nvic.c\000"
- 1802      2E2F2E2E 
- 1802      2F6F732F 
- 1802      68616C2F 
- 1802      706F7274 
+ 1794              	.LASF68:
+ 1795 0363 52455345 		.ascii	"RESERVED8\000"
+ 1795      52564544 
+ 1795      3800
+ 1796              	.LASF61:
+ 1797 036d 44434349 		.ascii	"DCCISW\000"
+ 1797      535700
+ 1798              	.LASF83:
+ 1799 0374 433A5C43 		.ascii	"C:\\ChibiStudio\\ChibiOS-master\\demos\\STM32\\CUST"
+ 1799      68696269 
+ 1799      53747564 
+ 1799      696F5C43 
+ 1799      68696269 
+ 1800 03a2 4F4D5F48 		.ascii	"OM_H743IIT6_maj\000"
+ 1800      37343349 
+ 1800      4954365F 
+ 1800      6D616A00 
+ 1801              	.LASF67:
+ 1802 03b2 41484253 		.ascii	"AHBSCR\000"
+ 1802      435200
  1803              	.LASF43:
- 1804 03b3 49445F4D 		.ascii	"ID_MFR\000"
+ 1804 03b9 49445F4D 		.ascii	"ID_MFR\000"
  1804      465200
  1805              	.LASF39:
- 1806 03ba 41465352 		.ascii	"AFSR\000"
+ 1806 03c0 41465352 		.ascii	"AFSR\000"
  1806      00
  1807              	.LASF41:
- 1808 03bf 49445F44 		.ascii	"ID_DFR\000"
+ 1808 03c5 49445F44 		.ascii	"ID_DFR\000"
  1808      465200
  1809              	.LASF0:
- 1810 03c6 756E7369 		.ascii	"unsigned int\000"
+ 1810 03cc 756E7369 		.ascii	"unsigned int\000"
  1810      676E6564 
  1810      20696E74 
  1810      00
  1811              	.LASF48:
- 1812 03d3 43504143 		.ascii	"CPACR\000"
+ 1812 03d9 43504143 		.ascii	"CPACR\000"
  1812      5200
  1813              	.LASF78:
- 1814 03d9 7072696F 		.ascii	"prio\000"
+ 1814 03df 7072696F 		.ascii	"prio\000"
  1814      00
  1815              	.LASF64:
- 1816 03de 4454434D 		.ascii	"DTCMCR\000"
+ 1816 03e4 4454434D 		.ascii	"DTCMCR\000"
  1816      435200
  1817              		.ident	"GCC: (Arm GNU Toolchain 11.3.Rel1) 11.3.1 20220712"
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s 			page 36
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s 			page 36
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 nvic.c
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:19     .text.nvicInit:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:26     .text.nvicInit:00000000 nvicInit
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:84     .text.nvicInit:00000028 $d
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:89     .text.nvicEnableVector:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:96     .text.nvicEnableVector:00000000 nvicEnableVector
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:140    .text.nvicEnableVector:0000002c $d
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:145    .text.nvicDisableVector:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:152    .text.nvicDisableVector:00000000 nvicDisableVector
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:190    .text.nvicDisableVector:00000028 $d
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:195    .text.nvicSetSystemHandlerPriority:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:202    .text.nvicSetSystemHandlerPriority:00000000 nvicSetSystemHandlerPriority
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:230    .text.nvicSetSystemHandlerPriority:0000000c $d
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:235    .text.nvicClearPending:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:242    .text.nvicClearPending:00000000 nvicClearPending
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:270    .text.nvicClearPending:00000014 $d
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:275    .text.nvicSetPending:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:282    .text.nvicSetPending:00000000 nvicSetPending
-C:\Users\DEVELO~1\AppData\Local\Temp\cchVMSmw.s:310    .text.nvicSetPending:00000014 $d
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:19     .text.nvicInit:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:26     .text.nvicInit:00000000 nvicInit
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:84     .text.nvicInit:00000028 $d
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:89     .text.nvicEnableVector:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:96     .text.nvicEnableVector:00000000 nvicEnableVector
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:140    .text.nvicEnableVector:0000002c $d
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:145    .text.nvicDisableVector:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:152    .text.nvicDisableVector:00000000 nvicDisableVector
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:190    .text.nvicDisableVector:00000028 $d
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:195    .text.nvicSetSystemHandlerPriority:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:202    .text.nvicSetSystemHandlerPriority:00000000 nvicSetSystemHandlerPriority
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:230    .text.nvicSetSystemHandlerPriority:0000000c $d
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:235    .text.nvicClearPending:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:242    .text.nvicClearPending:00000000 nvicClearPending
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:270    .text.nvicClearPending:00000014 $d
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:275    .text.nvicSetPending:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:282    .text.nvicSetPending:00000000 nvicSetPending
+C:\Users\DEVELO~1\AppData\Local\Temp\ccB8fcAx.s:310    .text.nvicSetPending:00000014 $d
 
 NO UNDEFINED SYMBOLS

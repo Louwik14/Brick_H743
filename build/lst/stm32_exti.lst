@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccooXRPS.s 			page 1
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cczbz1DX.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -27,10 +27,10 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccooXRPS.s 			page 1
   24 0007 04       		.byte	0x4
   25 0008 00000000 		.4byte	.Ldebug_abbrev0
   26 000c 02       		.uleb128 0x2
-  27 000d 8B000000 		.4byte	.LASF12
+  27 000d 91000000 		.4byte	.LASF12
   28 0011 1D       		.byte	0x1d
-  29 0012 1B000000 		.4byte	.LASF13
-  30 0016 3A010000 		.4byte	.LASF14
+  29 0012 44000000 		.4byte	.LASF13
+  30 0016 40010000 		.4byte	.LASF14
   31 001a 00000000 		.4byte	.Ldebug_line0
   32 001e 03       		.uleb128 0x3
   33 001f 04       		.byte	0x4
@@ -47,46 +47,46 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccooXRPS.s 			page 1
   44 0033 01       		.uleb128 0x1
   45 0034 08       		.byte	0x8
   46 0035 04       		.byte	0x4
-  47 0036 97010000 		.4byte	.LASF2
+  47 0036 9D010000 		.4byte	.LASF2
   48 003a 01       		.uleb128 0x1
   49 003b 01       		.byte	0x1
   50 003c 06       		.byte	0x6
-  51 003d 8B010000 		.4byte	.LASF3
+  51 003d 91010000 		.4byte	.LASF3
   52 0041 01       		.uleb128 0x1
   53 0042 01       		.byte	0x1
   54 0043 08       		.byte	0x8
-  55 0044 78000000 		.4byte	.LASF4
+  55 0044 7E000000 		.4byte	.LASF4
   56 0048 01       		.uleb128 0x1
   57 0049 02       		.byte	0x2
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccooXRPS.s 			page 2
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cczbz1DX.s 			page 2
 
 
   58 004a 05       		.byte	0x5
-  59 004b A3010000 		.4byte	.LASF5
+  59 004b A9010000 		.4byte	.LASF5
   60 004f 01       		.uleb128 0x1
   61 0050 02       		.byte	0x2
   62 0051 07       		.byte	0x7
-  63 0052 78010000 		.4byte	.LASF6
+  63 0052 7E010000 		.4byte	.LASF6
   64 0056 01       		.uleb128 0x1
   65 0057 04       		.byte	0x4
   66 0058 05       		.byte	0x5
-  67 0059 2B010000 		.4byte	.LASF7
+  67 0059 31010000 		.4byte	.LASF7
   68 005d 01       		.uleb128 0x1
   69 005e 04       		.byte	0x4
   70 005f 07       		.byte	0x7
-  71 0060 4F000000 		.4byte	.LASF8
+  71 0060 1B000000 		.4byte	.LASF8
   72 0064 01       		.uleb128 0x1
   73 0065 08       		.byte	0x8
   74 0066 07       		.byte	0x7
-  75 0067 61000000 		.4byte	.LASF9
+  75 0067 2D000000 		.4byte	.LASF9
   76 006b 01       		.uleb128 0x1
   77 006c 01       		.byte	0x1
   78 006d 08       		.byte	0x8
-  79 006e 86000000 		.4byte	.LASF10
+  79 006e 8C000000 		.4byte	.LASF10
   80 0072 01       		.uleb128 0x1
   81 0073 01       		.byte	0x1
   82 0074 02       		.byte	0x2
-  83 0075 34010000 		.4byte	.LASF11
+  83 0075 3A010000 		.4byte	.LASF11
   84 0079 00       		.byte	0
   85              		.section	.debug_abbrev,"",%progbits
   86              	.Ldebug_abbrev0:
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccooXRPS.s 			page 1
  112 0019 00       		.byte	0
  113 001a 03       		.uleb128 0x3
  114 001b 24       		.uleb128 0x24
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccooXRPS.s 			page 3
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cczbz1DX.s 			page 3
 
 
  115 001c 00       		.byte	0
@@ -158,94 +158,95 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccooXRPS.s 			page 1
  141      676E6564 
  141      20696E74 
  141      00
- 142              	.LASF13:
- 143 001b 2E2E2F2E 		.ascii	"../../../os/hal/ports/STM32/LLD/EXTIv1/stm32_exti.c"
- 143      2E2F2E2E 
- 143      2F6F732F 
- 143      68616C2F 
- 143      706F7274 
- 144 004e 00       		.ascii	"\000"
- 145              	.LASF8:
- 146 004f 6C6F6E67 		.ascii	"long unsigned int\000"
- 146      20756E73 
- 146      69676E65 
- 146      6420696E 
- 146      7400
- 147              	.LASF9:
- 148 0061 6C6F6E67 		.ascii	"long long unsigned int\000"
- 148      206C6F6E 
- 148      6720756E 
- 148      7369676E 
- 148      65642069 
+ 142              	.LASF8:
+ 143 001b 6C6F6E67 		.ascii	"long unsigned int\000"
+ 143      20756E73 
+ 143      69676E65 
+ 143      6420696E 
+ 143      7400
+ 144              	.LASF9:
+ 145 002d 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 145      206C6F6E 
+ 145      6720756E 
+ 145      7369676E 
+ 145      65642069 
+ 146              	.LASF13:
+ 147 0044 2E2F646F 		.ascii	"./docs/ChibiOS/os/hal/ports/STM32/LLD/EXTIv1/stm32_"
+ 147      63732F43 
+ 147      68696269 
+ 147      4F532F6F 
+ 147      732F6861 
+ 148 0077 65787469 		.ascii	"exti.c\000"
+ 148      2E6300
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cczbz1DX.s 			page 4
+
+
  149              	.LASF4:
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccooXRPS.s 			page 4
-
-
- 150 0078 756E7369 		.ascii	"unsigned char\000"
+ 150 007e 756E7369 		.ascii	"unsigned char\000"
  150      676E6564 
  150      20636861 
  150      7200
  151              	.LASF10:
- 152 0086 63686172 		.ascii	"char\000"
+ 152 008c 63686172 		.ascii	"char\000"
  152      00
  153              	.LASF12:
- 154 008b 474E5520 		.ascii	"GNU C17 11.3.1 20220712 -mcpu=cortex-m7 -mthumb -mf"
+ 154 0091 474E5520 		.ascii	"GNU C17 11.3.1 20220712 -mcpu=cortex-m7 -mthumb -mf"
  154      43313720 
  154      31312E33 
  154      2E312032 
  154      30323230 
- 155 00be 6C6F6174 		.ascii	"loat-abi=hard -mfpu=fpv5-d16 -march=armv7e-m+fp.dp "
+ 155 00c4 6C6F6174 		.ascii	"loat-abi=hard -mfpu=fpv5-d16 -march=armv7e-m+fp.dp "
  155      2D616269 
  155      3D686172 
  155      64202D6D 
  155      6670753D 
- 156 00f1 2D676764 		.ascii	"-ggdb -O2 -ffunction-sections -fdata-sections -fno-"
+ 156 00f7 2D676764 		.ascii	"-ggdb -O2 -ffunction-sections -fdata-sections -fno-"
  156      62202D4F 
  156      32202D66 
  156      66756E63 
  156      74696F6E 
- 157 0124 636F6D6D 		.ascii	"common\000"
+ 157 012a 636F6D6D 		.ascii	"common\000"
  157      6F6E00
  158              	.LASF7:
- 159 012b 6C6F6E67 		.ascii	"long int\000"
+ 159 0131 6C6F6E67 		.ascii	"long int\000"
  159      20696E74 
  159      00
  160              	.LASF11:
- 161 0134 5F426F6F 		.ascii	"_Bool\000"
+ 161 013a 5F426F6F 		.ascii	"_Bool\000"
  161      6C00
  162              	.LASF14:
- 163 013a 433A5C43 		.ascii	"C:\\ChibiStudio\\ChibiOS-master\\demos\\STM32\\CUST"
+ 163 0140 433A5C43 		.ascii	"C:\\ChibiStudio\\ChibiOS-master\\demos\\STM32\\CUST"
  163      68696269 
  163      53747564 
  163      696F5C43 
  163      68696269 
- 164 0168 4F4D5F48 		.ascii	"OM_H743IIT6_maj\000"
+ 164 016e 4F4D5F48 		.ascii	"OM_H743IIT6_maj\000"
  164      37343349 
  164      4954365F 
  164      6D616A00 
  165              	.LASF6:
- 166 0178 73686F72 		.ascii	"short unsigned int\000"
+ 166 017e 73686F72 		.ascii	"short unsigned int\000"
  166      7420756E 
  166      7369676E 
  166      65642069 
  166      6E7400
  167              	.LASF3:
- 168 018b 7369676E 		.ascii	"signed char\000"
+ 168 0191 7369676E 		.ascii	"signed char\000"
  168      65642063 
  168      68617200 
  169              	.LASF2:
- 170 0197 6C6F6E67 		.ascii	"long double\000"
+ 170 019d 6C6F6E67 		.ascii	"long double\000"
  170      20646F75 
  170      626C6500 
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cczbz1DX.s 			page 5
+
+
  171              	.LASF5:
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccooXRPS.s 			page 5
-
-
- 172 01a3 73686F72 		.ascii	"short int\000"
+ 172 01a9 73686F72 		.ascii	"short int\000"
  172      7420696E 
  172      7400
  173              		.ident	"GCC: (Arm GNU Toolchain 11.3.Rel1) 11.3.1 20220712"
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccooXRPS.s 			page 6
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cczbz1DX.s 			page 6
 
 
 DEFINED SYMBOLS

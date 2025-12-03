@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -28,7 +28,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
   25              		.type	__core_init, %function
   26              	__core_init:
   27              	.LFB352:
-  28              		.file 1 "../../../os/oslib/src/chmemcore.c"
+  28              		.file 1 "./docs/ChibiOS/os/oslib/src/chmemcore.c"
   29              		.loc 1 81 24 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
   55              		.align	1
   56              		.p2align 2,,3
   57              		.global	chCoreAllocFromBaseI
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 2
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 2
 
 
   58              		.syntax unified
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  112              	.LVL6:
  113              		.loc 1 129 1 view .LVU27
  114 0022 5DF8044B 		ldr	r4, [sp], #4
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 3
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 3
 
 
  115              		.cfi_remember_state
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  169 0004 10B4     		push	{r4}
  170              		.cfi_def_cfa_offset 4
  171              		.cfi_offset 4, -4
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 4
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 4
 
 
  172              		.loc 1 151 18 view .LVU41
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  226              		.syntax unified
  227              		.thumb
  228              		.thumb_func
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 5
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 5
 
 
  229              		.type	chCoreAllocFromBase, %function
@@ -254,17 +254,17 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  239              		.loc 1 181 3 view .LVU58
  240              	.LBB45:
  241              	.LBI45:
- 242              		.file 2 "../../../os/rt/include/chsys.h"
+ 242              		.file 2 "./docs/ChibiOS/os/rt/include/chsys.h"
  243              		.loc 2 372 20 view .LVU59
  244              		.loc 2 374 3 view .LVU60
  245              	.LBB46:
  246              	.LBI46:
- 247              		.file 3 "../../../os/common/ports/ARMv7-M/chcore.h"
+ 247              		.file 3 "./docs/ChibiOS/os/common/ports/ARMv7-M/chcore.h"
  248              		.loc 3 840 27 view .LVU61
  249              		.loc 3 848 3 view .LVU62
  250              	.LBB47:
  251              	.LBI47:
- 252              		.file 4 "../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h"
+ 252              		.file 4 "./docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h"
  253              		.loc 4 491 27 view .LVU63
  254              	.LBB48:
  255              		.loc 4 493 3 view .LVU64
@@ -284,7 +284,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  269              	.LBB49:
  270              		.loc 4 493 3 view .LVU66
  271              		.syntax unified
- 272              	@ 493 "../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 272              	@ 493 "./docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h" 1
  273 0004 83F31188 		MSR basepri, r3
  274              	@ 0 "" 2
  275              	.LVL20:
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  283              		.loc 2 376 21 view .LVU69
  284              	.LBE52:
  285              		.loc 1 182 3 view .LVU70
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 6
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 6
 
 
  286              	.LBB53:
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  340 0024 2060     		str	r0, [r4]
  341              		.loc 1 128 3 is_stmt 1 view .LVU90
  342              	.LVL25:
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 7
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 7
 
 
  343              		.loc 1 128 3 is_stmt 0 view .LVU91
@@ -385,7 +385,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  364              	.LBB62:
  365              		.loc 4 493 3 view .LVU103
  366              		.syntax unified
- 367              	@ 493 "../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 367              	@ 493 "./docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h" 1
  368 0026 82F31188 		MSR basepri, r2
  369              	@ 0 "" 2
  370              	.LVL26:
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  397              	.LBE56:
  398              	.LBE72:
  399              		.loc 1 183 3 is_stmt 1 view .LVU109
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 8
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 8
 
 
  400              	.LBB73:
@@ -439,7 +439,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  415              		.loc 4 493 3 view .LVU120
  416 0032 0022     		movs	r2, #0
  417              		.syntax unified
- 418              	@ 493 "../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 418              	@ 493 "./docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h" 1
  419 0034 82F31188 		MSR basepri, r2
  420              	@ 0 "" 2
  421              	.LVL29:
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  454              	.LVL30:
  455              	.LFB356:
  456              		.loc 1 202 70 is_stmt 1 view -0
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 9
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 9
 
 
  457              		.cfi_startproc
@@ -515,7 +515,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  488              	.LBB89:
  489              		.loc 4 493 3 view .LVU134
  490              		.syntax unified
- 491              	@ 493 "../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 491              	@ 493 "./docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h" 1
  492 0004 83F31188 		MSR basepri, r3
  493              	@ 0 "" 2
  494              	.LVL31:
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  511              		.loc 1 149 3 view .LVU142
  512              		.loc 1 149 3 view .LVU143
  513              		.loc 1 149 3 view .LVU144
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 10
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 10
 
 
  514              		.loc 1 151 3 view .LVU145
@@ -596,9 +596,9 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  566              		.loc 4 493 3 view .LVU169
  567 0020 0023     		movs	r3, #0
  568              		.syntax unified
- 569              	@ 493 "../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 569              	@ 493 "./docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h" 1
  570 0022 83F31188 		MSR basepri, r3
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 11
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 11
 
 
  571              	@ 0 "" 2
@@ -648,7 +648,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  615              		.loc 4 493 3 view .LVU186
  616 002e 0023     		movs	r3, #0
  617              		.syntax unified
- 618              	@ 493 "../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h" 1
+ 618              	@ 493 "./docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h" 1
  619 0030 83F31188 		MSR basepri, r3
  620              	@ 0 "" 2
  621              	.LVL41:
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  625              	.LBE101:
  626              	.LBE102:
  627              	.LBE103:
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 12
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 12
 
 
  628              	.LBE104:
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  682              	ch_memcore:
  683 0000 00000000 		.space	8
  683      00000000 
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 13
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 13
 
 
  684              		.text
@@ -726,8 +726,8 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  686              		.file 5 "c:\\chibistudio\\tools\\gnu tools arm embedded\\11.3 2022.08\\lib\\gcc\\arm-none-eabi\\11
  687              		.file 6 "c:\\chibistudio\\tools\\gnu tools arm embedded\\11.3 2022.08\\arm-none-eabi\\include\\mac
  688              		.file 7 "c:\\chibistudio\\tools\\gnu tools arm embedded\\11.3 2022.08\\arm-none-eabi\\include\\sys
- 689              		.file 8 "../../../os/oslib/include/chmemchecks.h"
- 690              		.file 9 "../../../os/oslib/include/chmemcore.h"
+ 689              		.file 8 "./docs/ChibiOS/os/oslib/include/chmemchecks.h"
+ 690              		.file 9 "./docs/ChibiOS/os/oslib/include/chmemcore.h"
  691              		.section	.debug_info,"",%progbits
  692              	.Ldebug_info0:
  693 0000 F7050000 		.4byte	0x5f7
@@ -736,10 +736,10 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  696 0007 04       		.byte	0x4
  697 0008 00000000 		.4byte	.Ldebug_abbrev0
  698 000c 1B       		.uleb128 0x1b
- 699 000d EB000000 		.4byte	.LASF43
+ 699 000d C9000000 		.4byte	.LASF43
  700 0011 1D       		.byte	0x1d
- 701 0012 00000000 		.4byte	.LASF44
- 702 0016 96010000 		.4byte	.LASF45
+ 701 0012 A4020000 		.4byte	.LASF44
+ 702 0016 74010000 		.4byte	.LASF45
  703 001a 5A000000 		.4byte	.LLRL38
  704 001e 00000000 		.4byte	0
  705 0022 00000000 		.4byte	.Ldebug_line0
@@ -748,7 +748,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  708 0028 05       		.byte	0x5
  709 0029 696E7400 		.ascii	"int\000"
  710 002d 05       		.uleb128 0x5
- 711 002e 2C000000 		.4byte	.LASF4
+ 711 002e 0A000000 		.4byte	.LASF4
  712 0032 05       		.byte	0x5
  713 0033 D1       		.byte	0xd1
  714 0034 17       		.byte	0x17
@@ -756,21 +756,21 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  716 0039 02       		.uleb128 0x2
  717 003a 04       		.byte	0x4
  718 003b 07       		.byte	0x7
- 719 003c EE010000 		.4byte	.LASF0
+ 719 003c CC010000 		.4byte	.LASF0
  720 0040 02       		.uleb128 0x2
  721 0041 08       		.byte	0x8
  722 0042 05       		.byte	0x5
- 723 0043 5D020000 		.4byte	.LASF1
+ 723 0043 3B020000 		.4byte	.LASF1
  724 0047 02       		.uleb128 0x2
  725 0048 08       		.byte	0x8
  726 0049 04       		.byte	0x4
- 727 004a BA020000 		.4byte	.LASF2
+ 727 004a 98020000 		.4byte	.LASF2
  728 004e 02       		.uleb128 0x2
  729 004f 01       		.byte	0x1
  730 0050 06       		.byte	0x6
- 731 0051 C6020000 		.4byte	.LASF3
+ 731 0051 CC020000 		.4byte	.LASF3
  732 0055 05       		.uleb128 0x5
- 733 0056 22000000 		.4byte	.LASF5
+ 733 0056 00000000 		.4byte	.LASF5
  734 005a 06       		.byte	0x6
  735 005b 2B       		.byte	0x2b
  736 005c 18       		.byte	0x18
@@ -778,24 +778,24 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  738 0061 02       		.uleb128 0x2
  739 0062 01       		.byte	0x1
  740 0063 08       		.byte	0x8
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 14
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 14
 
 
- 741 0064 B8000000 		.4byte	.LASF6
+ 741 0064 96000000 		.4byte	.LASF6
  742 0068 02       		.uleb128 0x2
  743 0069 02       		.byte	0x2
  744 006a 05       		.byte	0x5
- 745 006b 82020000 		.4byte	.LASF7
+ 745 006b 60020000 		.4byte	.LASF7
  746 006f 02       		.uleb128 0x2
  747 0070 02       		.byte	0x2
  748 0071 07       		.byte	0x7
- 749 0072 D8000000 		.4byte	.LASF8
+ 749 0072 B6000000 		.4byte	.LASF8
  750 0076 02       		.uleb128 0x2
  751 0077 04       		.byte	0x4
  752 0078 05       		.byte	0x5
- 753 0079 B1020000 		.4byte	.LASF9
+ 753 0079 8F020000 		.4byte	.LASF9
  754 007d 05       		.uleb128 0x5
- 755 007e 8B010000 		.4byte	.LASF10
+ 755 007e 69010000 		.4byte	.LASF10
  756 0082 06       		.byte	0x6
  757 0083 4F       		.byte	0x4f
  758 0084 19       		.byte	0x19
@@ -803,19 +803,19 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  760 0089 02       		.uleb128 0x2
  761 008a 04       		.byte	0x4
  762 008b 07       		.byte	0x7
- 763 008c C6000000 		.4byte	.LASF11
+ 763 008c A4000000 		.4byte	.LASF11
  764 0090 02       		.uleb128 0x2
  765 0091 08       		.byte	0x8
  766 0092 07       		.byte	0x7
- 767 0093 93000000 		.4byte	.LASF12
+ 767 0093 71000000 		.4byte	.LASF12
  768 0097 05       		.uleb128 0x5
- 769 0098 00020000 		.4byte	.LASF13
+ 769 0098 DE010000 		.4byte	.LASF13
  770 009c 07       		.byte	0x7
  771 009d 18       		.byte	0x18
  772 009e 13       		.byte	0x13
  773 009f 55000000 		.4byte	0x55
  774 00a3 05       		.uleb128 0x5
- 775 00a4 A8020000 		.4byte	.LASF14
+ 775 00a4 86020000 		.4byte	.LASF14
  776 00a8 07       		.byte	0x7
  777 00a9 30       		.byte	0x30
  778 00aa 14       		.byte	0x14
@@ -823,7 +823,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  780 00af 02       		.uleb128 0x2
  781 00b0 01       		.byte	0x1
  782 00b1 08       		.byte	0x8
- 783 00b2 FB010000 		.4byte	.LASF15
+ 783 00b2 D9010000 		.4byte	.LASF15
  784 00b6 08       		.uleb128 0x8
  785 00b7 AF000000 		.4byte	0xaf
  786 00bb 11       		.uleb128 0x11
@@ -835,17 +835,17 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  792 00c4 32       		.byte	0x32
  793 00c5 E4000000 		.4byte	0xe4
  794 00c9 09       		.uleb128 0x9
- 795 00ca E9010000 		.4byte	.LASF16
+ 795 00ca C7010000 		.4byte	.LASF16
  796 00ce 08       		.byte	0x8
  797 00cf 37       		.byte	0x37
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 15
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 15
 
 
  798 00d0 22       		.byte	0x22
  799 00d1 BB000000 		.4byte	0xbb
  800 00d5 00       		.byte	0
  801 00d6 09       		.uleb128 0x9
- 802 00d7 D2020000 		.4byte	.LASF17
+ 802 00d7 D8020000 		.4byte	.LASF17
  803 00db 08       		.byte	0x8
  804 00dc 3D       		.byte	0x3d
  805 00dd 21       		.byte	0x21
@@ -853,7 +853,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  807 00e2 04       		.byte	0x4
  808 00e3 00       		.byte	0
  809 00e4 05       		.uleb128 0x5
- 810 00e5 7C000000 		.4byte	.LASF18
+ 810 00e5 5A000000 		.4byte	.LASF18
  811 00e9 08       		.byte	0x8
  812 00ea 3E       		.byte	0x3e
  813 00eb 03       		.byte	0x3
@@ -861,20 +861,20 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  815 00f0 02       		.uleb128 0x2
  816 00f1 01       		.byte	0x1
  817 00f2 02       		.byte	0x2
- 818 00f3 D7020000 		.4byte	.LASF19
+ 818 00f3 DD020000 		.4byte	.LASF19
  819 00f7 12       		.uleb128 0x12
  820 00f8 09       		.byte	0x9
  821 00f9 51       		.byte	0x51
  822 00fa 19010000 		.4byte	0x119
  823 00fe 09       		.uleb128 0x9
- 824 00ff A0020000 		.4byte	.LASF20
+ 824 00ff 7E020000 		.4byte	.LASF20
  825 0103 09       		.byte	0x9
  826 0104 55       		.byte	0x55
  827 0105 0C       		.byte	0xc
  828 0106 BB000000 		.4byte	0xbb
  829 010a 00       		.byte	0
  830 010b 09       		.uleb128 0x9
- 831 010c 08020000 		.4byte	.LASF21
+ 831 010c E6010000 		.4byte	.LASF21
  832 0110 09       		.byte	0x9
  833 0111 59       		.byte	0x59
  834 0112 0C       		.byte	0xc
@@ -882,13 +882,13 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  836 0117 04       		.byte	0x4
  837 0118 00       		.byte	0
  838 0119 05       		.uleb128 0x5
- 839 011a 66000000 		.4byte	.LASF22
+ 839 011a 44000000 		.4byte	.LASF22
  840 011e 09       		.byte	0x9
  841 011f 5A       		.byte	0x5a
  842 0120 03       		.byte	0x3
  843 0121 F7000000 		.4byte	0xf7
  844 0125 0D       		.uleb128 0xd
- 845 0126 D4010000 		.4byte	.LASF25
+ 845 0126 B2010000 		.4byte	.LASF25
  846 012a 09       		.byte	0x9
  847 012b 75       		.byte	0x75
  848 012c 19010000 		.4byte	0x119
@@ -898,13 +898,13 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  852 0136 3A       		.byte	0x3a
  853 0137 0B       		.byte	0xb
  854 0138 05       		.uleb128 0x5
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 16
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 16
 
 
  855 0139 03       		.byte	0x3
  856 013a 00000000 		.4byte	ch_memcore
  857 013e 13       		.uleb128 0x13
- 858 013f 4C020000 		.4byte	.LASF33
+ 858 013f 2A020000 		.4byte	.LASF33
  859 0143 DB       		.byte	0xdb
  860 0144 00000000 		.4byte	.LFB357
  861 0148 14000000 		.4byte	.LFE357-.LFB357
@@ -923,7 +923,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  874 0161 11       		.uleb128 0x11
  875 0162 E4000000 		.4byte	0xe4
  876 0166 14       		.uleb128 0x14
- 877 0167 25020000 		.4byte	.LASF26
+ 877 0167 03020000 		.4byte	.LASF26
  878 016b CA       		.byte	0xca
  879 016c C0000000 		.4byte	0xc0
  880 0170 00000000 		.4byte	.LFB356
@@ -932,21 +932,21 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  883 0179 9C       		.byte	0x9c
  884 017a B1020000 		.4byte	0x2b1
  885 017e 06       		.uleb128 0x6
- 886 017f D2020000 		.4byte	.LASF17
+ 886 017f D8020000 		.4byte	.LASF17
  887 0183 CA       		.byte	0xca
  888 0184 21       		.byte	0x21
  889 0185 2D000000 		.4byte	0x2d
  890 0189 10000000 		.4byte	.LLST24
  891 018d 0C000000 		.4byte	.LVUS24
  892 0191 06       		.uleb128 0x6
- 893 0192 3F000000 		.4byte	.LASF23
+ 893 0192 1D000000 		.4byte	.LASF23
  894 0196 CA       		.byte	0xca
  895 0197 30       		.byte	0x30
  896 0198 39000000 		.4byte	0x39
  897 019c 29000000 		.4byte	.LLST25
  898 01a0 23000000 		.4byte	.LVUS25
  899 01a4 06       		.uleb128 0x6
- 900 01a5 38000000 		.4byte	.LASF24
+ 900 01a5 16000000 		.4byte	.LASF24
  901 01a9 CA       		.byte	0xca
  902 01aa 3E       		.byte	0x3e
  903 01ab 2D000000 		.4byte	0x2d
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  909 01bb C0000000 		.4byte	0xc0
  910 01bf 5F000000 		.4byte	.LLST27
  911 01c3 5B000000 		.4byte	.LVUS27
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 17
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 17
 
 
  912 01c7 0A       		.uleb128 0xa
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  966 0256 E9000000 		.4byte	.LVUS34
  967 025a 04       		.uleb128 0x4
  968 025b 33040000 		.4byte	0x433
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 18
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 18
 
 
  969 025f 01010000 		.4byte	.LLST35
@@ -1057,7 +1057,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1002 02af 00       		.byte	0
  1003 02b0 00       		.byte	0
  1004 02b1 14       		.uleb128 0x14
- 1005 02b2 8C020000 		.4byte	.LASF27
+ 1005 02b2 6A020000 		.4byte	.LASF27
  1006 02b6 B2       		.byte	0xb2
  1007 02b7 C0000000 		.4byte	0xc0
  1008 02bb 00000000 		.4byte	.LFB355
@@ -1066,24 +1066,24 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1011 02c4 9C       		.byte	0x9c
  1012 02c5 FC030000 		.4byte	0x3fc
  1013 02c9 06       		.uleb128 0x6
- 1014 02ca D2020000 		.4byte	.LASF17
+ 1014 02ca D8020000 		.4byte	.LASF17
  1015 02ce B2       		.byte	0xb2
  1016 02cf 22       		.byte	0x22
  1017 02d0 2D000000 		.4byte	0x2d
  1018 02d4 2B010000 		.4byte	.LLST10
  1019 02d8 27010000 		.4byte	.LVUS10
  1020 02dc 06       		.uleb128 0x6
- 1021 02dd 3F000000 		.4byte	.LASF23
+ 1021 02dd 1D000000 		.4byte	.LASF23
  1022 02e1 B2       		.byte	0xb2
  1023 02e2 31       		.byte	0x31
  1024 02e3 39000000 		.4byte	0x39
  1025 02e7 42010000 		.4byte	.LLST11
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 19
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 19
 
 
  1026 02eb 3E010000 		.4byte	.LVUS11
  1027 02ef 06       		.uleb128 0x6
- 1028 02f0 38000000 		.4byte	.LASF24
+ 1028 02f0 16000000 		.4byte	.LASF24
  1029 02f4 B2       		.byte	0xb2
  1030 02f5 3F       		.byte	0x3f
  1031 02f6 2D000000 		.4byte	0x2d
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1080 0375 8D010000 		.4byte	.LVUS17
  1081 0379 01       		.uleb128 0x1
  1082 037a 75040000 		.4byte	0x475
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 20
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 20
 
 
  1083 037e B4010000 		.4byte	.LLST18
@@ -1191,25 +1191,25 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1130 03fa 00       		.byte	0
  1131 03fb 00       		.byte	0
  1132 03fc 17       		.uleb128 0x17
- 1133 03fd 38020000 		.4byte	.LASF29
+ 1133 03fd 16020000 		.4byte	.LASF29
  1134 0401 91       		.byte	0x91
  1135 0402 C0000000 		.4byte	0xc0
  1136 0406 47040000 		.4byte	0x447
  1137 040a 07       		.uleb128 0x7
- 1138 040b D2020000 		.4byte	.LASF17
+ 1138 040b D8020000 		.4byte	.LASF17
  1139 040f 91       		.byte	0x91
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 21
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 21
 
 
  1140 0410 22       		.byte	0x22
  1141 0411 2D000000 		.4byte	0x2d
  1142 0415 07       		.uleb128 0x7
- 1143 0416 3F000000 		.4byte	.LASF23
+ 1143 0416 1D000000 		.4byte	.LASF23
  1144 041a 91       		.byte	0x91
  1145 041b 31       		.byte	0x31
  1146 041c 39000000 		.4byte	0x39
  1147 0420 07       		.uleb128 0x7
- 1148 0421 38000000 		.4byte	.LASF24
+ 1148 0421 16000000 		.4byte	.LASF24
  1149 0425 91       		.byte	0x91
  1150 0426 3F       		.byte	0x3f
  1151 0427 2D000000 		.4byte	0x2d
@@ -1218,11 +1218,11 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1154 042e 92       		.byte	0x92
  1155 042f BB000000 		.4byte	0xbb
  1156 0433 19       		.uleb128 0x19
- 1157 0434 DD020000 		.4byte	.LASF28
+ 1157 0434 E3020000 		.4byte	.LASF28
  1158 0438 92       		.byte	0x92
  1159 0439 BB000000 		.4byte	0xbb
  1160 043d 0E       		.uleb128 0xe
- 1161 043e 8A000000 		.4byte	.LASF32
+ 1161 043e 68000000 		.4byte	.LASF32
  1162 0442 57040000 		.4byte	0x457
  1163 0446 00       		.byte	0
  1164 0447 0C       		.uleb128 0xc
@@ -1235,22 +1235,22 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1171 0457 08       		.uleb128 0x8
  1172 0458 47040000 		.4byte	0x447
  1173 045c 17       		.uleb128 0x17
- 1174 045d 51000000 		.4byte	.LASF30
+ 1174 045d 2F000000 		.4byte	.LASF30
  1175 0461 70       		.byte	0x70
  1176 0462 C0000000 		.4byte	0xc0
  1177 0466 A7040000 		.4byte	0x4a7
  1178 046a 07       		.uleb128 0x7
- 1179 046b D2020000 		.4byte	.LASF17
+ 1179 046b D8020000 		.4byte	.LASF17
  1180 046f 70       		.byte	0x70
  1181 0470 23       		.byte	0x23
  1182 0471 2D000000 		.4byte	0x2d
  1183 0475 07       		.uleb128 0x7
- 1184 0476 3F000000 		.4byte	.LASF23
+ 1184 0476 1D000000 		.4byte	.LASF23
  1185 047a 70       		.byte	0x70
  1186 047b 32       		.byte	0x32
  1187 047c 39000000 		.4byte	0x39
  1188 0480 07       		.uleb128 0x7
- 1189 0481 38000000 		.4byte	.LASF24
+ 1189 0481 16000000 		.4byte	.LASF24
  1190 0485 70       		.byte	0x70
  1191 0486 40       		.byte	0x40
  1192 0487 2D000000 		.4byte	0x2d
@@ -1258,15 +1258,15 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1194 048c 7000     		.ascii	"p\000"
  1195 048e 71       		.byte	0x71
  1196 048f BB000000 		.4byte	0xbb
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 22
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 22
 
 
  1197 0493 19       		.uleb128 0x19
- 1198 0494 33000000 		.4byte	.LASF31
+ 1198 0494 11000000 		.4byte	.LASF31
  1199 0498 71       		.byte	0x71
  1200 0499 BB000000 		.4byte	0xbb
  1201 049d 0E       		.uleb128 0xe
- 1202 049e 8A000000 		.4byte	.LASF32
+ 1202 049e 68000000 		.4byte	.LASF32
  1203 04a2 B7040000 		.4byte	0x4b7
  1204 04a6 00       		.byte	0
  1205 04a7 0C       		.uleb128 0xc
@@ -1279,7 +1279,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1212 04b7 08       		.uleb128 0x8
  1213 04b8 A7040000 		.4byte	0x4a7
  1214 04bc 13       		.uleb128 0x13
- 1215 04bd 45000000 		.4byte	.LASF34
+ 1215 04bd 23000000 		.4byte	.LASF34
  1216 04c1 51       		.byte	0x51
  1217 04c2 00000000 		.4byte	.LFB352
  1218 04c6 18000000 		.4byte	.LFE352-.LFB352
@@ -1287,12 +1287,12 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1220 04cb 9C       		.byte	0x9c
  1221 04cc E7040000 		.4byte	0x4e7
  1222 04d0 0D       		.uleb128 0xd
- 1223 04d1 0F020000 		.4byte	.LASF35
+ 1223 04d1 ED010000 		.4byte	.LASF35
  1224 04d5 01       		.byte	0x1
  1225 04d6 53       		.byte	0x53
  1226 04d7 E7040000 		.4byte	0x4e7
  1227 04db 0D       		.uleb128 0xd
- 1228 04dc 6B020000 		.4byte	.LASF36
+ 1228 04dc 49020000 		.4byte	.LASF36
  1229 04e0 01       		.byte	0x1
  1230 04e1 54       		.byte	0x54
  1231 04e2 E7040000 		.4byte	0x4e7
@@ -1303,13 +1303,13 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1236 04f0 20       		.uleb128 0x20
  1237 04f1 00       		.byte	0
  1238 04f2 1A       		.uleb128 0x1a
- 1239 04f3 E2020000 		.4byte	.LASF40
+ 1239 04f3 E8020000 		.4byte	.LASF40
  1240 04f7 02       		.byte	0x2
  1241 04f8 8201     		.2byte	0x182
  1242 04fa 14       		.byte	0x14
  1243 04fb 09050000 		.4byte	0x509
  1244 04ff 0E       		.uleb128 0xe
- 1245 0500 8A000000 		.4byte	.LASF32
+ 1245 0500 68000000 		.4byte	.LASF32
  1246 0504 19050000 		.4byte	0x519
  1247 0508 00       		.byte	0
  1248 0509 0C       		.uleb128 0xc
@@ -1318,35 +1318,35 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1251 0512 0F       		.uleb128 0xf
  1252 0513 39000000 		.4byte	0x39
  1253 0517 0B       		.byte	0xb
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 23
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 23
 
 
  1254 0518 00       		.byte	0
  1255 0519 08       		.uleb128 0x8
  1256 051a 09050000 		.4byte	0x509
  1257 051e 10       		.uleb128 0x10
- 1258 051f 78020000 		.4byte	.LASF37
+ 1258 051f 56020000 		.4byte	.LASF37
  1259 0523 02       		.byte	0x2
  1260 0524 7401     		.2byte	0x174
  1261 0526 14       		.byte	0x14
  1262 0527 10       		.uleb128 0x10
- 1263 0528 70000000 		.4byte	.LASF38
+ 1263 0528 4E000000 		.4byte	.LASF38
  1264 052c 03       		.byte	0x3
  1265 052d 6003     		.2byte	0x360
  1266 052f 1B       		.byte	0x1b
  1267 0530 10       		.uleb128 0x10
- 1268 0531 DF010000 		.4byte	.LASF39
+ 1268 0531 BD010000 		.4byte	.LASF39
  1269 0535 03       		.byte	0x3
  1270 0536 4803     		.2byte	0x348
  1271 0538 1B       		.byte	0x1b
  1272 0539 1A       		.uleb128 0x1a
- 1273 053a AA000000 		.4byte	.LASF41
+ 1273 053a 88000000 		.4byte	.LASF41
  1274 053e 04       		.byte	0x4
  1275 053f EB01     		.2byte	0x1eb
  1276 0541 1B       		.byte	0x1b
  1277 0542 54050000 		.4byte	0x554
  1278 0546 21       		.uleb128 0x21
- 1279 0547 1D020000 		.4byte	.LASF42
+ 1279 0547 FB010000 		.4byte	.LASF42
  1280 054b 04       		.byte	0x4
  1281 054c EB01     		.2byte	0x1eb
  1282 054e 32       		.byte	0x32
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1308 059b 04       		.uleb128 0x4
  1309 059c 93040000 		.4byte	0x493
  1310 05a0 BD020000 		.4byte	.LLST4
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 24
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 24
 
 
  1311 05a4 B5020000 		.4byte	.LVUS4
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1365 0017 03       		.uleb128 0x3
  1366 0018 1D       		.uleb128 0x1d
  1367 0019 01       		.byte	0x1
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 25
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 25
 
 
  1368 001a 31       		.uleb128 0x31
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1422 0052 0B       		.uleb128 0xb
  1423 0053 49       		.uleb128 0x49
  1424 0054 13       		.uleb128 0x13
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 26
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 26
 
 
  1425 0055 02       		.uleb128 0x2
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1479 008d 0B       		.uleb128 0xb
  1480 008e 55       		.uleb128 0x55
  1481 008f 17       		.uleb128 0x17
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 27
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 27
 
 
  1482 0090 58       		.uleb128 0x58
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1536 00c6 34       		.uleb128 0x34
  1537 00c7 19       		.uleb128 0x19
  1538 00c8 00       		.byte	0
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 28
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 28
 
 
  1539 00c9 00       		.byte	0
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1593 00ff 00       		.byte	0
  1594 0100 13       		.uleb128 0x13
  1595 0101 2E       		.uleb128 0x2e
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 29
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 29
 
 
  1596 0102 01       		.byte	0x1
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1650 0138 01       		.uleb128 0x1
  1651 0139 13       		.uleb128 0x13
  1652 013a 00       		.byte	0
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 30
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 30
 
 
  1653 013b 00       		.byte	0
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1707 0173 0B       		.uleb128 0xb
  1708 0174 39       		.uleb128 0x39
  1709 0175 21       		.uleb128 0x21
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 31
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 31
 
 
  1710 0176 07       		.sleb128 7
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1764 01ac 05       		.uleb128 0x5
  1765 01ad 39       		.uleb128 0x39
  1766 01ae 0B       		.uleb128 0xb
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 32
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 32
 
 
  1767 01af 27       		.uleb128 0x27
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1821 01e5 0B       		.uleb128 0xb
  1822 01e6 39       		.uleb128 0x39
  1823 01e7 0B       		.uleb128 0xb
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 33
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 33
 
 
  1824 01e8 02       		.uleb128 0x2
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1878 021e 01       		.uleb128 0x1
  1879 021f 13       		.uleb128 0x13
  1880 0220 00       		.byte	0
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 34
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 34
 
 
  1881 0221 00       		.byte	0
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1935              	.LLST25:
  1936 0029 06       		.byte	0x6
  1937 002a 00000000 		.4byte	.LVL30
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 35
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 35
 
 
  1938 002e 04       		.byte	0x4
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  1992 0066 0C       		.uleb128 .LVL39-.LVL37
  1993 0067 01       		.uleb128 0x1
  1994 0068 50       		.byte	0x50
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 36
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 36
 
 
  1995 0069 04       		.byte	0x4
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2049 00a0 00       		.uleb128 .LVU151
  2050 00a1 00       		.uleb128 .LVU151
  2051 00a2 01       		.uleb128 .LVU157
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 37
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 37
 
 
  2052 00a3 00       		.uleb128 .LVU173
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2106 00dc A3       		.byte	0xa3
  2107 00dd 01       		.uleb128 0x1
  2108 00de 50       		.byte	0x50
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 38
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 38
 
 
  2109 00df 9F       		.byte	0x9f
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2163 0115 06       		.byte	0x6
  2164 0116 20000000 		.4byte	.LVL37
  2165 011a 04       		.byte	0x4
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 39
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 39
 
 
  2166 011b 00       		.uleb128 .LVL37-.LVL37
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2220 0153 9F       		.byte	0x9f
  2221 0154 00       		.byte	0
  2222              	.LVUS12:
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 40
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 40
 
 
  2223 0155 00       		.uleb128 0
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2277 018e 00       		.uleb128 .LVU79
  2278 018f 00       		.uleb128 .LVU79
  2279 0190 01       		.uleb128 .LVU91
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 41
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 41
 
 
  2280 0191 00       		.uleb128 .LVU107
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2334 01ca 71       		.byte	0x71
  2335 01cb 00       		.sleb128 0
  2336 01cc 1F       		.byte	0x1f
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 42
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 42
 
 
  2337 01cd 9F       		.byte	0x9f
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2391 0204 00       		.uleb128 .LVU85
  2392 0205 01       		.uleb128 .LVU91
  2393 0206 00       		.uleb128 .LVU107
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 43
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 43
 
 
  2394 0207 00       		.uleb128 .LVU108
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2448 0241 01       		.uleb128 0x1
  2449 0242 50       		.byte	0x50
  2450 0243 9F       		.byte	0x9f
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 44
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 44
 
 
  2451 0244 00       		.byte	0
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2505              	.LVUS3:
  2506 027c 00       		.uleb128 .LVU18
  2507 027d 00       		.uleb128 .LVU29
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 45
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 45
 
 
  2508 027e 00       		.uleb128 .LVU29
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2562 02b8 00       		.uleb128 .LVU28
  2563 02b9 00       		.uleb128 .LVU28
  2564 02ba 00       		.uleb128 .LVU31
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 46
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 46
 
 
  2565 02bb 00       		.uleb128 .LVU31
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2619 02fa 00       		.uleb128 .LVL11-.LVL11
  2620 02fb 0A       		.uleb128 .LVL13-.LVL11
  2621 02fc 01       		.uleb128 0x1
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 47
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 47
 
 
  2622 02fd 50       		.byte	0x50
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2676 0335 52       		.byte	0x52
  2677 0336 04       		.byte	0x4
  2678 0337 10       		.uleb128 .LVL16-.LVL11
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 48
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 48
 
 
  2679 0338 2C       		.uleb128 .LFE354-.LVL11
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2733 0372 9F       		.byte	0x9f
  2734 0373 00       		.byte	0
  2735              	.LVUS9:
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 49
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 49
 
 
  2736 0374 00       		.uleb128 .LVU46
@@ -2938,7 +2938,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2790 001e 00       		.uleb128 .LBB53-.LBB53
  2791 001f 1A       		.uleb128 .LBE53-.LBB53
  2792 0020 04       		.byte	0x4
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 50
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 50
 
 
  2793 0021 1C       		.uleb128 .LBB70-.LBB53
@@ -2998,7 +2998,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2847 0061 00000000 		.4byte	.LFB353
  2848 0065 38       		.uleb128 .LFE353-.LFB353
  2849 0066 07       		.byte	0x7
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 51
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 51
 
 
  2850 0067 00000000 		.4byte	.LFB354
@@ -3016,265 +3016,265 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 1
  2862              	.Ldebug_ranges3:
  2863              		.section	.debug_line,"",%progbits
  2864              	.Ldebug_line0:
- 2865 0000 66050000 		.section	.debug_str,"MS",%progbits,1
- 2865      03003302 
+ 2865 0000 84050000 		.section	.debug_str,"MS",%progbits,1
+ 2865      03005102 
  2865      00000201 
  2865      FB0E0D00 
  2865      01010101 
- 2866              	.LASF44:
- 2867 0000 2E2E2F2E 		.ascii	"../../../os/oslib/src/chmemcore.c\000"
- 2867      2E2F2E2E 
- 2867      2F6F732F 
- 2867      6F736C69 
- 2867      622F7372 
- 2868              	.LASF5:
- 2869 0022 5F5F7569 		.ascii	"__uint8_t\000"
- 2869      6E74385F 
- 2869      7400
- 2870              	.LASF4:
- 2871 002c 73697A65 		.ascii	"size_t\000"
- 2871      5F7400
- 2872              	.LASF31:
- 2873 0033 6E657874 		.ascii	"next\000"
- 2873      00
- 2874              	.LASF24:
- 2875 0038 6F666673 		.ascii	"offset\000"
- 2875      657400
- 2876              	.LASF23:
- 2877 003f 616C6967 		.ascii	"align\000"
- 2877      6E00
- 2878              	.LASF34:
- 2879 0045 5F5F636F 		.ascii	"__core_init\000"
- 2879      72655F69 
- 2879      6E697400 
- 2880              	.LASF30:
- 2881 0051 6368436F 		.ascii	"chCoreAllocFromBaseI\000"
- 2881      7265416C 
- 2881      6C6F6346 
- 2881      726F6D42 
- 2881      61736549 
- 2882              	.LASF22:
- 2883 0066 6D656D63 		.ascii	"memcore_t\000"
- 2883      6F72655F 
- 2883      7400
- 2884              	.LASF38:
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 52
+ 2866              	.LASF5:
+ 2867 0000 5F5F7569 		.ascii	"__uint8_t\000"
+ 2867      6E74385F 
+ 2867      7400
+ 2868              	.LASF4:
+ 2869 000a 73697A65 		.ascii	"size_t\000"
+ 2869      5F7400
+ 2870              	.LASF31:
+ 2871 0011 6E657874 		.ascii	"next\000"
+ 2871      00
+ 2872              	.LASF24:
+ 2873 0016 6F666673 		.ascii	"offset\000"
+ 2873      657400
+ 2874              	.LASF23:
+ 2875 001d 616C6967 		.ascii	"align\000"
+ 2875      6E00
+ 2876              	.LASF34:
+ 2877 0023 5F5F636F 		.ascii	"__core_init\000"
+ 2877      72655F69 
+ 2877      6E697400 
+ 2878              	.LASF30:
+ 2879 002f 6368436F 		.ascii	"chCoreAllocFromBaseI\000"
+ 2879      7265416C 
+ 2879      6C6F6346 
+ 2879      726F6D42 
+ 2879      61736549 
+ 2880              	.LASF22:
+ 2881 0044 6D656D63 		.ascii	"memcore_t\000"
+ 2881      6F72655F 
+ 2881      7400
+ 2882              	.LASF38:
+ 2883 004e 706F7274 		.ascii	"port_unlock\000"
+ 2883      5F756E6C 
+ 2883      6F636B00 
+ 2884              	.LASF18:
+ 2885 005a 6D656D6F 		.ascii	"memory_area_t\000"
+ 2885      72795F61 
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 52
 
 
- 2885 0070 706F7274 		.ascii	"port_unlock\000"
- 2885      5F756E6C 
- 2885      6F636B00 
- 2886              	.LASF18:
- 2887 007c 6D656D6F 		.ascii	"memory_area_t\000"
- 2887      72795F61 
- 2887      7265615F 
- 2887      7400
- 2888              	.LASF32:
- 2889 008a 5F5F6675 		.ascii	"__func__\000"
- 2889      6E635F5F 
- 2889      00
- 2890              	.LASF12:
- 2891 0093 6C6F6E67 		.ascii	"long long unsigned int\000"
- 2891      206C6F6E 
- 2891      6720756E 
- 2891      7369676E 
- 2891      65642069 
- 2892              	.LASF41:
- 2893 00aa 5F5F7365 		.ascii	"__set_BASEPRI\000"
- 2893      745F4241 
- 2893      53455052 
- 2893      4900
- 2894              	.LASF6:
- 2895 00b8 756E7369 		.ascii	"unsigned char\000"
- 2895      676E6564 
- 2895      20636861 
- 2895      7200
- 2896              	.LASF11:
- 2897 00c6 6C6F6E67 		.ascii	"long unsigned int\000"
- 2897      20756E73 
- 2897      69676E65 
- 2897      6420696E 
- 2897      7400
- 2898              	.LASF8:
- 2899 00d8 73686F72 		.ascii	"short unsigned int\000"
- 2899      7420756E 
- 2899      7369676E 
- 2899      65642069 
- 2899      6E7400
- 2900              	.LASF43:
- 2901 00eb 474E5520 		.ascii	"GNU C17 11.3.1 20220712 -mcpu=cortex-m7 -mthumb -mf"
- 2901      43313720 
- 2901      31312E33 
- 2901      2E312032 
- 2901      30323230 
- 2902 011e 6C6F6174 		.ascii	"loat-abi=hard -mfpu=fpv5-d16 -march=armv7e-m+fp.dp "
- 2902      2D616269 
- 2902      3D686172 
- 2902      64202D6D 
- 2902      6670753D 
- 2903 0151 2D676764 		.ascii	"-ggdb -O2 -ffunction-sections -fdata-sections -fno-"
- 2903      62202D4F 
- 2903      32202D66 
- 2903      66756E63 
- 2903      74696F6E 
- 2904 0184 636F6D6D 		.ascii	"common\000"
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 53
+ 2885      7265615F 
+ 2885      7400
+ 2886              	.LASF32:
+ 2887 0068 5F5F6675 		.ascii	"__func__\000"
+ 2887      6E635F5F 
+ 2887      00
+ 2888              	.LASF12:
+ 2889 0071 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2889      206C6F6E 
+ 2889      6720756E 
+ 2889      7369676E 
+ 2889      65642069 
+ 2890              	.LASF41:
+ 2891 0088 5F5F7365 		.ascii	"__set_BASEPRI\000"
+ 2891      745F4241 
+ 2891      53455052 
+ 2891      4900
+ 2892              	.LASF6:
+ 2893 0096 756E7369 		.ascii	"unsigned char\000"
+ 2893      676E6564 
+ 2893      20636861 
+ 2893      7200
+ 2894              	.LASF11:
+ 2895 00a4 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2895      20756E73 
+ 2895      69676E65 
+ 2895      6420696E 
+ 2895      7400
+ 2896              	.LASF8:
+ 2897 00b6 73686F72 		.ascii	"short unsigned int\000"
+ 2897      7420756E 
+ 2897      7369676E 
+ 2897      65642069 
+ 2897      6E7400
+ 2898              	.LASF43:
+ 2899 00c9 474E5520 		.ascii	"GNU C17 11.3.1 20220712 -mcpu=cortex-m7 -mthumb -mf"
+ 2899      43313720 
+ 2899      31312E33 
+ 2899      2E312032 
+ 2899      30323230 
+ 2900 00fc 6C6F6174 		.ascii	"loat-abi=hard -mfpu=fpv5-d16 -march=armv7e-m+fp.dp "
+ 2900      2D616269 
+ 2900      3D686172 
+ 2900      64202D6D 
+ 2900      6670753D 
+ 2901 012f 2D676764 		.ascii	"-ggdb -O2 -ffunction-sections -fdata-sections -fno-"
+ 2901      62202D4F 
+ 2901      32202D66 
+ 2901      66756E63 
+ 2901      74696F6E 
+ 2902 0162 636F6D6D 		.ascii	"common\000"
+ 2902      6F6E00
+ 2903              	.LASF10:
+ 2904 0169 5F5F7569 		.ascii	"__uint32_t\000"
+ 2904      6E743332 
+ 2904      5F7400
+ 2905              	.LASF45:
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 53
 
 
- 2904      6F6E00
- 2905              	.LASF10:
- 2906 018b 5F5F7569 		.ascii	"__uint32_t\000"
- 2906      6E743332 
- 2906      5F7400
- 2907              	.LASF45:
- 2908 0196 433A5C43 		.ascii	"C:\\ChibiStudio\\ChibiOS-master\\demos\\STM32\\CUST"
- 2908      68696269 
- 2908      53747564 
- 2908      696F5C43 
- 2908      68696269 
- 2909 01c4 4F4D5F48 		.ascii	"OM_H743IIT6_maj\000"
- 2909      37343349 
- 2909      4954365F 
- 2909      6D616A00 
- 2910              	.LASF25:
- 2911 01d4 63685F6D 		.ascii	"ch_memcore\000"
- 2911      656D636F 
- 2911      726500
- 2912              	.LASF39:
- 2913 01df 706F7274 		.ascii	"port_lock\000"
- 2913      5F6C6F63 
- 2913      6B00
- 2914              	.LASF16:
- 2915 01e9 62617365 		.ascii	"base\000"
+ 2906 0174 433A5C43 		.ascii	"C:\\ChibiStudio\\ChibiOS-master\\demos\\STM32\\CUST"
+ 2906      68696269 
+ 2906      53747564 
+ 2906      696F5C43 
+ 2906      68696269 
+ 2907 01a2 4F4D5F48 		.ascii	"OM_H743IIT6_maj\000"
+ 2907      37343349 
+ 2907      4954365F 
+ 2907      6D616A00 
+ 2908              	.LASF25:
+ 2909 01b2 63685F6D 		.ascii	"ch_memcore\000"
+ 2909      656D636F 
+ 2909      726500
+ 2910              	.LASF39:
+ 2911 01bd 706F7274 		.ascii	"port_lock\000"
+ 2911      5F6C6F63 
+ 2911      6B00
+ 2912              	.LASF16:
+ 2913 01c7 62617365 		.ascii	"base\000"
+ 2913      00
+ 2914              	.LASF0:
+ 2915 01cc 756E7369 		.ascii	"unsigned int\000"
+ 2915      676E6564 
+ 2915      20696E74 
  2915      00
- 2916              	.LASF0:
- 2917 01ee 756E7369 		.ascii	"unsigned int\000"
- 2917      676E6564 
- 2917      20696E74 
+ 2916              	.LASF15:
+ 2917 01d9 63686172 		.ascii	"char\000"
  2917      00
- 2918              	.LASF15:
- 2919 01fb 63686172 		.ascii	"char\000"
- 2919      00
- 2920              	.LASF13:
- 2921 0200 75696E74 		.ascii	"uint8_t\000"
- 2921      385F7400 
- 2922              	.LASF21:
- 2923 0208 746F706D 		.ascii	"topmem\000"
- 2923      656D00
- 2924              	.LASF35:
- 2925 020f 5F5F6865 		.ascii	"__heap_base__\000"
- 2925      61705F62 
- 2925      6173655F 
- 2925      5F00
- 2926              	.LASF42:
- 2927 021d 62617365 		.ascii	"basePri\000"
- 2927      50726900 
- 2928              	.LASF26:
- 2929 0225 6368436F 		.ascii	"chCoreAllocFromTop\000"
+ 2918              	.LASF13:
+ 2919 01de 75696E74 		.ascii	"uint8_t\000"
+ 2919      385F7400 
+ 2920              	.LASF21:
+ 2921 01e6 746F706D 		.ascii	"topmem\000"
+ 2921      656D00
+ 2922              	.LASF35:
+ 2923 01ed 5F5F6865 		.ascii	"__heap_base__\000"
+ 2923      61705F62 
+ 2923      6173655F 
+ 2923      5F00
+ 2924              	.LASF42:
+ 2925 01fb 62617365 		.ascii	"basePri\000"
+ 2925      50726900 
+ 2926              	.LASF26:
+ 2927 0203 6368436F 		.ascii	"chCoreAllocFromTop\000"
+ 2927      7265416C 
+ 2927      6C6F6346 
+ 2927      726F6D54 
+ 2927      6F7000
+ 2928              	.LASF29:
+ 2929 0216 6368436F 		.ascii	"chCoreAllocFromTopI\000"
  2929      7265416C 
  2929      6C6F6346 
  2929      726F6D54 
- 2929      6F7000
- 2930              	.LASF29:
- 2931 0238 6368436F 		.ascii	"chCoreAllocFromTopI\000"
- 2931      7265416C 
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 54
+ 2929      6F704900 
+ 2930              	.LASF33:
+ 2931 022a 6368436F 		.ascii	"chCoreGetStatusX\000"
+ 2931      72654765 
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 54
 
 
- 2931      6C6F6346 
- 2931      726F6D54 
- 2931      6F704900 
- 2932              	.LASF33:
- 2933 024c 6368436F 		.ascii	"chCoreGetStatusX\000"
- 2933      72654765 
- 2933      74537461 
- 2933      74757358 
- 2933      00
- 2934              	.LASF1:
- 2935 025d 6C6F6E67 		.ascii	"long long int\000"
- 2935      206C6F6E 
- 2935      6720696E 
- 2935      7400
- 2936              	.LASF36:
- 2937 026b 5F5F6865 		.ascii	"__heap_end__\000"
- 2937      61705F65 
- 2937      6E645F5F 
- 2937      00
- 2938              	.LASF37:
- 2939 0278 63685379 		.ascii	"chSysLock\000"
- 2939      734C6F63 
- 2939      6B00
- 2940              	.LASF7:
- 2941 0282 73686F72 		.ascii	"short int\000"
- 2941      7420696E 
- 2941      7400
- 2942              	.LASF27:
- 2943 028c 6368436F 		.ascii	"chCoreAllocFromBase\000"
- 2943      7265416C 
- 2943      6C6F6346 
- 2943      726F6D42 
- 2943      61736500 
- 2944              	.LASF20:
- 2945 02a0 62617365 		.ascii	"basemem\000"
- 2945      6D656D00 
- 2946              	.LASF14:
- 2947 02a8 75696E74 		.ascii	"uint32_t\000"
- 2947      33325F74 
+ 2931      74537461 
+ 2931      74757358 
+ 2931      00
+ 2932              	.LASF1:
+ 2933 023b 6C6F6E67 		.ascii	"long long int\000"
+ 2933      206C6F6E 
+ 2933      6720696E 
+ 2933      7400
+ 2934              	.LASF36:
+ 2935 0249 5F5F6865 		.ascii	"__heap_end__\000"
+ 2935      61705F65 
+ 2935      6E645F5F 
+ 2935      00
+ 2936              	.LASF37:
+ 2937 0256 63685379 		.ascii	"chSysLock\000"
+ 2937      734C6F63 
+ 2937      6B00
+ 2938              	.LASF7:
+ 2939 0260 73686F72 		.ascii	"short int\000"
+ 2939      7420696E 
+ 2939      7400
+ 2940              	.LASF27:
+ 2941 026a 6368436F 		.ascii	"chCoreAllocFromBase\000"
+ 2941      7265416C 
+ 2941      6C6F6346 
+ 2941      726F6D42 
+ 2941      61736500 
+ 2942              	.LASF20:
+ 2943 027e 62617365 		.ascii	"basemem\000"
+ 2943      6D656D00 
+ 2944              	.LASF14:
+ 2945 0286 75696E74 		.ascii	"uint32_t\000"
+ 2945      33325F74 
+ 2945      00
+ 2946              	.LASF9:
+ 2947 028f 6C6F6E67 		.ascii	"long int\000"
+ 2947      20696E74 
  2947      00
- 2948              	.LASF9:
- 2949 02b1 6C6F6E67 		.ascii	"long int\000"
- 2949      20696E74 
- 2949      00
- 2950              	.LASF2:
- 2951 02ba 6C6F6E67 		.ascii	"long double\000"
- 2951      20646F75 
- 2951      626C6500 
+ 2948              	.LASF2:
+ 2949 0298 6C6F6E67 		.ascii	"long double\000"
+ 2949      20646F75 
+ 2949      626C6500 
+ 2950              	.LASF44:
+ 2951 02a4 2E2F646F 		.ascii	"./docs/ChibiOS/os/oslib/src/chmemcore.c\000"
+ 2951      63732F43 
+ 2951      68696269 
+ 2951      4F532F6F 
+ 2951      732F6F73 
  2952              	.LASF3:
- 2953 02c6 7369676E 		.ascii	"signed char\000"
+ 2953 02cc 7369676E 		.ascii	"signed char\000"
  2953      65642063 
  2953      68617200 
  2954              	.LASF17:
- 2955 02d2 73697A65 		.ascii	"size\000"
+ 2955 02d8 73697A65 		.ascii	"size\000"
  2955      00
  2956              	.LASF19:
- 2957 02d7 5F426F6F 		.ascii	"_Bool\000"
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 55
+ 2957 02dd 5F426F6F 		.ascii	"_Bool\000"
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 55
 
 
  2957      6C00
  2958              	.LASF28:
- 2959 02dd 70726576 		.ascii	"prev\000"
+ 2959 02e3 70726576 		.ascii	"prev\000"
  2959      00
  2960              	.LASF40:
- 2961 02e2 63685379 		.ascii	"chSysUnlock\000"
+ 2961 02e8 63685379 		.ascii	"chSysUnlock\000"
  2961      73556E6C 
  2961      6F636B00 
  2962              		.ident	"GCC: (Arm GNU Toolchain 11.3.Rel1) 11.3.1 20220712"
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s 			page 56
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s 			page 56
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 chmemcore.c
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:19     .text.__core_init:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:26     .text.__core_init:00000000 __core_init
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:48     .text.__core_init:0000000c $d
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:55     .text.chCoreAllocFromBaseI:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:62     .text.chCoreAllocFromBaseI:00000000 chCoreAllocFromBaseI
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:138    .text.chCoreAllocFromBaseI:00000034 $d
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:143    .text.chCoreAllocFromTopI:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:150    .text.chCoreAllocFromTopI:00000000 chCoreAllocFromTopI
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:218    .text.chCoreAllocFromTopI:00000028 $d
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:223    .text.chCoreAllocFromBase:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:230    .text.chCoreAllocFromBase:00000000 chCoreAllocFromBase
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:441    .text.chCoreAllocFromBase:00000040 $d
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:446    .text.chCoreAllocFromTop:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:453    .text.chCoreAllocFromTop:00000000 chCoreAllocFromTop
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:639    .text.chCoreAllocFromTop:0000003c $d
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:644    .text.chCoreGetStatusX:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:651    .text.chCoreGetStatusX:00000000 chCoreGetStatusX
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:672    .text.chCoreGetStatusX:00000010 $d
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:682    .bss.ch_memcore:00000000 ch_memcore
-C:\Users\DEVELO~1\AppData\Local\Temp\ccUtYWfd.s:678    .bss.ch_memcore:00000000 $d
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:19     .text.__core_init:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:26     .text.__core_init:00000000 __core_init
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:48     .text.__core_init:0000000c $d
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:55     .text.chCoreAllocFromBaseI:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:62     .text.chCoreAllocFromBaseI:00000000 chCoreAllocFromBaseI
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:138    .text.chCoreAllocFromBaseI:00000034 $d
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:143    .text.chCoreAllocFromTopI:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:150    .text.chCoreAllocFromTopI:00000000 chCoreAllocFromTopI
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:218    .text.chCoreAllocFromTopI:00000028 $d
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:223    .text.chCoreAllocFromBase:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:230    .text.chCoreAllocFromBase:00000000 chCoreAllocFromBase
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:441    .text.chCoreAllocFromBase:00000040 $d
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:446    .text.chCoreAllocFromTop:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:453    .text.chCoreAllocFromTop:00000000 chCoreAllocFromTop
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:639    .text.chCoreAllocFromTop:0000003c $d
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:644    .text.chCoreGetStatusX:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:651    .text.chCoreGetStatusX:00000000 chCoreGetStatusX
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:672    .text.chCoreGetStatusX:00000010 $d
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:682    .bss.ch_memcore:00000000 ch_memcore
+C:\Users\DEVELO~1\AppData\Local\Temp\cc1WhPcd.s:678    .bss.ch_memcore:00000000 $d
 
 UNDEFINED SYMBOLS
 __heap_base__

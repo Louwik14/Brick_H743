@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -29,7 +29,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
   26              	palReadBus:
   27              	.LVL0:
   28              	.LFB448:
-  29              		.file 1 "../../../os/hal/src/hal_pal.c"
+  29              		.file 1 "./docs/ChibiOS/os/hal/src/hal_pal.c"
   30              		.loc 1 65 43 view -0
   31              		.cfi_startproc
   32              		@ args = 0, pretend = 0, frame = 0
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
   55              		.global	palWriteBus
   56              		.syntax unified
   57              		.thumb
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 2
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 2
 
 
   58              		.thumb_func
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  112              		.global	palSetBusMode
  113              		.syntax unified
  114              		.thumb
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 3
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 3
 
 
  115              		.thumb_func
@@ -156,9 +156,9 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  147              		.file 2 "c:\\chibistudio\\tools\\gnu tools arm embedded\\11.3 2022.08\\arm-none-eabi\\include\\mac
  148              		.file 3 "c:\\chibistudio\\tools\\gnu tools arm embedded\\11.3 2022.08\\arm-none-eabi\\include\\sys
  149              		.file 4 "c:\\chibistudio\\tools\\gnu tools arm embedded\\11.3 2022.08\\arm-none-eabi\\include\\std
- 150              		.file 5 "../../../os/hal/ports/STM32/LLD/GPIOv2/stm32_gpio.h"
- 151              		.file 6 "../../../os/hal/ports/STM32/LLD/GPIOv2/hal_pal_lld.h"
- 152              		.file 7 "../../../os/hal/include/hal_pal.h"
+ 150              		.file 5 "./docs/ChibiOS/os/hal/ports/STM32/LLD/GPIOv2/stm32_gpio.h"
+ 151              		.file 6 "./docs/ChibiOS/os/hal/ports/STM32/LLD/GPIOv2/hal_pal_lld.h"
+ 152              		.file 7 "./docs/ChibiOS/os/hal/include/hal_pal.h"
  153              		.section	.debug_info,"",%progbits
  154              	.Ldebug_info0:
  155 0000 4F030000 		.4byte	0x34f
@@ -169,7 +169,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  160 000c 11       		.uleb128 0x11
  161 000d 3D010000 		.4byte	.LASF39
  162 0011 1D       		.byte	0x1d
- 163 0012 29020000 		.4byte	.LASF40
+ 163 0012 55020000 		.4byte	.LASF40
  164 0016 E9000000 		.4byte	.LASF41
  165 001a 1B000000 		.4byte	.LLRL7
  166 001e 00000000 		.4byte	0
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  169 0027 04       		.byte	0x4
  170 0028 05       		.byte	0x5
  171 0029 696E7400 		.ascii	"int\000"
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 4
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 4
 
 
  172 002d 01       		.uleb128 0x1
@@ -192,11 +192,11 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  180 003b 01       		.uleb128 0x1
  181 003c 08       		.byte	0x8
  182 003d 04       		.byte	0x4
- 183 003e 73020000 		.4byte	.LASF2
+ 183 003e 79020000 		.4byte	.LASF2
  184 0042 01       		.uleb128 0x1
  185 0043 01       		.byte	0x1
  186 0044 06       		.byte	0x6
- 187 0045 7F020000 		.4byte	.LASF3
+ 187 0045 85020000 		.4byte	.LASF3
  188 0049 01       		.uleb128 0x1
  189 004a 01       		.byte	0x1
  190 004b 08       		.byte	0x8
@@ -218,7 +218,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  206 006a 01       		.uleb128 0x1
  207 006b 04       		.byte	0x4
  208 006c 05       		.byte	0x5
- 209 006d 6A020000 		.4byte	.LASF7
+ 209 006d 4C020000 		.4byte	.LASF7
  210 0071 03       		.uleb128 0x3
  211 0072 DE000000 		.4byte	.LASF9
  212 0076 02       		.byte	0x2
@@ -234,16 +234,16 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  222 0086 07       		.byte	0x7
  223 0087 7F000000 		.4byte	.LASF11
  224 008b 03       		.uleb128 0x3
- 225 008c 52020000 		.4byte	.LASF12
+ 225 008c 34020000 		.4byte	.LASF12
  226 0090 03       		.byte	0x3
  227 0091 24       		.byte	0x24
  228 0092 14       		.byte	0x14
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 5
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 5
 
 
  229 0093 57000000 		.4byte	0x57
  230 0097 03       		.uleb128 0x3
- 231 0098 61020000 		.4byte	.LASF13
+ 231 0098 43020000 		.4byte	.LASF13
  232 009c 03       		.byte	0x3
  233 009d 30       		.byte	0x30
  234 009e 14       		.byte	0x14
@@ -265,7 +265,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  250 00c0 01       		.uleb128 0x1
  251 00c1 01       		.byte	0x1
  252 00c2 02       		.byte	0x2
- 253 00c3 8B020000 		.4byte	.LASF16
+ 253 00c3 91020000 		.4byte	.LASF16
  254 00c7 05       		.uleb128 0x5
  255 00c8 04       		.byte	0x4
  256 00c9 05       		.byte	0x5
@@ -278,7 +278,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  263 00d6 8B000000 		.4byte	0x8b
  264 00da 00       		.byte	0
  265 00db 02       		.uleb128 0x2
- 266 00dc 5B020000 		.4byte	.LASF17
+ 266 00dc 3D020000 		.4byte	.LASF17
  267 00e0 05       		.byte	0x5
  268 00e1 5D       		.byte	0x5d
  269 00e2 19       		.byte	0x19
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  283 00f7 97000000 		.4byte	0x97
  284 00fb 0D       		.uleb128 0xd
  285 00fc 4800     		.ascii	"H\000"
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 6
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 6
 
 
  286 00fe 5E       		.byte	0x5e
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  340 0164 05       		.byte	0x5
  341 0165 05010000 		.4byte	0x105
  342 0169 18       		.byte	0x18
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 7
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 7
 
 
  343 016a 02       		.uleb128 0x2
@@ -402,7 +402,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  381 01b1 12       		.byte	0x12
  382 01b2 97000000 		.4byte	0x97
  383 01b6 03       		.uleb128 0x3
- 384 01b7 47020000 		.4byte	.LASF29
+ 384 01b7 29020000 		.4byte	.LASF29
  385 01bb 06       		.byte	0x6
  386 01bc D9       		.byte	0xd9
  387 01bd 18       		.byte	0x18
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  397 01d0 02       		.uleb128 0x2
  398 01d1 52000000 		.4byte	.LASF30
  399 01d5 07       		.byte	0x7
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 8
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 8
 
 
  400 01d6 BB       		.byte	0xbb
@@ -441,7 +441,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  417 01f6 08       		.byte	0x8
  418 01f7 00       		.byte	0
  419 01f8 03       		.uleb128 0x3
- 420 01f9 91020000 		.4byte	.LASF33
+ 420 01f9 97020000 		.4byte	.LASF33
  421 01fd 07       		.byte	0x7
  422 01fe C6       		.byte	0xc6
  423 01ff 03       		.byte	0x3
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  454 0249 0C000000 		.4byte	.LVUS5
  455 024d 10       		.uleb128 0x10
  456 024e EF010000 		.4byte	.LASF34
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 9
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 9
 
 
  457 0252 71       		.byte	0x71
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  511 02d0 66000000 		.4byte	.LASF38
  512 02d4 01030000 		.4byte	0x301
  513 02d8 17       		.uleb128 0x17
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 10
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 10
 
 
  514 02d9 0C000000 		.4byte	.LLRL3
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  568 0000 01       		.uleb128 0x1
  569 0001 24       		.uleb128 0x24
  570 0002 00       		.byte	0
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 11
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 11
 
 
  571 0003 0B       		.uleb128 0xb
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  625 0039 3B       		.uleb128 0x3b
  626 003a 0B       		.uleb128 0xb
  627 003b 39       		.uleb128 0x39
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 12
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 12
 
 
  628 003c 0B       		.uleb128 0xb
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  682 0073 03       		.uleb128 0x3
  683 0074 0E       		.uleb128 0xe
  684 0075 49       		.uleb128 0x49
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 13
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 13
 
 
  685 0076 13       		.uleb128 0x13
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  739 00ac 00       		.byte	0
  740 00ad 00       		.byte	0
  741 00ae 0F       		.uleb128 0xf
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 14
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 14
 
 
  742 00af 2E       		.uleb128 0x2e
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  796 00e6 0B       		.uleb128 0xb
  797 00e7 03       		.uleb128 0x3
  798 00e8 0E       		.uleb128 0xe
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 15
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 15
 
 
  799 00e9 1B       		.uleb128 0x1b
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  853 011f 13       		.uleb128 0x13
  854 0120 00       		.byte	0
  855 0121 00       		.byte	0
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 16
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 16
 
 
  856 0122 15       		.uleb128 0x15
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  910 015a 0B       		.uleb128 0xb
  911 015b 3B       		.uleb128 0x3b
  912 015c 0B       		.uleb128 0xb
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 17
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 17
 
 
  913 015d 39       		.uleb128 0x39
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  967 0027 00       		.uleb128 .LVU31
  968 0028 00       		.uleb128 0
  969              	.LLST6:
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 18
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 18
 
 
  970 0029 06       		.byte	0x6
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  1024 0064 01       		.uleb128 0x1
  1025 0065 51       		.byte	0x51
  1026 0066 04       		.byte	0x4
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 19
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 19
 
 
  1027 0067 0E       		.uleb128 .LVL4-.LVL2
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  1081 0024 0E000000 		.4byte	.LFE450-.LFB450
  1082 0028 00000000 		.4byte	0
  1083 002c 00000000 		.4byte	0
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 20
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 20
 
 
  1084              		.section	.debug_rnglists,"",%progbits
@@ -1176,8 +1176,8 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  1116              	.Ldebug_ranges3:
  1117              		.section	.debug_line,"",%progbits
  1118              	.Ldebug_line0:
- 1119 0000 3D020000 		.section	.debug_str,"MS",%progbits,1
- 1119      0300C701 
+ 1119 0000 4F020000 		.section	.debug_str,"MS",%progbits,1
+ 1119      0300D901 
  1119      00000201 
  1119      FB0E0D00 
  1119      01010101 
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  1127      74385F74 
  1127      00
  1128              	.LASF22:
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 21
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 21
 
 
  1129 0029 42535252 		.ascii	"BSRR\000"
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  1154              	.LASF6:
  1155 00bb 73686F72 		.ascii	"short unsigned int\000"
  1155      7420756E 
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 22
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 22
 
 
  1155      7369676E 
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  1175 01ea 63686172 		.ascii	"char\000"
  1175      00
  1176              	.LASF34:
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 23
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 23
 
 
  1177 01ef 6D6F6465 		.ascii	"mode\000"
@@ -1347,60 +1347,60 @@ ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 1
  1190              	.LASF32:
  1191 0222 6F666673 		.ascii	"offset\000"
  1191      657400
- 1192              	.LASF40:
- 1193 0229 2E2E2F2E 		.ascii	"../../../os/hal/src/hal_pal.c\000"
- 1193      2E2F2E2E 
- 1193      2F6F732F 
- 1193      68616C2F 
- 1193      7372632F 
- 1194              	.LASF29:
- 1195 0247 696F706F 		.ascii	"ioportid_t\000"
- 1195      72746964 
- 1195      5F7400
- 1196              	.LASF12:
- 1197 0252 75696E74 		.ascii	"uint16_t\000"
- 1197      31365F74 
- 1197      00
- 1198              	.LASF17:
- 1199 025b 636C6561 		.ascii	"clear\000"
- 1199      7200
- 1200              	.LASF13:
- 1201 0261 75696E74 		.ascii	"uint32_t\000"
- 1201      33325F74 
+ 1192              	.LASF29:
+ 1193 0229 696F706F 		.ascii	"ioportid_t\000"
+ 1193      72746964 
+ 1193      5F7400
+ 1194              	.LASF12:
+ 1195 0234 75696E74 		.ascii	"uint16_t\000"
+ 1195      31365F74 
+ 1195      00
+ 1196              	.LASF17:
+ 1197 023d 636C6561 		.ascii	"clear\000"
+ 1197      7200
+ 1198              	.LASF13:
+ 1199 0243 75696E74 		.ascii	"uint32_t\000"
+ 1199      33325F74 
+ 1199      00
+ 1200              	.LASF7:
+ 1201 024c 6C6F6E67 		.ascii	"long int\000"
+ 1201      20696E74 
  1201      00
- 1202              	.LASF7:
- 1203 026a 6C6F6E67 		.ascii	"long int\000"
- 1203      20696E74 
- 1203      00
+ 1202              	.LASF40:
+ 1203 0255 2E2F646F 		.ascii	"./docs/ChibiOS/os/hal/src/hal_pal.c\000"
+ 1203      63732F43 
+ 1203      68696269 
+ 1203      4F532F6F 
+ 1203      732F6861 
  1204              	.LASF2:
- 1205 0273 6C6F6E67 		.ascii	"long double\000"
+ 1205 0279 6C6F6E67 		.ascii	"long double\000"
  1205      20646F75 
  1205      626C6500 
  1206              	.LASF3:
- 1207 027f 7369676E 		.ascii	"signed char\000"
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 24
+ 1207 0285 7369676E 		.ascii	"signed char\000"
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 24
 
 
  1207      65642063 
  1207      68617200 
  1208              	.LASF16:
- 1209 028b 5F426F6F 		.ascii	"_Bool\000"
+ 1209 0291 5F426F6F 		.ascii	"_Bool\000"
  1209      6C00
  1210              	.LASF33:
- 1211 0291 494F4275 		.ascii	"IOBus\000"
+ 1211 0297 494F4275 		.ascii	"IOBus\000"
  1211      7300
  1212              		.ident	"GCC: (Arm GNU Toolchain 11.3.Rel1) 11.3.1 20220712"
-ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s 			page 25
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s 			page 25
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 hal_pal.c
-C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s:19     .text.palReadBus:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s:26     .text.palReadBus:00000000 palReadBus
-C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s:53     .text.palWriteBus:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s:60     .text.palWriteBus:00000000 palWriteBus
-C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s:110    .text.palSetBusMode:00000000 $t
-C:\Users\DEVELO~1\AppData\Local\Temp\ccjfASpd.s:117    .text.palSetBusMode:00000000 palSetBusMode
+C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s:19     .text.palReadBus:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s:26     .text.palReadBus:00000000 palReadBus
+C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s:53     .text.palWriteBus:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s:60     .text.palWriteBus:00000000 palWriteBus
+C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s:110    .text.palSetBusMode:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\ccYyPkP8.s:117    .text.palSetBusMode:00000000 palSetBusMode
 
 UNDEFINED SYMBOLS
 _pal_lld_setgroupmode

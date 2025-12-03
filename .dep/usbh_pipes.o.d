@@ -5,9 +5,9 @@ build/obj/usbh_pipes.o: \
  usb_host/usbh_conf.h drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal.h \
  cfg/stm32h7xx_hal_conf.h \
  drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_def.h \
- ../../../os/common/ext/ST/STM32H7xx/stm32h7xx.h \
- ../../../os/common/ext/ST/STM32H7xx/stm32h743xx.h \
- ../../../os/common/ext/ARM/CMSIS/Core/Include/core_cm7.h \
+ docs/ChibiOS/os/common/ext/ST/STM32H7xx/stm32h7xx.h \
+ docs/ChibiOS/os/common/ext/ST/STM32H7xx/stm32h743xx.h \
+ docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/core_cm7.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdint.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdint.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\_default_types.h \
@@ -15,11 +15,11 @@ build/obj/usbh_pipes.o: \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_newlib_version.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_intsup.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_stdint.h \
- ../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_version.h \
- ../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_compiler.h \
- ../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h \
- ../../../os/common/ext/ARM/CMSIS/Core/Include/mpu_armv7.h \
- ../../../os/common/ext/ST/STM32H7xx/system_stm32h7xx.h \
+ docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/cmsis_version.h \
+ docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/cmsis_compiler.h \
+ docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h \
+ docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/mpu_armv7.h \
+ docs/ChibiOS/os/common/ext/ST/STM32H7xx/system_stm32h7xx.h \
  drivers/stm32h7xx-hal-driver/Inc/Legacy/stm32_hal_legacy.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stddef.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\math.h \
@@ -66,9 +66,9 @@ usb_host/usbh_conf.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal.h:
 cfg/stm32h7xx_hal_conf.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_def.h:
-../../../os/common/ext/ST/STM32H7xx/stm32h7xx.h:
-../../../os/common/ext/ST/STM32H7xx/stm32h743xx.h:
-../../../os/common/ext/ARM/CMSIS/Core/Include/core_cm7.h:
+docs/ChibiOS/os/common/ext/ST/STM32H7xx/stm32h7xx.h:
+docs/ChibiOS/os/common/ext/ST/STM32H7xx/stm32h743xx.h:
+docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/core_cm7.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdint.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdint.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\_default_types.h:
@@ -76,11 +76,11 @@ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\inclu
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_newlib_version.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_intsup.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_stdint.h:
-../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_version.h:
-../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_compiler.h:
-../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h:
-../../../os/common/ext/ARM/CMSIS/Core/Include/mpu_armv7.h:
-../../../os/common/ext/ST/STM32H7xx/system_stm32h7xx.h:
+docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/cmsis_version.h:
+docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/cmsis_compiler.h:
+docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h:
+docs/ChibiOS/os/common/ext/ARM/CMSIS/Core/Include/mpu_armv7.h:
+docs/ChibiOS/os/common/ext/ST/STM32H7xx/system_stm32h7xx.h:
 drivers/stm32h7xx-hal-driver/Inc/Legacy/stm32_hal_legacy.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stddef.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\math.h:
