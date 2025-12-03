@@ -9,6 +9,9 @@
 
 static adcsample_t adc_sample;
 
+/* Compteur d'erreurs ADC (diagnostic interne) */
+static uint32_t adc_error_count;
+
 /*
  * Groupe de conversion ADC — STM32H743 / ChibiOS ADCv4
  * 1 seul canal lu à la fois via le MUX
@@ -53,7 +56,8 @@ static inline void mux_select(uint8_t index) {
 /*                         STOCKAGE INTERNE                               */
 /* ====================================================================== */
 
-static uint16_t pots_raw[BRICK_POT_MUX_COUNT];
+static volatile uint16_t pots_raw[BRICK_POT_MUX_COUNT];
+static uint16_t         pots_filt[BRICK_POT_MUX_COUNT];
 
 /* ====================================================================== */
 /*                         THREAD DE LECTURE                              */
@@ -73,9 +77,20 @@ static THD_FUNCTION(potReaderThread, arg) {
             mux_select(i);
             chThdSleepMicroseconds(8);   /* Stabilisation MUX */
 
-            adcConvert(&ADCD1, &adcgrpcfg, &adc_sample, 1);
-            pots_raw[i] = adc_sample;
+            msg_t ret = adcConvert(&ADCD1, &adcgrpcfg, &adc_sample, 1);
+            if (ret != MSG_OK) {
+                adc_error_count++;
+                continue;
+            }
+
+            int32_t delta     = (int32_t)adc_sample - (int32_t)pots_filt[i];
+            pots_filt[i]      = (uint16_t)(pots_filt[i] + (delta >> 3));
+            pots_raw[i]       = pots_filt[i];
         }
+
+        palClearLine(LINE_MUX_POT_S0);
+        palClearLine(LINE_MUX_POT_S1);
+        palClearLine(LINE_MUX_POT_S2);
 
         chThdSleepMilliseconds(5);
     }

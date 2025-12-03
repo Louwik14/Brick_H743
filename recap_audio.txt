@@ -103,3 +103,10 @@ V9 – Driver WS2812 (TIM8 + BDMA) durci
 - Mutex global, flag busy et compteur d'erreurs pour rendre render/update thread-safe et empêcher les re-entrances pendant un transfert.
 - BDMA CH0 configuré avec interruptions TC/TE, callback d'erreur qui désactive/relance proprement le flux et re-synchronise TIM8 sans bloquer le système.
 - Reset WS2812 garanti (>100 µs) via 80 slots à 800 kHz ; ajout de mesures de durée de frame et d'une API de diagnostic (busy/erreurs/temps µs) utilisable en live.
+
+V10 – Durcissement du driver de potentiomètres (ADC1 + MUX)
+-----------------------------------------------------------
+- Tableau `pots_raw` déclaré volatile pour garantir la cohérence inter-thread sans verrou.
+- Filtre IIR léger (`pots_filt`) appliqué à chaque conversion pour lisser le jitter tout en conservant la réactivité.
+- Vérification systématique du retour `adcConvert`; en cas d'erreur, la dernière valeur valide est conservée et un compteur interne `adc_error_count` est incrémenté.
+- Le MUX analogique est remis en état neutre après chaque balayage complet pour éviter les couplages parasites entre canaux.
