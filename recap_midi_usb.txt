@@ -6,6 +6,9 @@ Corrections réalisées
 - Ajout d’une option conditionnelle USB_FORCE_NOVBUS pour contrôler le forçage de NOVBUSSENS dans usb_device_start().
 - Hygiène D-Cache Cortex-M7 : alignement du buffer RX USB, invalidation systématique avant réarmement, et hook de flush TX avant usbStartTransmitI() pour sécuriser les accès DMA/USB.
 - Mailbox USB toujours protégée, compteurs high-water conservés, aucune attente active ajoutée.
+- Compteur RX USB : remplissage et high-water désormais protégés uniquement via verrou système (I-lock) pour éviter les courses ISR/thread ; aucun accès concurrent non protégé ne subsiste.
+- Overflow RX explicite : si la mailbox de 128 paquets est pleine, le paquet est rejeté sans écrasement et le compteur midi_usb_rx_drops (et midi_rx_stats.usb_rx_drops) est incrémenté pour diagnostic.
+- Portabilité UART DIN : le port série est défini dans brick_config.h via BRICK_MIDI_UART, plus de référence directe à SDx dans midi.c.
 
 Impact sur la latence et le jitter
 - Suppression des micro-attentes bloquantes : les messages realtime/notes ne bloquent plus le CPU et sont soit envoyés immédiatement, soit programmés pour le SOF suivant, limitant la dérive temporelle.
@@ -25,10 +28,15 @@ Rôle des threads / sémaphores / callbacks
 - Callback EP1 OUT : invalide D-Cache du buffer RX puis relance la réception sans bloquer.
 - Callback EP2 IN : réveille le producteur via tx_sem pour le cycle suivant.
 
+Thread unique RX/TX
+- RX (décodage USB → moteur interne/DIN) et TX (agrégation USB IN) partagent volontairement le même thread MIDI. Cela évite deux piles de stack et simplifie la synchronisation SOF/tx_sem.
+- Conséquence : sous rafales RX très denses, le traitement TX peut être légèrement décalé (et inversement), mais les boucles sont bornées (max 16 paquets RX par tour) pour limiter la dérive.
+- Acceptable pour l’instant car la bande passante MIDI reste faible (1 ms/frame USB) et aucun SysEx n’est supporté ; la séparation en deux threads reste possible ultérieurement si des flux continus saturent la file.
+
 Réception MIDI USB
 - Pipeline : PC → EP1 OUT → invalidation D-Cache → midi_usb_rx_submit_from_isr() → mailbox RX (128 paquets) → thread MIDI → décodage USB-MIDI (CIN filtrés) → moteur interne → optionnellement DIN selon midi_set_rx_destination().
 - Décodage supporté : Note On/Off, CC, Program Change, Channel Pressure, Pitch Bend, MTC QF/Song Select/Song Position, Realtime (Clock/Start/Continue/Stop/Active Sensing/System Reset). CIN non supportés ignorés proprement.
-- File logicielle RX : mailbox sans alloc dynamique, compteurs de remplissage + drops (midi_rx_stats). Défilement par rafale (max 16 paquets/loop) pour ne pas perturber le TX.
+- File logicielle RX : mailbox sans alloc dynamique, compteurs de remplissage + drops (midi_rx_stats + midi_usb_rx_drops). Défilement par rafale (max 16 paquets/loop) pour ne pas perturber le TX.
 - Injection moteur : callback faible midi_internal_receive() appelé pour chaque message décodé. Routage DIN appliqué si destination = UART ou BOTH, aucune boucle vers l’USB.
 - Latence RX estimée : <1 ms typique (boucle thread avec timeout 1 ms + traitement O(1) par paquet), sans attente active en ISR.
 - Limitations connues : pas de SysEx long, pas d’USB Host, CIN hors standard ignorés, pas d’écho USB pour éviter les boucles.
