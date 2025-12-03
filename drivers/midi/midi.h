@@ -83,6 +83,29 @@ typedef struct {
 /** @brief Statistiques globales d’état et de performance MIDI. */
 extern midi_tx_stats_t midi_tx_stats;
 
+/**
+ * @struct midi_rx_stats_t
+ * @brief Statistiques de réception MIDI (USB → moteur interne / DIN).
+ */
+typedef struct {
+  volatile uint32_t usb_rx_enqueued;   /**< Paquets USB-MIDI reçus et mis en file */
+  volatile uint32_t usb_rx_drops;      /**< Paquets USB-MIDI perdus (file pleine) */
+  volatile uint32_t usb_rx_decoded;    /**< Messages MIDI décodés et injectés */
+  volatile uint32_t usb_rx_ignored;    /**< Paquets/CIN ignorés */
+} midi_rx_stats_t;
+
+/** @brief Statistiques globales de réception MIDI. */
+extern midi_rx_stats_t midi_rx_stats;
+
+/**
+ * @struct midi_msg_t
+ * @brief Message MIDI décodé (1 à 3 octets).
+ */
+typedef struct {
+  uint8_t data[3];
+  uint8_t len;
+} midi_msg_t;
+
 /* ====================================================================== */
 /*                              INITIALISATION                            */
 /* ====================================================================== */
@@ -94,6 +117,18 @@ extern midi_tx_stats_t midi_tx_stats;
  * le thread responsable de l’envoi USB.
  */
 void midi_init(void);
+
+/**
+ * @brief Configure la destination des messages MIDI entrants (USB → moteur/DIN).
+ *
+ * - @ref MIDI_DEST_UART  : moteur interne + renvoi DIN uniquement
+ * - @ref MIDI_DEST_USB   : moteur interne uniquement (pas de boucle USB)
+ * - @ref MIDI_DEST_BOTH  : moteur interne + renvoi DIN
+ */
+void midi_set_rx_destination(midi_dest_t dest);
+
+/** @brief Retourne la destination de routage des messages MIDI entrants. */
+midi_dest_t midi_get_rx_destination(void);
 
 /* ====================================================================== */
 /*                        COMMANDES “CHANNEL VOICE”                       */
@@ -183,5 +218,23 @@ void midi_stats_reset(void);
 
 /** @brief Retourne le plus haut niveau de remplissage observé sur la mailbox USB. */
 uint16_t midi_usb_queue_high_watermark(void);
+
+/** @brief Retourne le plus haut niveau de remplissage observé sur la file RX USB. */
+uint16_t midi_usb_rx_high_watermark(void);
+
+/**
+ * @brief Callback faible injectant un message MIDI dans le moteur interne.
+ *
+ * Peut être redéfini par une autre unité de compilation pour brancher le
+ * moteur MIDI applicatif. Par défaut, cette implémentation est vide.
+ */
+void midi_internal_receive(const uint8_t *msg, size_t len);
+
+/**
+ * @brief Alimente la file RX USB (appel depuis l’ISR USB OUT).
+ * @param packet Paquet USB-MIDI (1 à 16 messages de 4 octets agrégés).
+ * @param len    Taille réelle en octets (multiple de 4 attendu).
+ */
+void midi_usb_rx_submit_from_isr(const uint8_t *packet, size_t len);
 
 #endif /* MIDI_H */

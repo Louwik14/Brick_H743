@@ -30,6 +30,7 @@
 
 #include "hal.h"
 #include "usbcfg.h"
+#include "midi.h"
 #include "ch.h"         /* chBSemSignalI */
 #include <stdint.h>
 #include <stddef.h>
@@ -169,10 +170,10 @@ static USBInEndpointState   ep2_in_state;   /**< État runtime EP2 IN  */
 static USBOutEndpointState  ep1_out_state;  /**< État runtime EP1 OUT */
 
 /**
- * @brief Buffer de réception de 4 octets (1 paquet MIDI).
+ * @brief Buffer de réception USB (paquets multiples de 4 octets).
  * @note Aligné sur 32 octets pour compatibilité D-Cache Cortex-M7.
  */
-static uint8_t rx_pkt[4] __attribute__((aligned(32)));
+static uint8_t rx_pkt[MIDI_EP_SIZE] __attribute__((aligned(32)));
 
 /**
  * @brief Callback OUT (EP1) — réarme la réception de paquets MIDI.
@@ -181,7 +182,9 @@ static uint8_t rx_pkt[4] __attribute__((aligned(32)));
  */
 static void ep1_out_cb(USBDriver *usbp, usbep_t ep) {
   (void)ep;
-  usb_dcache_invalidate(rx_pkt, sizeof rx_pkt);
+  const size_t rx_size = ep1_out_state.rxsize;
+  usb_dcache_invalidate(rx_pkt, rx_size);
+  midi_usb_rx_submit_from_isr(rx_pkt, rx_size);
   usbStartReceiveI(usbp, MIDI_EP_OUT, rx_pkt, sizeof rx_pkt);
 }
 
