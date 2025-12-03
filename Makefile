@@ -113,7 +113,8 @@ $(STM32_HAL_DIR)/Src/stm32h7xx_hal_pwr.c \
 $(STM32_HAL_DIR)/Src/stm32h7xx_hal_pwr_ex.c \
 $(STM32_HAL_DIR)/Src/stm32h7xx_hal_hcd.c \
 $(STM32_HAL_DIR)/Src/stm32h7xx_hal_flash.c \
-$(STM32_HAL_DIR)/Src/stm32h7xx_hal_flash_ex.c
+$(STM32_HAL_DIR)/Src/stm32h7xx_hal_flash_ex.c \
+$(STM32_HAL_DIR)/Src/stm32h7xx_hal_cortex.c
 
 ##############################################################################
 # CMSIS (TES CHEMINS)
