@@ -7,8 +7,8 @@
 #define __USBH_CONF_H
 
 #include "stm32h7xx_hal.h"
+#include <stddef.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 #define USBH_MAX_NUM_ENDPOINTS                4U
@@ -22,8 +22,16 @@
 #define USBH_USE_OS                           0U
 #define USBH_IN_NAK_PROCESS                   0U
 
-#define USBH_malloc               malloc
-#define USBH_free                 free
+#ifndef USBH_STATIC_MEM_SIZE
+#define USBH_STATIC_MEM_SIZE                  16384U
+#endif
+
+void *USBH_static_malloc(size_t size);
+void USBH_static_free(void *p);
+void USBH_static_mem_reset(void);
+
+#define USBH_malloc               USBH_static_malloc
+#define USBH_free                 USBH_static_free
 #define USBH_memset               memset
 #define USBH_memcpy               memcpy
 
