@@ -1491,64 +1491,6 @@ Discarded input sections
  .comment       0x00000000       0x34 ./build/obj/font5x8_elektron.o
  .ARM.attributes
                 0x00000000       0x32 ./build/obj/font5x8_elektron.o
- .text          0x00000000        0x0 ./build/obj/usbcfg.o
- .data          0x00000000        0x0 ./build/obj/usbcfg.o
- .bss           0x00000000        0x0 ./build/obj/usbcfg.o
- .text.get_descriptor
-                0x00000000       0x34 ./build/obj/usbcfg.o
- .text.sof_handler
-                0x00000000        0x4 ./build/obj/usbcfg.o
- .text.ep1_out_cb
-                0x00000000       0x10 ./build/obj/usbcfg.o
- .text.ep2_in_cb
-                0x00000000       0x14 ./build/obj/usbcfg.o
- .text.usb_event
-                0x00000000       0x74 ./build/obj/usbcfg.o
- .bss.ep1_out_state
-                0x00000000       0x10 ./build/obj/usbcfg.o
- .bss.ep2_in_state
-                0x00000000       0x10 ./build/obj/usbcfg.o
- .bss.rx_pkt    0x00000000        0x4 ./build/obj/usbcfg.o
- .bss.usb_midi_tx_ready
-                0x00000000        0x1 ./build/obj/usbcfg.o
- .rodata.config_descriptor
-                0x00000000        0x8 ./build/obj/usbcfg.o
- .rodata.config_descriptor_data
-                0x00000000       0x52 ./build/obj/usbcfg.o
- .rodata.device_descriptor
-                0x00000000        0x8 ./build/obj/usbcfg.o
- .rodata.device_descriptor_data
-                0x00000000       0x12 ./build/obj/usbcfg.o
- .rodata.ep1_out_cfg
-                0x00000000       0x24 ./build/obj/usbcfg.o
- .rodata.ep2_in_cfg
-                0x00000000       0x24 ./build/obj/usbcfg.o
- .rodata.string0
-                0x00000000        0x4 ./build/obj/usbcfg.o
- .rodata.string1
-                0x00000000       0x10 ./build/obj/usbcfg.o
- .rodata.string2
-                0x00000000       0x20 ./build/obj/usbcfg.o
- .rodata.string3
-                0x00000000        0xa ./build/obj/usbcfg.o
- .rodata.strings
-                0x00000000       0x20 ./build/obj/usbcfg.o
- .rodata.usbcfg
-                0x00000000       0x10 ./build/obj/usbcfg.o
- .debug_info    0x00000000     0x11b4 ./build/obj/usbcfg.o
- .debug_abbrev  0x00000000      0x3bd ./build/obj/usbcfg.o
- .debug_loclists
-                0x00000000      0x101 ./build/obj/usbcfg.o
- .debug_aranges
-                0x00000000       0x40 ./build/obj/usbcfg.o
- .debug_rnglists
-                0x00000000       0x55 ./build/obj/usbcfg.o
- .debug_line    0x00000000      0x49c ./build/obj/usbcfg.o
- .debug_str     0x00000000      0xa4f ./build/obj/usbcfg.o
- .comment       0x00000000       0x34 ./build/obj/usbcfg.o
- .debug_frame   0x00000000       0x6c ./build/obj/usbcfg.o
- .ARM.attributes
-                0x00000000       0x32 ./build/obj/usbcfg.o
  .text          0x00000000       0xa0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libgcc.a(_aeabi_ldivmod.o)
  .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libgcc.a(_aeabi_ldivmod.o)
  .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libgcc.a(_aeabi_ldivmod.o)
@@ -3116,7 +3058,6 @@ LOAD ./build/obj/font.o
 LOAD ./build/obj/font4x6.o
 LOAD ./build/obj/font5x7.o
 LOAD ./build/obj/font5x8_elektron.o
-LOAD ./build/obj/usbcfg.o
 
 .mstack         0x20000000      0x400
                 0x20000000                . = ALIGN (0x8)
@@ -6541,7 +6482,6 @@ chSemResetWithMessage                             ./build/obj/chsem.o
 chSemResetWithMessageI                            ./build/obj/chsem.o
 chSemSignal                                       ./build/obj/chsem.o
 chSemSignalI                                      ./build/obj/chsem.o
-                                                  ./build/obj/usbcfg.o
                                                   ./build/obj/chobjcaches.o
                                                   ./build/obj/chmempools.o
 chSemSignalWait                                   ./build/obj/chsem.o
@@ -7157,19 +7097,16 @@ strncpy                                           c:/chibistudio/tools/gnu tools
 strtol                                            c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strtol.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o)
 strtol_l                                          c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strtol.o)
-tx_sem                                            ./build/obj/usbcfg.o
 usbDisableEndpointsI                              ./build/obj/hal_usb.o
 usbInit                                           ./build/obj/hal_usb.o
                                                   ./build/obj/hal.o
 usbInitEndpointI                                  ./build/obj/hal_usb.o
-                                                  ./build/obj/usbcfg.o
 usbObjectInit                                     ./build/obj/hal_usb.o
                                                   ./build/obj/hal_usb_lld.o
 usbStallReceiveI                                  ./build/obj/hal_usb.o
 usbStallTransmitI                                 ./build/obj/hal_usb.o
 usbStart                                          ./build/obj/hal_usb.o
 usbStartReceiveI                                  ./build/obj/hal_usb.o
-                                                  ./build/obj/usbcfg.o
                                                   ./build/obj/hal_serial_usb.o
 usbStartTransmitI                                 ./build/obj/hal_usb.o
                                                   ./build/obj/hal_serial_usb.o
@@ -7207,8 +7144,6 @@ usb_lld_start_out                                 ./build/obj/hal_usb_lld.o
                                                   ./build/obj/hal_usb.o
 usb_lld_stop                                      ./build/obj/hal_usb_lld.o
                                                   ./build/obj/hal_usb.o
-usb_midi_tx_ready                                 ./build/obj/usbcfg.o
-usbcfg                                            ./build/obj/usbcfg.o
 vfiprintf                                         c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-vfiprintf.o)
 wcrtomb                                           c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-wcrtomb.o)
 wcsnrtombs                                        c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-wcsnrtombs.o)
