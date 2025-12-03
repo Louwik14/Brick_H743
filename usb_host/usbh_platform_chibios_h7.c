@@ -6,9 +6,40 @@
 #include "usbh_platform_chibios_h7.h"
 #include "usbh_ioreq.h"
 #include "hal.h"
+#include <stddef.h>
+#include <stdint.h>
 
 static HCD_HandleTypeDef hhcd_USB_OTG_FS;
 static volatile uint32_t port_reset_count = 0U;
+static const uint32_t cache_line_size = 32U;
+
+static void usbh_dcache_clean(const uint8_t *address, uint32_t length)
+{
+  if ((address == NULL) || (length == 0U))
+  {
+    return;
+  }
+
+  uintptr_t aligned_addr = ((uintptr_t)address) & ~(cache_line_size - 1U);
+  uint32_t aligned_length = (uint32_t)((((uintptr_t)address + length + cache_line_size - 1U) &
+                                       ~(cache_line_size - 1U)) - aligned_addr);
+
+  SCB_CleanDCache_by_Addr((uint32_t *)aligned_addr, (int32_t)aligned_length);
+}
+
+static void usbh_dcache_invalidate(uint8_t *address, uint32_t length)
+{
+  if ((address == NULL) || (length == 0U))
+  {
+    return;
+  }
+
+  uintptr_t aligned_addr = ((uintptr_t)address) & ~(cache_line_size - 1U);
+  uint32_t aligned_length = (uint32_t)((((uintptr_t)address + length + cache_line_size - 1U) &
+                                       ~(cache_line_size - 1U)) - aligned_addr);
+
+  SCB_InvalidateDCache_by_Addr((uint32_t *)aligned_addr, (int32_t)aligned_length);
+}
 
 static void MX_USB_OTG_FS_HCD_Init(HCD_HandleTypeDef *hhcd)
 {
@@ -112,18 +143,6 @@ USBH_StatusTypeDef USBH_LL_Stop(USBH_HandleTypeDef *phost)
   return USBH_OK;
 }
 
-USBH_StatusTypeDef USBH_LL_Connect(USBH_HandleTypeDef *phost)
-{
-  phost->device.is_connected = 1U;
-  return USBH_OK;
-}
-
-USBH_StatusTypeDef USBH_LL_Disconnect(USBH_HandleTypeDef *phost)
-{
-  phost->device.is_disconnected = 1U;
-  return USBH_OK;
-}
-
 USBH_SpeedTypeDef USBH_LL_GetSpeed(USBH_HandleTypeDef *phost)
 {
   uint32_t speed = HAL_HCD_GetCurrentSpeed((HCD_HandleTypeDef *)phost->pData);
@@ -183,6 +202,15 @@ USBH_StatusTypeDef USBH_LL_SubmitURB(USBH_HandleTypeDef *phost, uint8_t pipe,
                                      uint8_t token, uint8_t *pbuff,
                                      uint16_t length, uint8_t do_ping)
 {
+  if (direction == 0U)
+  {
+    usbh_dcache_clean(pbuff, length);
+  }
+  else
+  {
+    usbh_dcache_invalidate(pbuff, length);
+  }
+
   if (HAL_HCD_HC_SubmitRequest((HCD_HandleTypeDef *)phost->pData, pipe,
                                direction, ep_type, token, pbuff, length,
                                do_ping) != HAL_OK)
@@ -196,6 +224,11 @@ USBH_URBStateTypeDef USBH_LL_GetURBState(USBH_HandleTypeDef *phost, uint8_t pipe
 {
   HCD_HandleTypeDef *hhcd = (HCD_HandleTypeDef *)phost->pData;
   HCD_URBStateTypeDef urb_state = HAL_HCD_HC_GetURBState(hhcd, pipe);
+
+  if ((urb_state == URB_DONE) && (hhcd->hc[pipe].ep_is_in != 0U))
+  {
+    usbh_dcache_invalidate((uint8_t *)hhcd->hc[pipe].xfer_buff, hhcd->hc[pipe].xfer_len);
+  }
 
   switch (urb_state)
   {
@@ -276,16 +309,6 @@ void HAL_HCD_PortDisabled_Callback(HCD_HandleTypeDef *hhcd)
 void OTG_FS_IRQHandler(void)
 {
   HAL_HCD_IRQHandler(&hhcd_USB_OTG_FS);
-}
-
-void USBH_LL_SetTimer(USBH_HandleTypeDef *phost, uint32_t time)
-{
-  phost->Timer = time;
-}
-
-void USBH_LL_IncTimer(USBH_HandleTypeDef *phost)
-{
-  phost->Timer++; 
 }
 
 void USBH_Delay(uint32_t Delay)
