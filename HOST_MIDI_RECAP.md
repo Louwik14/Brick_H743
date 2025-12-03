@@ -1,71 +1,43 @@
-# USB MIDI Host Recap
+# USB MIDI Host Integration Recap
 
-## Vue d'ensemble
-- **Librairie cœur** : `stm32-mw-usb-host-master` fournit le cœur USB Host et les callbacks utilisateur.
-- **Classe MIDI** : `STM32_USB_Host_Library/Class/MIDI` implémente un driver USB-MIDI prêt production : une interface MIDIStreaming unique avec un bulk IN et un bulk OUT, buffers circulaires statiques, machines d'état RX/TX sans allocation dynamique.
-- **Wrapper ChibiOS** : `usb_host/usb_host_midi.{c,h}` crée un thread dédié qui appelle en continu `USBH_Process()` toutes les ~1 ms, pousse la RX vers une mailbox, dépile la TX depuis une autre, et publie les états device/class via `device_attached` et `midi_ready`.
-- **Portage bas niveau** : `usb_host/usbh_platform_chibios_h7.{c,h}` pilote réellement l'OTG FS du STM32H743 avec le driver HAL HCD : clocks RCC, GPIO DM/DP, IRQ OTG_FS, FIFO RX/TX et requêtes URB DMA/FIFO, sans aucune broche VBUS/ID/overcurrent ni bascule matérielle de VBUS.
+## Hardware path
+- **MCU**: STM32H743 running ChibiOS/RT with D-Cache enabled.
+- **USB port**: OTG FS on PA11 (DM) / PA12 (DP), alternate function AF10, no VBUS sensing or switching. VBUS is hardwired to 5 V.
+- **Clocking**: RCC enables USB_OTG_FS, GPIOA, and SYSCFG. USB voltage detector is enabled for correct PHY power-up.
+- **Interrupts**: OTG_FS_IRQn is configured with priority 6 and handled by `OTG_FS_IRQHandler` calling the HAL HCD ISR.
 
-Hypothèses matérielles immédiates :
-- Le VBUS USB Host est toujours alimenté en 5V par le hardware.
-- Aucune GPIO de contrôle VBUS n’est utilisée.
-- Aucune détection VBUS externe n’est présente.
-- La détection des périphériques repose uniquement sur le contrôleur OTG (D+/D-).
+## Low-level host bring-up
+1. `USBH_LL_Init` links the ST Host stack to the HAL HCD driver, configures the OTG FS core for full-speed embedded PHY, disables VBUS sensing, and sets FIFO sizes (RX 0x80 words, TX0 0x40, TX1 0x80).
+2. `HAL_HCD_MspInit` configures PA11/PA12 pins, enables clocks, and sets up NVIC.
+3. `USBH_LL_Start` starts the real controller; `USBH_LL_Stop` halts it cleanly. `USBH_LL_ResetPort` issues a hardware reset and increments a reset counter for diagnostics.
+4. VBUS control is a no-op: `USBH_LL_DriverVBUS` intentionally does nothing because power is always present.
 
-## Flux d'initialisation
-1. `usb_host_midi_init()` :
-   - Initialise les mailboxes RX/TX.
-   - Appelle `USBH_Init()` avec `USBH_UserProcess`, enregistre `USBH_MIDI_Class`, démarre le Host (`USBH_Start`).
-   - Lance le thread `usb_host_midi_thread` (prio `NORMALPRIO+2`).
-2. `USBH_LL_Init()` (portage STM32H7) :
-   - Active les clocks OTG FS, SYSCFG et GPIO nécessaires.
-   - Configure PA11/PA12 en AF10 OTG_FS.
-   - Initialise `HCD_HandleTypeDef` (12 channels, SOF actif, PHY embarqué), désactive totalement le vbus sensing (`vbus_sensing_enable = DISABLE`) et le pilotage externe (`use_external_vbus = DISABLE`), dimensionne les FIFO RX/TX, assigne le handle au Host.
-3. `USBH_LL_Start()` :
-   - Démarre uniquement le contrôleur OTG via `HAL_HCD_Start()` ; aucun pilotage VBUS n'est requis car il est toujours présent.
-4. Enumeration :
-   - Les callbacks HAL (`HAL_HCD_Connect_Callback`, `HAL_HCD_HC_NotifyURBChange_Callback`, etc.) réinjectent les événements dans la stack Host, mettent à jour l'état URB et la taille réelle transférée.
-5. `USBH_MIDI_InterfaceInit()` :
-   - Sélectionne l'unique interface Audio/MIDIStreaming (classe 0x01 / sous-classe 0x03, alt 0).
-   - Trouve un bulk IN et un bulk OUT, limite la taille de paquet à `USBH_MIDI_MAX_PACKET_SIZE`, ouvre les pipes et marque l'interface prête.
+## Enumeration and class binding
+1. `usb_host_midi_init()` creates the USB Host core with `USBH_Init`, registers the MIDI class, starts the host, and spawns the ChibiOS thread `usb_host_thread`.
+2. The thread calls `USBH_Process` every millisecond to drive enumeration and class state machines.
+3. The MIDI class searches the configuration descriptor for the first Audio/MIDIStreaming interface (Class 0x01 / SubClass 0x03) and requires exactly one Bulk IN and one Bulk OUT endpoint.
+4. Pipes are allocated and opened with the ST core APIs using the discovered endpoint addresses and packet sizes; data toggles are initialized to zero.
 
-## Flux en fonctionnement
-- **Thread wrapper** : boucle infinie avec `USBH_Process()`, puis `pump_rx_events()` et `pump_tx_events()`, sommeil 1 ms.
-- **RX** : `pump_rx_events()` lit autant de paquets 4 octets que disponibles via `USBH_MIDI_ReadEvent()` et tente de les poster dans la mailbox RX. En cas de saturation, `rx_overflow` est incrémenté et les paquets supplémentaires sont abandonnés.
-- **TX** : `usb_host_midi_send_event()` poste les paquets dans la mailbox TX (sinon `tx_overflow++`). `pump_tx_events()` dépile et injecte dans la ring TX de la classe ; un échec d'injection incrémente également `tx_overflow` pour tracer le drop.
-- **URB** : `USBH_LL_SubmitURB()` programme réellement les transferts via `HAL_HCD_HC_SubmitRequest()`. Les états URB et tailles transférées sont mis à jour par `HAL_HCD_HC_NotifyURBChange_Callback()`.
-- **VBUS** : aucune GPIO ni interrupteur n'est piloté. VBUS reste en permanence à 5V via le hardware ; `USBH_LL_DriverVBUS()` est un no-op et la connexion est gérée exclusivement par l'OTG via D+/D- (`HAL_HCD_Connect_Callback` / `Disconnect`).
-- **Synchronisation état** : `USBH_UserProcess()` met à jour `device_attached` (connexion) et `midi_ready` (classe active). En déconnexion, les mailboxes sont réinitialisées et `reset_events` est incrémenté.
+## MIDI data path
+- **Reception**: The class continuously posts bulk IN URBs. Completed transfers are split into 4-byte USB-MIDI packets and queued in a circular buffer. Overflow is counted without blocking the stack.
+- **Transmission**: Application writes 4-byte packets into a non-blocking TX ring. The class batches as many packets as fit in the endpoint’s max packet size and submits a bulk OUT URB. URB completion returns the pipe to IDLE for the next batch.
+- **Supported messages**: 4-byte USB-MIDI events for Note On/Off, CC, Program Change, Pitch Bend, Channel Pressure, MIDI Clock/Start/Stop/Continue, Active Sensing, and Reset. SysEx and multi-cable are intentionally not supported.
 
-## API côté application
-- `usb_host_midi_init()` : démarre le host et le thread wrapper.
-- `usb_host_midi_is_device_attached()` : vrai quand un périphérique est détecté.
-- `usb_host_midi_is_ready()` : vrai quand la classe est active et les pipes configurés.
-- `usb_host_midi_fetch_event(uint8_t packet[4])` : lecture non bloquante d'un paquet USB-MIDI depuis la mailbox RX.
-- `usb_host_midi_send_event(const uint8_t packet[4])` : poste un paquet vers la mailbox TX (drop + compteur si pleine).
-- `usb_host_midi_register_attach_callback()` / `usb_host_midi_register_detach_callback()` : callbacks app.
-- Helpers classe : `USBH_MIDI_EncodeShortMessage()` pour formatter Note/CC/Clock/Start/Stop/Program/PitchBend/Aftertouch en paquet 4 octets.
+## ChibiOS wrapper API
+- `usb_host_midi_is_device_attached()` indicates physical connection events from the USBH user callback.
+- `usb_host_midi_is_ready()` reflects class activation (`HOST_CLASS` state).
+- `usb_host_midi_receive(packet)` and `usb_host_midi_send(packet)` are non-blocking; they return `false` if no data or if the host is not ready.
+- `usb_host_midi_rx_overflow()` / `usb_host_midi_tx_overflow()` expose dropped packet counts.
+- `usb_host_midi_reset_count()` exposes hardware port reset count collected in `USBH_LL_ResetPort`.
 
-## Paramètres configurables
-- Tailles des ring buffers MIDI : macros `USBH_MIDI_RX_EVENT_BUFFER`, `USBH_MIDI_TX_EVENT_BUFFER`, `USBH_MIDI_MAX_PACKET_SIZE` dans `usbh_midi.h`.
-- Tailles des mailboxes wrapper : constantes en tête de `usb_host_midi.c` (`USB_HOST_MIDI_RX_MAILBOX_SIZE`, `USB_HOST_MIDI_TX_MAILBOX_SIZE`).
+## Hotplug and recovery
+- Connect and disconnect events are delivered by HAL HCD callbacks into the ST host core, which drives enumeration or cleanup automatically.
+- The wrapper clears readiness flags on disconnect and keeps processing URBs on reconnect without rebooting.
 
-## Séquence de test terrain
-1. Alimenter la carte STM32H743 (D-Cache actif) et vérifier que le firmware démarre ChibiOS.
-2. `usb_host_midi_init()` est appelé au boot ; `USBH_Start` déclenche `USBH_LL_Start()` qui démarre le contrôleur OTG avec un VBUS déjà présent.
-3. Brancher un clavier USB-MIDI class-compliant sur le port OTG FS.
-4. Observer l'énumération : l'IRQ OTG_FS génère `HOST_USER_CLASS_ACTIVE` via D+/D- et `usb_host_midi_is_ready()` devient vrai.
-5. Appuyer sur quelques notes : `usb_host_midi_fetch_event()` retourne des paquets 4 octets (CIN/status/données), `rx_overflow` reste à zéro sur une consommation régulière.
-6. Envoyer des notes depuis l'application via `usb_host_midi_send_event()` ; vérifier qu'elles partent réellement sur le bus (LED clavier ou capture MIDI) et que `tx_overflow` ne monte pas en conditions nominales.
-7. Débrancher/rebrancher à chaud : `reset_events` s'incrémente, les mailboxes sont vidées, `midi_ready` repasse à vrai après re-énumération.
-
-## Hypothèses matérielles
-- OTG FS utilisé par défaut (PHY embarqué, 12 channels). Pour OTG HS, définir `USBH_USE_HS_PORT` et adapter l'horloge/pinout.
-- La carte ne dispose pas de pin de détection VBUS host, d'ID ou d'overcurrent. Le VBUS du connecteur est toujours fourni par le hardware sans commande logicielle.
-- Le contrôleur OTG FS est configuré avec `vbus_sensing_enable = DISABLE` et `use_external_vbus = DISABLE`.
-- ChibiOS fournit `hal.h` et le support du HAL STM32H7 ; `HAL_PWREx_EnableUSBVoltageDetector()` est disponible.
-
-## Limitations actuelles
-- Pas de support SysEx longue durée ni multi-câbles : une seule interface MIDIStreaming avec un bulk IN/OUT.
-- L'horloge et le pinout OTG HS ne sont pas configurés par défaut ; le port FS est utilisé pour la production actuelle.
-- Les compteurs de débordement (mailboxes) ne sont pas exposés par API publique mais peuvent être instrumentés si nécessaire.
+## Test procedure
+1. Power the STM32H743 board with the firmware built from this tree.
+2. Plug a class-compliant USB MIDI keyboard into the OTG FS port (VBUS already at 5 V).
+3. Observe through logs or LEDs that enumeration completes (device attached then MIDI ready).
+4. Press keys or move controls; `usb_host_midi_receive()` should return USB-MIDI 4-byte packets for Note/CC/Clock without blocking. Check overflow counters remain zero.
+5. Send MIDI events back via `usb_host_midi_send()`; the keyboard should play/flash as notes/CCs arrive.
+6. Unplug and replug the keyboard; connection flags should update and port reset count should increment while the system continues running.
