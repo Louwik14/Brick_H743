@@ -7,6 +7,7 @@
 #define __USBH_CONF_H
 
 #include "stm32h7xx_hal.h"
+#include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
@@ -29,6 +30,7 @@
 void *USBH_static_malloc(size_t size);
 void USBH_static_free(void *p);
 void USBH_static_mem_reset(void);
+uint32_t USBH_static_get_oom_count(void);
 
 #define USBH_malloc               USBH_static_malloc
 #define USBH_free                 USBH_static_free
