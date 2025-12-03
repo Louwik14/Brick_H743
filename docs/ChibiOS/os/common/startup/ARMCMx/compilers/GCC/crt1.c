@@ -26,6 +26,7 @@
 #include <stdbool.h>
 
 #include "cmparams.h"
+#include "stm32h7xx_hal.h"
 
 /*===========================================================================*/
 /* Module local definitions.                                                 */
@@ -141,6 +142,25 @@ __attribute__((weak))
 void __cpu_init(void) {
 
 #if CORTEX_MODEL == 7
+  MPU_Region_InitTypeDef mpu;
+
+  HAL_MPU_Disable();
+
+  mpu.Enable           = MPU_REGION_ENABLE;
+  mpu.BaseAddress      = 0x30040000;
+  mpu.Size             = MPU_REGION_SIZE_32KB;
+  mpu.AccessPermission = MPU_REGION_FULL_ACCESS;
+  mpu.IsBufferable     = MPU_ACCESS_BUFFERABLE;
+  mpu.IsCacheable      = MPU_ACCESS_NOT_CACHEABLE;
+  mpu.IsShareable      = MPU_ACCESS_SHAREABLE;
+  mpu.Number           = MPU_REGION_NUMBER0;
+  mpu.TypeExtField     = MPU_TEX_LEVEL0;
+  mpu.SubRegionDisable = 0x00;
+  mpu.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
+
+  HAL_MPU_ConfigRegion(&mpu);
+  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
+
   SCB_EnableICache();
   SCB_EnableDCache();
 #endif

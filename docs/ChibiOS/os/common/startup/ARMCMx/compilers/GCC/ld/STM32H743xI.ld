@@ -37,13 +37,13 @@ MEMORY
     flash7 (rx) : org = 0x00000000, len = 0
     ram0   (wx) : org = 0x24000000, len = 512k      /* AXI SRAM */
     ram1   (wx) : org = 0x30000000, len = 256k      /* AHB SRAM1+SRAM2 */
-    ram2   (wx) : org = 0x30000000, len = 288k      /* AHB SRAM1+SRAM2+SRAM3 */
-    RAM_D2 (xrw) : ORIGIN = 0x30000000, LENGTH = 288K
-    ram3   (wx) : org = 0x30040000, len = 32k       /* AHB SRAM3 */
-    ram4   (wx) : org = 0x38000000, len = 64k       /* AHB SRAM4 */
-    ram5   (wx) : org = 0x20000000, len = 128k      /* DTCM-RAM */
-    ram6   (wx) : org = 0x00000000, len = 64k       /* ITCM-RAM */
-    ram7   (wx) : org = 0x38800000, len = 4k        /* BCKP SRAM */
+    RAM_D2 (xrw) : ORIGIN = 0x30040000, LENGTH = 32K
+    ram2   (wx) : org = 0x38000000, len = 64k       /* AHB SRAM4 */
+    ram3   (wx) : org = 0x20000000, len = 128k      /* DTCM-RAM */
+    ram4   (wx) : org = 0x00000000, len = 64k       /* ITCM-RAM */
+    ram5   (wx) : org = 0x38800000, len = 4k        /* BCKP SRAM */
+    ram6   (wx) : org = 0x00080000, len = 0
+    ram7   (wx) : org = 0x00081000, len = 0
 }
 
 /* For each data/text section two region are defined, a virtual region
@@ -95,7 +95,6 @@ INCLUDE rules_stacks.ld
 
 /*===========================================================================*/
 /* Custom sections for STM32H7xx.                                            */
-/* SRAM3 is assumed to be marked non-cacheable using MPU.                    */
 /*===========================================================================*/
 
 /* RAM region to be used for nocache segment.*/

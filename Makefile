@@ -41,7 +41,7 @@ USE_FPU_OPT = -mfloat-abi=hard -mfpu=fpv5-d16
 ##############################################################################
 
 # !!! CHEMIN RELATIF OBLIGATOIRE POUR ÉVITER MSYS !!!
-CHIBIOS := ../../..
+CHIBIOS := ./docs/ChibiOS
 
 CONFDIR  := ./cfg
 BUILDDIR := ./build
