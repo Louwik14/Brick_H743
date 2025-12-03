@@ -16,10 +16,10 @@ static size_t usbh_align_size(size_t size)
 
 void USBH_static_mem_reset(void)
 {
-  osalSysLock();
+  chSysLock();
   usbh_static_offset = 0U;
   usbh_static_oom_count = 0U;
-  osalSysUnlock();
+  chSysUnlock();
 }
 
 void *USBH_static_malloc(size_t size)
@@ -27,7 +27,7 @@ void *USBH_static_malloc(size_t size)
   void *ptr = NULL;
   size_t aligned = usbh_align_size(size);
 
-  osalSysLock();
+  chSysLock();
   if ((USBH_STATIC_MEM_SIZE - usbh_static_offset) >= aligned)
   {
     ptr = &usbh_static_pool[usbh_static_offset];
@@ -38,7 +38,7 @@ void *USBH_static_malloc(size_t size)
     usbh_static_oom_count++;
     USBH_ErrLog("USBH OOM: requested %u bytes", (unsigned int)size);
   }
-  osalSysUnlock();
+  chSysUnlock();
 
   return ptr;
 }
@@ -52,9 +52,9 @@ uint32_t USBH_static_get_oom_count(void)
 {
   uint32_t count;
 
-  osalSysLock();
+  chSysLock();
   count = usbh_static_oom_count;
-  osalSysUnlock();
+  chSysUnlock();
 
   return count;
 }
