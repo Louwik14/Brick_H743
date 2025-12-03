@@ -38,6 +38,7 @@ MEMORY
     ram0   (wx) : org = 0x24000000, len = 512k      /* AXI SRAM */
     ram1   (wx) : org = 0x30000000, len = 256k      /* AHB SRAM1+SRAM2 */
     ram2   (wx) : org = 0x30000000, len = 288k      /* AHB SRAM1+SRAM2+SRAM3 */
+    RAM_D2 (xrw) : ORIGIN = 0x30000000, LENGTH = 288K
     ram3   (wx) : org = 0x30040000, len = 32k       /* AHB SRAM3 */
     ram4   (wx) : org = 0x38000000, len = 64k       /* AHB SRAM4 */
     ram5   (wx) : org = 0x20000000, len = 128k      /* DTCM-RAM */
@@ -126,6 +127,13 @@ SECTIONS
         . = ALIGN(4);
         __eth_end__ = .;
     } > ETH_RAM
+
+    .ram_d2 (NOLOAD) :
+    {
+        . = ALIGN(32);
+        *(.ram_d2)
+        . = ALIGN(32);
+    } >RAM_D2
 }
 
 /* Code rules inclusion.*/
