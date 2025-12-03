@@ -1,0 +1,641 @@
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccPhu5qi.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 2
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"hal.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.halInit,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 2,,3
+  21              		.global	halInit
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  25              		.type	halInit, %function
+  26              	halInit:
+  27              	.LFB448:
+  28              		.file 1 "../../../os/hal/src/hal.c"
+  29              		.loc 1 56 20 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 59 3 view .LVU1
+  34              		.loc 1 62 3 view .LVU2
+  35              		.loc 1 56 20 is_stmt 0 view .LVU3
+  36 0000 08B5     		push	{r3, lr}
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 3, -8
+  39              		.cfi_offset 14, -4
+  40              		.loc 1 62 3 view .LVU4
+  41 0002 FFF7FEFF 		bl	hal_lld_init
+  42              	.LVL0:
+  43              		.loc 1 66 3 is_stmt 1 view .LVU5
+  44 0006 FFF7FEFF 		bl	_pal_lld_init
+  45              	.LVL1:
+  46              		.loc 1 72 3 view .LVU6
+  47 000a FFF7FEFF 		bl	adcInit
+  48              	.LVL2:
+  49              		.loc 1 90 3 view .LVU7
+  50 000e FFF7FEFF 		bl	i2cInit
+  51              	.LVL3:
+  52              		.loc 1 102 3 view .LVU8
+  53 0012 FFF7FEFF 		bl	pwmInit
+  54              	.LVL4:
+  55              		.loc 1 105 3 view .LVU9
+  56 0016 FFF7FEFF 		bl	sdInit
+  57              	.LVL5:
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccPhu5qi.s 			page 2
+
+
+  58              		.loc 1 108 3 view .LVU10
+  59 001a FFF7FEFF 		bl	sdcInit
+  60              	.LVL6:
+  61              		.loc 1 114 3 view .LVU11
+  62 001e FFF7FEFF 		bl	spiInit
+  63              	.LVL7:
+  64              		.loc 1 123 3 view .LVU12
+  65 0022 FFF7FEFF 		bl	usbInit
+  66              	.LVL8:
+  67              		.loc 1 129 3 view .LVU13
+  68 0026 FFF7FEFF 		bl	sduInit
+  69              	.LVL9:
+  70              		.loc 1 149 3 view .LVU14
+  71 002a FFF7FEFF 		bl	boardInit
+  72              	.LVL10:
+  73              		.loc 1 156 3 view .LVU15
+  74              		.loc 1 158 1 is_stmt 0 view .LVU16
+  75 002e BDE80840 		pop	{r3, lr}
+  76              		.cfi_restore 14
+  77              		.cfi_restore 3
+  78              		.cfi_def_cfa_offset 0
+  79              		.loc 1 156 3 view .LVU17
+  80 0032 FFF7FEBF 		b	stInit
+  81              	.LVL11:
+  82              		.cfi_endproc
+  83              	.LFE448:
+  84              		.size	halInit, .-halInit
+  85 0036 00BF     		.text
+  86              	.Letext0:
+  87              		.file 2 "../../../os/hal/include/hal_st.h"
+  88              		.file 3 "../../../os/hal/boards/CUSTOM_H743IIT6/board.h"
+  89              		.file 4 "../../../os/hal/include/hal_serial_usb.h"
+  90              		.file 5 "../../../os/hal/include/hal_usb.h"
+  91              		.file 6 "../../../os/hal/include/hal_spi_v2.h"
+  92              		.file 7 "../../../os/hal/include/hal_sdc.h"
+  93              		.file 8 "../../../os/hal/include/hal_serial.h"
+  94              		.file 9 "../../../os/hal/include/hal_pwm.h"
+  95              		.file 10 "../../../os/hal/include/hal_i2c.h"
+  96              		.file 11 "../../../os/hal/include/hal_adc.h"
+  97              		.file 12 "../../../os/hal/ports/STM32/LLD/GPIOv2/hal_pal_lld.h"
+  98              		.file 13 "../../../os/hal/ports/STM32/STM32H7xx/hal_lld.h"
+  99              		.file 14 "../../../os/hal/osal/rt-nil/osal.h"
+ 100              		.section	.debug_info,"",%progbits
+ 101              	.Ldebug_info0:
+ 102 0000 66010000 		.4byte	0x166
+ 103 0004 0500     		.2byte	0x5
+ 104 0006 01       		.byte	0x1
+ 105 0007 04       		.byte	0x4
+ 106 0008 00000000 		.4byte	.Ldebug_abbrev0
+ 107 000c 05       		.uleb128 0x5
+ 108 000d B4000000 		.4byte	.LASF24
+ 109 0011 1D       		.byte	0x1d
+ 110 0012 36000000 		.4byte	.LASF25
+ 111 0016 7A010000 		.4byte	.LASF26
+ 112 001a 0C000000 		.4byte	.LLRL0
+ 113 001e 00000000 		.4byte	0
+ 114 0022 00000000 		.4byte	.Ldebug_line0
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccPhu5qi.s 			page 3
+
+
+ 115 0026 06       		.uleb128 0x6
+ 116 0027 04       		.byte	0x4
+ 117 0028 05       		.byte	0x5
+ 118 0029 696E7400 		.ascii	"int\000"
+ 119 002d 01       		.uleb128 0x1
+ 120 002e 04       		.byte	0x4
+ 121 002f 07       		.byte	0x7
+ 122 0030 29000000 		.4byte	.LASF0
+ 123 0034 01       		.uleb128 0x1
+ 124 0035 08       		.byte	0x8
+ 125 0036 05       		.byte	0x5
+ 126 0037 00000000 		.4byte	.LASF1
+ 127 003b 01       		.uleb128 0x1
+ 128 003c 08       		.byte	0x8
+ 129 003d 04       		.byte	0x4
+ 130 003e ED010000 		.4byte	.LASF2
+ 131 0042 01       		.uleb128 0x1
+ 132 0043 01       		.byte	0x1
+ 133 0044 06       		.byte	0x6
+ 134 0045 CF010000 		.4byte	.LASF3
+ 135 0049 01       		.uleb128 0x1
+ 136 004a 01       		.byte	0x1
+ 137 004b 08       		.byte	0x8
+ 138 004c A1000000 		.4byte	.LASF4
+ 139 0050 01       		.uleb128 0x1
+ 140 0051 02       		.byte	0x2
+ 141 0052 05       		.byte	0x5
+ 142 0053 63010000 		.4byte	.LASF5
+ 143 0057 01       		.uleb128 0x1
+ 144 0058 02       		.byte	0x2
+ 145 0059 07       		.byte	0x7
+ 146 005a 0E000000 		.4byte	.LASF6
+ 147 005e 01       		.uleb128 0x1
+ 148 005f 04       		.byte	0x4
+ 149 0060 05       		.byte	0x5
+ 150 0061 DB010000 		.4byte	.LASF7
+ 151 0065 01       		.uleb128 0x1
+ 152 0066 04       		.byte	0x4
+ 153 0067 07       		.byte	0x7
+ 154 0068 60000000 		.4byte	.LASF8
+ 155 006c 01       		.uleb128 0x1
+ 156 006d 08       		.byte	0x8
+ 157 006e 07       		.byte	0x7
+ 158 006f 7A000000 		.4byte	.LASF9
+ 159 0073 01       		.uleb128 0x1
+ 160 0074 01       		.byte	0x1
+ 161 0075 08       		.byte	0x8
+ 162 0076 AF000000 		.4byte	.LASF10
+ 163 007a 01       		.uleb128 0x1
+ 164 007b 01       		.byte	0x1
+ 165 007c 02       		.byte	0x2
+ 166 007d 74010000 		.4byte	.LASF11
+ 167 0081 04       		.uleb128 0x4
+ 168 0082 54010000 		.4byte	.LASF12
+ 169 0086 02       		.byte	0x2
+ 170 0087 46       		.byte	0x46
+ 171 0088 03       		.uleb128 0x3
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccPhu5qi.s 			page 4
+
+
+ 172 0089 C5010000 		.4byte	.LASF13
+ 173 008d 03       		.byte	0x3
+ 174 008e AB06     		.2byte	0x6ab
+ 175 0090 04       		.uleb128 0x4
+ 176 0091 F9010000 		.4byte	.LASF14
+ 177 0095 04       		.byte	0x4
+ 178 0096 B0       		.byte	0xb0
+ 179 0097 03       		.uleb128 0x3
+ 180 0098 21000000 		.4byte	.LASF15
+ 181 009c 05       		.byte	0x5
+ 182 009d 5D02     		.2byte	0x25d
+ 183 009f 03       		.uleb128 0x3
+ 184 00a0 99000000 		.4byte	.LASF16
+ 185 00a4 06       		.byte	0x6
+ 186 00a5 E101     		.2byte	0x1e1
+ 187 00a7 04       		.uleb128 0x4
+ 188 00a8 91000000 		.4byte	.LASF17
+ 189 00ac 07       		.byte	0x7
+ 190 00ad BA       		.byte	0xba
+ 191 00ae 03       		.uleb128 0x3
+ 192 00af 6D010000 		.4byte	.LASF18
+ 193 00b3 08       		.byte	0x8
+ 194 00b4 7F01     		.2byte	0x17f
+ 195 00b6 03       		.uleb128 0x3
+ 196 00b7 5B010000 		.4byte	.LASF19
+ 197 00bb 09       		.byte	0x9
+ 198 00bc 1F01     		.2byte	0x11f
+ 199 00be 04       		.uleb128 0x4
+ 200 00bf 58000000 		.4byte	.LASF20
+ 201 00c3 0A       		.byte	0xa
+ 202 00c4 B0       		.byte	0xb0
+ 203 00c5 03       		.uleb128 0x3
+ 204 00c6 50000000 		.4byte	.LASF21
+ 205 00ca 0B       		.byte	0xb
+ 206 00cb 8001     		.2byte	0x180
+ 207 00cd 03       		.uleb128 0x3
+ 208 00ce 01020000 		.4byte	.LASF22
+ 209 00d2 0C       		.byte	0xc
+ 210 00d3 F201     		.2byte	0x1f2
+ 211 00d5 04       		.uleb128 0x4
+ 212 00d6 B8010000 		.4byte	.LASF23
+ 213 00da 0D       		.byte	0xd
+ 214 00db BC       		.byte	0xbc
+ 215 00dc 07       		.uleb128 0x7
+ 216 00dd 72000000 		.4byte	.LASF27
+ 217 00e1 01       		.byte	0x1
+ 218 00e2 38       		.byte	0x38
+ 219 00e3 06       		.byte	0x6
+ 220 00e4 00000000 		.4byte	.LFB448
+ 221 00e8 36000000 		.4byte	.LFE448-.LFB448
+ 222 00ec 01       		.uleb128 0x1
+ 223 00ed 9C       		.byte	0x9c
+ 224 00ee 5F010000 		.4byte	0x15f
+ 225 00f2 02       		.uleb128 0x2
+ 226 00f3 06000000 		.4byte	.LVL0
+ 227 00f7 D5000000 		.4byte	0xd5
+ 228 00fb 02       		.uleb128 0x2
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccPhu5qi.s 			page 5
+
+
+ 229 00fc 0A000000 		.4byte	.LVL1
+ 230 0100 CD000000 		.4byte	0xcd
+ 231 0104 02       		.uleb128 0x2
+ 232 0105 0E000000 		.4byte	.LVL2
+ 233 0109 C5000000 		.4byte	0xc5
+ 234 010d 02       		.uleb128 0x2
+ 235 010e 12000000 		.4byte	.LVL3
+ 236 0112 BE000000 		.4byte	0xbe
+ 237 0116 02       		.uleb128 0x2
+ 238 0117 16000000 		.4byte	.LVL4
+ 239 011b B6000000 		.4byte	0xb6
+ 240 011f 02       		.uleb128 0x2
+ 241 0120 1A000000 		.4byte	.LVL5
+ 242 0124 AE000000 		.4byte	0xae
+ 243 0128 02       		.uleb128 0x2
+ 244 0129 1E000000 		.4byte	.LVL6
+ 245 012d A7000000 		.4byte	0xa7
+ 246 0131 02       		.uleb128 0x2
+ 247 0132 22000000 		.4byte	.LVL7
+ 248 0136 9F000000 		.4byte	0x9f
+ 249 013a 02       		.uleb128 0x2
+ 250 013b 26000000 		.4byte	.LVL8
+ 251 013f 97000000 		.4byte	0x97
+ 252 0143 02       		.uleb128 0x2
+ 253 0144 2A000000 		.4byte	.LVL9
+ 254 0148 90000000 		.4byte	0x90
+ 255 014c 02       		.uleb128 0x2
+ 256 014d 2E000000 		.4byte	.LVL10
+ 257 0151 88000000 		.4byte	0x88
+ 258 0155 08       		.uleb128 0x8
+ 259 0156 36000000 		.4byte	.LVL11
+ 260 015a 81000000 		.4byte	0x81
+ 261 015e 00       		.byte	0
+ 262 015f 09       		.uleb128 0x9
+ 263 0160 E4010000 		.4byte	.LASF28
+ 264 0164 0E       		.byte	0xe
+ 265 0165 1302     		.2byte	0x213
+ 266 0167 14       		.byte	0x14
+ 267 0168 03       		.byte	0x3
+ 268 0169 00       		.byte	0
+ 269              		.section	.debug_abbrev,"",%progbits
+ 270              	.Ldebug_abbrev0:
+ 271 0000 01       		.uleb128 0x1
+ 272 0001 24       		.uleb128 0x24
+ 273 0002 00       		.byte	0
+ 274 0003 0B       		.uleb128 0xb
+ 275 0004 0B       		.uleb128 0xb
+ 276 0005 3E       		.uleb128 0x3e
+ 277 0006 0B       		.uleb128 0xb
+ 278 0007 03       		.uleb128 0x3
+ 279 0008 0E       		.uleb128 0xe
+ 280 0009 00       		.byte	0
+ 281 000a 00       		.byte	0
+ 282 000b 02       		.uleb128 0x2
+ 283 000c 48       		.uleb128 0x48
+ 284 000d 00       		.byte	0
+ 285 000e 7D       		.uleb128 0x7d
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccPhu5qi.s 			page 6
+
+
+ 286 000f 01       		.uleb128 0x1
+ 287 0010 7F       		.uleb128 0x7f
+ 288 0011 13       		.uleb128 0x13
+ 289 0012 00       		.byte	0
+ 290 0013 00       		.byte	0
+ 291 0014 03       		.uleb128 0x3
+ 292 0015 2E       		.uleb128 0x2e
+ 293 0016 00       		.byte	0
+ 294 0017 3F       		.uleb128 0x3f
+ 295 0018 19       		.uleb128 0x19
+ 296 0019 03       		.uleb128 0x3
+ 297 001a 0E       		.uleb128 0xe
+ 298 001b 3A       		.uleb128 0x3a
+ 299 001c 0B       		.uleb128 0xb
+ 300 001d 3B       		.uleb128 0x3b
+ 301 001e 05       		.uleb128 0x5
+ 302 001f 39       		.uleb128 0x39
+ 303 0020 21       		.uleb128 0x21
+ 304 0021 08       		.sleb128 8
+ 305 0022 27       		.uleb128 0x27
+ 306 0023 19       		.uleb128 0x19
+ 307 0024 3C       		.uleb128 0x3c
+ 308 0025 19       		.uleb128 0x19
+ 309 0026 00       		.byte	0
+ 310 0027 00       		.byte	0
+ 311 0028 04       		.uleb128 0x4
+ 312 0029 2E       		.uleb128 0x2e
+ 313 002a 00       		.byte	0
+ 314 002b 3F       		.uleb128 0x3f
+ 315 002c 19       		.uleb128 0x19
+ 316 002d 03       		.uleb128 0x3
+ 317 002e 0E       		.uleb128 0xe
+ 318 002f 3A       		.uleb128 0x3a
+ 319 0030 0B       		.uleb128 0xb
+ 320 0031 3B       		.uleb128 0x3b
+ 321 0032 0B       		.uleb128 0xb
+ 322 0033 39       		.uleb128 0x39
+ 323 0034 21       		.uleb128 0x21
+ 324 0035 08       		.sleb128 8
+ 325 0036 27       		.uleb128 0x27
+ 326 0037 19       		.uleb128 0x19
+ 327 0038 3C       		.uleb128 0x3c
+ 328 0039 19       		.uleb128 0x19
+ 329 003a 00       		.byte	0
+ 330 003b 00       		.byte	0
+ 331 003c 05       		.uleb128 0x5
+ 332 003d 11       		.uleb128 0x11
+ 333 003e 01       		.byte	0x1
+ 334 003f 25       		.uleb128 0x25
+ 335 0040 0E       		.uleb128 0xe
+ 336 0041 13       		.uleb128 0x13
+ 337 0042 0B       		.uleb128 0xb
+ 338 0043 03       		.uleb128 0x3
+ 339 0044 0E       		.uleb128 0xe
+ 340 0045 1B       		.uleb128 0x1b
+ 341 0046 0E       		.uleb128 0xe
+ 342 0047 55       		.uleb128 0x55
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccPhu5qi.s 			page 7
+
+
+ 343 0048 17       		.uleb128 0x17
+ 344 0049 11       		.uleb128 0x11
+ 345 004a 01       		.uleb128 0x1
+ 346 004b 10       		.uleb128 0x10
+ 347 004c 17       		.uleb128 0x17
+ 348 004d 00       		.byte	0
+ 349 004e 00       		.byte	0
+ 350 004f 06       		.uleb128 0x6
+ 351 0050 24       		.uleb128 0x24
+ 352 0051 00       		.byte	0
+ 353 0052 0B       		.uleb128 0xb
+ 354 0053 0B       		.uleb128 0xb
+ 355 0054 3E       		.uleb128 0x3e
+ 356 0055 0B       		.uleb128 0xb
+ 357 0056 03       		.uleb128 0x3
+ 358 0057 08       		.uleb128 0x8
+ 359 0058 00       		.byte	0
+ 360 0059 00       		.byte	0
+ 361 005a 07       		.uleb128 0x7
+ 362 005b 2E       		.uleb128 0x2e
+ 363 005c 01       		.byte	0x1
+ 364 005d 3F       		.uleb128 0x3f
+ 365 005e 19       		.uleb128 0x19
+ 366 005f 03       		.uleb128 0x3
+ 367 0060 0E       		.uleb128 0xe
+ 368 0061 3A       		.uleb128 0x3a
+ 369 0062 0B       		.uleb128 0xb
+ 370 0063 3B       		.uleb128 0x3b
+ 371 0064 0B       		.uleb128 0xb
+ 372 0065 39       		.uleb128 0x39
+ 373 0066 0B       		.uleb128 0xb
+ 374 0067 27       		.uleb128 0x27
+ 375 0068 19       		.uleb128 0x19
+ 376 0069 11       		.uleb128 0x11
+ 377 006a 01       		.uleb128 0x1
+ 378 006b 12       		.uleb128 0x12
+ 379 006c 06       		.uleb128 0x6
+ 380 006d 40       		.uleb128 0x40
+ 381 006e 18       		.uleb128 0x18
+ 382 006f 7A       		.uleb128 0x7a
+ 383 0070 19       		.uleb128 0x19
+ 384 0071 01       		.uleb128 0x1
+ 385 0072 13       		.uleb128 0x13
+ 386 0073 00       		.byte	0
+ 387 0074 00       		.byte	0
+ 388 0075 08       		.uleb128 0x8
+ 389 0076 48       		.uleb128 0x48
+ 390 0077 00       		.byte	0
+ 391 0078 7D       		.uleb128 0x7d
+ 392 0079 01       		.uleb128 0x1
+ 393 007a 8201     		.uleb128 0x82
+ 394 007c 19       		.uleb128 0x19
+ 395 007d 7F       		.uleb128 0x7f
+ 396 007e 13       		.uleb128 0x13
+ 397 007f 00       		.byte	0
+ 398 0080 00       		.byte	0
+ 399 0081 09       		.uleb128 0x9
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccPhu5qi.s 			page 8
+
+
+ 400 0082 2E       		.uleb128 0x2e
+ 401 0083 00       		.byte	0
+ 402 0084 03       		.uleb128 0x3
+ 403 0085 0E       		.uleb128 0xe
+ 404 0086 3A       		.uleb128 0x3a
+ 405 0087 0B       		.uleb128 0xb
+ 406 0088 3B       		.uleb128 0x3b
+ 407 0089 05       		.uleb128 0x5
+ 408 008a 39       		.uleb128 0x39
+ 409 008b 0B       		.uleb128 0xb
+ 410 008c 27       		.uleb128 0x27
+ 411 008d 19       		.uleb128 0x19
+ 412 008e 20       		.uleb128 0x20
+ 413 008f 0B       		.uleb128 0xb
+ 414 0090 00       		.byte	0
+ 415 0091 00       		.byte	0
+ 416 0092 00       		.byte	0
+ 417              		.section	.debug_aranges,"",%progbits
+ 418 0000 1C000000 		.4byte	0x1c
+ 419 0004 0200     		.2byte	0x2
+ 420 0006 00000000 		.4byte	.Ldebug_info0
+ 421 000a 04       		.byte	0x4
+ 422 000b 00       		.byte	0
+ 423 000c 0000     		.2byte	0
+ 424 000e 0000     		.2byte	0
+ 425 0010 00000000 		.4byte	.LFB448
+ 426 0014 36000000 		.4byte	.LFE448-.LFB448
+ 427 0018 00000000 		.4byte	0
+ 428 001c 00000000 		.4byte	0
+ 429              		.section	.debug_rnglists,"",%progbits
+ 430              	.Ldebug_ranges0:
+ 431 0000 0F000000 		.4byte	.Ldebug_ranges3-.Ldebug_ranges2
+ 432              	.Ldebug_ranges2:
+ 433 0004 0500     		.2byte	0x5
+ 434 0006 04       		.byte	0x4
+ 435 0007 00       		.byte	0
+ 436 0008 00000000 		.4byte	0
+ 437              	.LLRL0:
+ 438 000c 07       		.byte	0x7
+ 439 000d 00000000 		.4byte	.LFB448
+ 440 0011 36       		.uleb128 .LFE448-.LFB448
+ 441 0012 00       		.byte	0
+ 442              	.Ldebug_ranges3:
+ 443              		.section	.debug_line,"",%progbits
+ 444              	.Ldebug_line0:
+ 445 0000 CB010000 		.section	.debug_str,"MS",%progbits,1
+ 445      03008C01 
+ 445      00000201 
+ 445      FB0E0D00 
+ 445      01010101 
+ 446              	.LASF1:
+ 447 0000 6C6F6E67 		.ascii	"long long int\000"
+ 447      206C6F6E 
+ 447      6720696E 
+ 447      7400
+ 448              	.LASF6:
+ 449 000e 73686F72 		.ascii	"short unsigned int\000"
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccPhu5qi.s 			page 9
+
+
+ 449      7420756E 
+ 449      7369676E 
+ 449      65642069 
+ 449      6E7400
+ 450              	.LASF15:
+ 451 0021 75736249 		.ascii	"usbInit\000"
+ 451      6E697400 
+ 452              	.LASF0:
+ 453 0029 756E7369 		.ascii	"unsigned int\000"
+ 453      676E6564 
+ 453      20696E74 
+ 453      00
+ 454              	.LASF25:
+ 455 0036 2E2E2F2E 		.ascii	"../../../os/hal/src/hal.c\000"
+ 455      2E2F2E2E 
+ 455      2F6F732F 
+ 455      68616C2F 
+ 455      7372632F 
+ 456              	.LASF21:
+ 457 0050 61646349 		.ascii	"adcInit\000"
+ 457      6E697400 
+ 458              	.LASF20:
+ 459 0058 69326349 		.ascii	"i2cInit\000"
+ 459      6E697400 
+ 460              	.LASF8:
+ 461 0060 6C6F6E67 		.ascii	"long unsigned int\000"
+ 461      20756E73 
+ 461      69676E65 
+ 461      6420696E 
+ 461      7400
+ 462              	.LASF27:
+ 463 0072 68616C49 		.ascii	"halInit\000"
+ 463      6E697400 
+ 464              	.LASF9:
+ 465 007a 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 465      206C6F6E 
+ 465      6720756E 
+ 465      7369676E 
+ 465      65642069 
+ 466              	.LASF17:
+ 467 0091 73646349 		.ascii	"sdcInit\000"
+ 467      6E697400 
+ 468              	.LASF16:
+ 469 0099 73706949 		.ascii	"spiInit\000"
+ 469      6E697400 
+ 470              	.LASF4:
+ 471 00a1 756E7369 		.ascii	"unsigned char\000"
+ 471      676E6564 
+ 471      20636861 
+ 471      7200
+ 472              	.LASF10:
+ 473 00af 63686172 		.ascii	"char\000"
+ 473      00
+ 474              	.LASF24:
+ 475 00b4 474E5520 		.ascii	"GNU C17 11.3.1 20220712 -mcpu=cortex-m7 -mthumb -mf"
+ 475      43313720 
+ 475      31312E33 
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccPhu5qi.s 			page 10
+
+
+ 475      2E312032 
+ 475      30323230 
+ 476 00e7 6C6F6174 		.ascii	"loat-abi=hard -mfpu=fpv5-d16 -march=armv7e-m+fp.dp "
+ 476      2D616269 
+ 476      3D686172 
+ 476      64202D6D 
+ 476      6670753D 
+ 477 011a 2D676764 		.ascii	"-ggdb -O2 -ffunction-sections -fdata-sections -fno-"
+ 477      62202D4F 
+ 477      32202D66 
+ 477      66756E63 
+ 477      74696F6E 
+ 478 014d 636F6D6D 		.ascii	"common\000"
+ 478      6F6E00
+ 479              	.LASF12:
+ 480 0154 7374496E 		.ascii	"stInit\000"
+ 480      697400
+ 481              	.LASF19:
+ 482 015b 70776D49 		.ascii	"pwmInit\000"
+ 482      6E697400 
+ 483              	.LASF5:
+ 484 0163 73686F72 		.ascii	"short int\000"
+ 484      7420696E 
+ 484      7400
+ 485              	.LASF18:
+ 486 016d 7364496E 		.ascii	"sdInit\000"
+ 486      697400
+ 487              	.LASF11:
+ 488 0174 5F426F6F 		.ascii	"_Bool\000"
+ 488      6C00
+ 489              	.LASF26:
+ 490 017a 433A5C43 		.ascii	"C:\\ChibiStudio\\ChibiOS-master\\demos\\STM32\\CUST"
+ 490      68696269 
+ 490      53747564 
+ 490      696F5C43 
+ 490      68696269 
+ 491 01a8 4F4D5F48 		.ascii	"OM_H743IIT6_maj\000"
+ 491      37343349 
+ 491      4954365F 
+ 491      6D616A00 
+ 492              	.LASF23:
+ 493 01b8 68616C5F 		.ascii	"hal_lld_init\000"
+ 493      6C6C645F 
+ 493      696E6974 
+ 493      00
+ 494              	.LASF13:
+ 495 01c5 626F6172 		.ascii	"boardInit\000"
+ 495      64496E69 
+ 495      7400
+ 496              	.LASF3:
+ 497 01cf 7369676E 		.ascii	"signed char\000"
+ 497      65642063 
+ 497      68617200 
+ 498              	.LASF7:
+ 499 01db 6C6F6E67 		.ascii	"long int\000"
+ 499      20696E74 
+ 499      00
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccPhu5qi.s 			page 11
+
+
+ 500              	.LASF28:
+ 501 01e4 6F73616C 		.ascii	"osalInit\000"
+ 501      496E6974 
+ 501      00
+ 502              	.LASF2:
+ 503 01ed 6C6F6E67 		.ascii	"long double\000"
+ 503      20646F75 
+ 503      626C6500 
+ 504              	.LASF14:
+ 505 01f9 73647549 		.ascii	"sduInit\000"
+ 505      6E697400 
+ 506              	.LASF22:
+ 507 0201 5F70616C 		.ascii	"_pal_lld_init\000"
+ 507      5F6C6C64 
+ 507      5F696E69 
+ 507      7400
+ 508              		.ident	"GCC: (Arm GNU Toolchain 11.3.Rel1) 11.3.1 20220712"
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\ccPhu5qi.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 hal.c
+C:\Users\DEVELO~1\AppData\Local\Temp\ccPhu5qi.s:19     .text.halInit:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\ccPhu5qi.s:26     .text.halInit:00000000 halInit
+
+UNDEFINED SYMBOLS
+hal_lld_init
+_pal_lld_init
+adcInit
+i2cInit
+pwmInit
+sdInit
+sdcInit
+spiInit
+usbInit
+sduInit
+boardInit
+stInit

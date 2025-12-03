@@ -1,0 +1,117 @@
+build/obj/usbh_pipes.o: \
+ usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Src/usbh_pipes.c \
+ usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_pipes.h \
+ usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h \
+ usb_host/usbh_conf.h drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal.h \
+ cfg/stm32h7xx_hal_conf.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_def.h \
+ ../../../os/common/ext/ST/STM32H7xx/stm32h7xx.h \
+ ../../../os/common/ext/ST/STM32H7xx/stm32h743xx.h \
+ ../../../os/common/ext/ARM/CMSIS/Core/Include/core_cm7.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdint.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdint.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\_default_types.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\features.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_newlib_version.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_intsup.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_stdint.h \
+ ../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_version.h \
+ ../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_compiler.h \
+ ../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h \
+ ../../../os/common/ext/ARM/CMSIS/Core/Include/mpu_armv7.h \
+ ../../../os/common/ext/ST/STM32H7xx/system_stm32h7xx.h \
+ drivers/stm32h7xx-hal-driver/Inc/Legacy/stm32_hal_legacy.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stddef.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\math.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\reent.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_ansi.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\newlib.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\config.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\ieeefp.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_types.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\_types.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\lock.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\cdefs.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_ansi.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_rcc.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_def.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_rcc_ex.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_gpio.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_gpio_ex.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_hcd.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_ll_usb.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_pwr.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_pwr_ex.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_cortex.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdio.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdarg.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\stdio.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdlib.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\stdlib.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\alloca.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\string.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_locale.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\strings.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\string.h \
+ usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_def.h \
+ usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ioreq.h \
+ usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_pipes.h \
+ usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ctlreq.h
+usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_pipes.h:
+usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h:
+usb_host/usbh_conf.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal.h:
+cfg/stm32h7xx_hal_conf.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_def.h:
+../../../os/common/ext/ST/STM32H7xx/stm32h7xx.h:
+../../../os/common/ext/ST/STM32H7xx/stm32h743xx.h:
+../../../os/common/ext/ARM/CMSIS/Core/Include/core_cm7.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdint.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdint.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\_default_types.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\features.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_newlib_version.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_intsup.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_stdint.h:
+../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_version.h:
+../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_compiler.h:
+../../../os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h:
+../../../os/common/ext/ARM/CMSIS/Core/Include/mpu_armv7.h:
+../../../os/common/ext/ST/STM32H7xx/system_stm32h7xx.h:
+drivers/stm32h7xx-hal-driver/Inc/Legacy/stm32_hal_legacy.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stddef.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\math.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\reent.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_ansi.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\newlib.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\config.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\ieeefp.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_types.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\_types.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\lock.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\cdefs.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_ansi.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_rcc.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_def.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_rcc_ex.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_gpio.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_gpio_ex.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_hcd.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_ll_usb.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_pwr.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_pwr_ex.h:
+drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_cortex.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdio.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdarg.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\stdio.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdlib.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\stdlib.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\alloca.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\string.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_locale.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\strings.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\string.h:
+usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_def.h:
+usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ioreq.h:
+usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_pipes.h:
+usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ctlreq.h:
