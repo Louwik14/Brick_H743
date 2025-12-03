@@ -5,7 +5,6 @@
 
 #include "usbh_platform_chibios_h7.h"
 #include "stm32h7xx_hal.h"
-#include <stdbool.h>
 #include <string.h>
 
 #define USBH_H7_OTG_FS_IRQn      OTG_FS_IRQn
@@ -21,13 +20,10 @@ static USBH_HandleTypeDef *registered_host = NULL;
 static volatile USBH_URBStateTypeDef urb_state[USBH_MAX_PIPES];
 static volatile uint32_t last_xfer_size[USBH_MAX_PIPES];
 static uint8_t toggle_states[USBH_MAX_PIPES];
-static bool vbus_gpio_ready = false;
-
 static void USBH_H7_GPIOInit(void);
 static void USBH_H7_GPIODeInit(void);
 static void USBH_H7_EnableClocks(void);
 static void USBH_H7_DisableClocks(void);
-static void USBH_H7_ConfigVBUSGPIO(void);
 
 USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef *phost)
 {
@@ -53,7 +49,7 @@ USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef *phost)
   hhcd.Init.low_power_enable = DISABLE;
   hhcd.Init.lpm_enable = DISABLE;
   hhcd.Init.vbus_sensing_enable = DISABLE;
-  hhcd.Init.use_external_vbus = ENABLE;
+  hhcd.Init.use_external_vbus = DISABLE;
 
   hhcd.pData = phost;
   phost->pData = &hhcd;
@@ -93,7 +89,6 @@ USBH_StatusTypeDef USBH_LL_Start(USBH_HandleTypeDef *phost)
     return USBH_FAIL;
   }
 
-  (void)USBH_LL_DriverVBUS(phost, 1U);
   (void)HAL_HCD_Start(&hhcd);
   return USBH_OK;
 }
@@ -106,7 +101,6 @@ USBH_StatusTypeDef USBH_LL_Stop(USBH_HandleTypeDef *phost)
   }
 
   (void)HAL_HCD_Stop(&hhcd);
-  (void)USBH_LL_DriverVBUS(phost, 0U);
   return USBH_OK;
 }
 
@@ -227,18 +221,7 @@ USBH_URBStateTypeDef USBH_LL_GetURBState(USBH_HandleTypeDef *phost, uint8_t pipe
 USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8_t state)
 {
   (void)phost;
-  if (!vbus_gpio_ready)
-  {
-    USBH_H7_ConfigVBUSGPIO();
-  }
-  if (state != 0U)
-  {
-    HAL_GPIO_WritePin(BOARD_USB_VBUS_PORT, BOARD_USB_VBUS_PIN, BOARD_USB_VBUS_ACTIVE_STATE);
-  }
-  else
-  {
-    HAL_GPIO_WritePin(BOARD_USB_VBUS_PORT, BOARD_USB_VBUS_PIN, BOARD_USB_VBUS_INACTIVE_STATE);
-  }
+  (void)state;
   return USBH_OK;
 }
 
@@ -263,27 +246,12 @@ uint8_t USBH_LL_GetToggle(USBH_HandleTypeDef *phost, uint8_t pipe)
   return 0U;
 }
 
-static void USBH_H7_ConfigVBUSGPIO(void)
-{
-  GPIO_InitTypeDef GPIO_InitStruct;
-
-  GPIO_InitStruct.Pin = BOARD_USB_VBUS_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(BOARD_USB_VBUS_PORT, &GPIO_InitStruct);
-  HAL_GPIO_WritePin(BOARD_USB_VBUS_PORT, BOARD_USB_VBUS_PIN, BOARD_USB_VBUS_INACTIVE_STATE);
-  vbus_gpio_ready = true;
-}
-
 static void USBH_H7_EnableClocks(void)
 {
   __HAL_RCC_SYSCFG_CLK_ENABLE();
-  HAL_PWREx_EnableUSBVoltageDetector();
 #ifdef USBH_USE_FS_PORT
   __HAL_RCC_USB_OTG_FS_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
 #endif
 }
 
@@ -306,14 +274,6 @@ static void USBH_H7_GPIOInit(void)
   GPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  GPIO_InitStruct.Pin = BOARD_USB_VBUS_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(BOARD_USB_VBUS_PORT, &GPIO_InitStruct);
-  HAL_GPIO_WritePin(BOARD_USB_VBUS_PORT, BOARD_USB_VBUS_PIN, BOARD_USB_VBUS_INACTIVE_STATE);
-  vbus_gpio_ready = true;
-
   HAL_NVIC_SetPriority(USBH_H7_OTG_FS_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(USBH_H7_OTG_FS_IRQn);
 #endif
@@ -323,8 +283,6 @@ static void USBH_H7_GPIODeInit(void)
 {
 #ifdef USBH_USE_FS_PORT
   HAL_GPIO_DeInit(GPIOA, GPIO_PIN_11 | GPIO_PIN_12);
-  HAL_GPIO_DeInit(BOARD_USB_VBUS_PORT, BOARD_USB_VBUS_PIN);
-  vbus_gpio_ready = false;
   HAL_NVIC_DisableIRQ(USBH_H7_OTG_FS_IRQn);
 #endif
 }
