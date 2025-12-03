@@ -11,12 +11,17 @@
 /* -------------------------------------------------------------------------- */
 /* Buffers ping/pong                                                          */
 /* -------------------------------------------------------------------------- */
+/*
+ * Placés en .ram_d2 non cacheable (voir linker/MPU) pour éliminer toute
+ * incohérence D-Cache avec le DMA SAI/SPI. Le linker n'est pas modifié ici,
+ * seule la documentation rappelle la contrainte de section.
+ */
 
-static int32_t audio_in_buffers[2][AUDIO_FRAMES_PER_BUFFER][AUDIO_NUM_INPUT_CHANNELS];
-static int32_t audio_out_buffers[2][AUDIO_FRAMES_PER_BUFFER][AUDIO_NUM_OUTPUT_CHANNELS];
+static int32_t AUDIO_DMA_BUFFER_ATTR audio_in_buffers[2][AUDIO_FRAMES_PER_BUFFER][AUDIO_NUM_INPUT_CHANNELS];
+static int32_t AUDIO_DMA_BUFFER_ATTR audio_out_buffers[2][AUDIO_FRAMES_PER_BUFFER][AUDIO_NUM_OUTPUT_CHANNELS];
 
-static spilink_audio_block_t spi_in_buffers;
-static spilink_audio_block_t spi_out_buffers;
+static spilink_audio_block_t AUDIO_DMA_BUFFER_ATTR spi_in_buffers;
+static spilink_audio_block_t AUDIO_DMA_BUFFER_ATTR spi_out_buffers;
 
 static volatile uint8_t audio_in_ready_index = 0xFFU;
 static volatile uint8_t audio_out_ready_index = 0xFFU;
@@ -470,6 +475,9 @@ static void audio_dma_stop(void) {
 /* Callbacks DMA : half/full -> signale le thread. */
 static void audio_dma_rx_cb(void *p, uint32_t flags) {
     (void)p;
+    if ((flags & (STM32_DMA_ISR_TEIF | STM32_DMA_ISR_DMEIF | STM32_DMA_ISR_FEIF)) != 0U) {
+        chSysHalt("AUDIO DMA ERROR");
+    }
     if ((flags & STM32_DMA_ISR_HTIF) != 0U) {
         audio_in_ready_index = 0U;
     } else if ((flags & STM32_DMA_ISR_TCIF) != 0U) {
@@ -480,6 +488,9 @@ static void audio_dma_rx_cb(void *p, uint32_t flags) {
 
 static void audio_dma_tx_cb(void *p, uint32_t flags) {
     (void)p;
+    if ((flags & (STM32_DMA_ISR_TEIF | STM32_DMA_ISR_DMEIF | STM32_DMA_ISR_FEIF)) != 0U) {
+        chSysHalt("AUDIO DMA ERROR");
+    }
     if ((flags & STM32_DMA_ISR_HTIF) != 0U) {
         audio_out_ready_index = 0U;
     } else if ((flags & STM32_DMA_ISR_TCIF) != 0U) {

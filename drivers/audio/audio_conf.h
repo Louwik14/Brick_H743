@@ -9,6 +9,9 @@
 #include "ch.h"
 #include "hal.h"
 
+/* Attribut pour placer les buffers DMA audio en RAM non cacheable (.ram_d2). */
+#define AUDIO_DMA_BUFFER_ATTR __attribute__((section(".ram_d2"), aligned(32)))
+
 /* -------------------------------------------------------------------------- */
 /* Paramètres généraux du flux audio                                          */
 /* -------------------------------------------------------------------------- */
