@@ -4,7 +4,7 @@
 - **Librairie cœur** : `stm32-mw-usb-host-master` fournit le cœur USB Host et les callbacks utilisateur.
 - **Classe MIDI** : `STM32_USB_Host_Library/Class/MIDI` implémente un driver USB-MIDI prêt production : une interface MIDIStreaming unique avec un bulk IN et un bulk OUT, buffers circulaires statiques, machines d'état RX/TX sans allocation dynamique.
 - **Wrapper ChibiOS** : `usb_host/usb_host_midi.{c,h}` crée un thread dédié qui appelle en continu `USBH_Process()` toutes les ~1 ms, pousse la RX vers une mailbox, dépile la TX depuis une autre, et publie les états device/class via `device_attached` et `midi_ready`.
-- **Portage bas niveau** : `usb_host/usbh_platform_chibios_h7.{c,h}` pilote réellement l'OTG FS du STM32H743 avec le driver HAL HCD : clocks RCC, GPIO DM/DP, IRQ OTG_FS, FIFO RX/TX, requêtes URB DMA/FIFO et GPIO VBUS physique.
+- **Portage bas niveau** : `usb_host/usbh_platform_chibios_h7.{c,h}` pilote réellement l'OTG FS du STM32H743 avec le driver HAL HCD : clocks RCC, GPIO DM/DP, IRQ OTG_FS, FIFO RX/TX, requêtes URB DMA/FIFO et GPIO VBUS physique, sans aucune détection matérielle VBUS/ID/overcurrent.
 
 ## Flux d'initialisation
 1. `usb_host_midi_init()` :
@@ -14,7 +14,7 @@
 2. `USBH_LL_Init()` (portage STM32H7) :
    - Active les clocks OTG FS, SYSCFG et GPIO nécessaires.
    - Configure PA11/PA12 en AF10 OTG_FS, prépare la broche VBUS (macro `BOARD_USB_VBUS_PORT/PIN`).
-   - Initialise `HCD_HandleTypeDef` (12 channels, SOF actif, PHY embarqué, vbus sensing désactivé car piloté par GPIO), dimensionne les FIFO RX/TX, assigne le handle au Host.
+   - Initialise `HCD_HandleTypeDef` (12 channels, SOF actif, PHY embarqué), désactive totalement le vbus sensing (`vbus_sensing_enable = DISABLE`), force `use_external_vbus = ENABLE` car VBUS est piloté par GPIO, dimensionne les FIFO RX/TX, assigne le handle au Host.
 3. `USBH_LL_Start()` :
    - Alimente le connecteur via `USBH_LL_DriverVBUS()` (GPIO à l'état actif) puis démarre le contrôleur OTG.
 4. Enumeration :
@@ -28,7 +28,7 @@
 - **RX** : `pump_rx_events()` lit autant de paquets 4 octets que disponibles via `USBH_MIDI_ReadEvent()` et tente de les poster dans la mailbox RX. En cas de saturation, `rx_overflow` est incrémenté et les paquets supplémentaires sont abandonnés.
 - **TX** : `usb_host_midi_send_event()` poste les paquets dans la mailbox TX (sinon `tx_overflow++`). `pump_tx_events()` dépile et injecte dans la ring TX de la classe ; un échec d'injection incrémente également `tx_overflow` pour tracer le drop.
 - **URB** : `USBH_LL_SubmitURB()` programme réellement les transferts via `HAL_HCD_HC_SubmitRequest()`. Les états URB et tailles transférées sont mis à jour par `HAL_HCD_HC_NotifyURBChange_Callback()`.
-- **VBUS** : `USBH_LL_DriverVBUS()` pilote une broche GPIO matérielle (macros `BOARD_USB_VBUS_*`) pour alimenter ou couper le périphérique. VBUS est activé au `Start`, coupé au `Stop` et lors des déconnexions.
+- **VBUS** : `USBH_LL_DriverVBUS()` pilote uniquement une broche GPIO (macros `BOARD_USB_VBUS_*`) pour alimenter ou couper le périphérique. VBUS est activé dès `USBH_LL_Start()`, coupé dans `USBH_LL_Stop()`, et aucune détection de VBUS/overcurrent n'existe sur la carte ; la connexion est gérée par l'OTG via D+/D-.
 - **Synchronisation état** : `USBH_UserProcess()` met à jour `device_attached` (connexion) et `midi_ready` (classe active). En déconnexion, les mailboxes sont réinitialisées et `reset_events` est incrémenté.
 
 ## API côté application
@@ -47,7 +47,7 @@
 
 ## Séquence de test terrain
 1. Alimenter la carte STM32H743 (D-Cache actif) et vérifier que le firmware démarre ChibiOS.
-2. `usb_host_midi_init()` est appelé au boot ; vérifier que VBUS reste coupé tant que le Host n'est pas lancé.
+2. `usb_host_midi_init()` est appelé au boot ; `USBH_Start` déclenche `USBH_LL_Start()` qui active immédiatement VBUS par GPIO (pas de détection préalable).
 3. Brancher un clavier USB-MIDI class-compliant sur le port OTG FS.
 4. Observer l'énumération : la broche VBUS passe à l'état actif, l'IRQ OTG_FS génère `HOST_USER_CLASS_ACTIVE`, `usb_host_midi_is_ready()` devient vrai.
 5. Appuyer sur quelques notes : `usb_host_midi_fetch_event()` retourne des paquets 4 octets (CIN/status/données), `rx_overflow` reste à zéro sur une consommation régulière.
@@ -56,7 +56,8 @@
 
 ## Hypothèses matérielles
 - OTG FS utilisé par défaut (PHY embarqué, 12 channels). Pour OTG HS, définir `USBH_USE_HS_PORT` et adapter l'horloge/pinout.
-- La broche VBUS du connecteur est pilotée par un interrupteur 5V commandé via `BOARD_USB_VBUS_PORT/PIN` (niveau actif configurable).
+- La carte ne dispose pas de pin de détection VBUS host, d'ID ou d'overcurrent. La broche VBUS du connecteur est pilotée par un interrupteur 5V commandé via `BOARD_USB_VBUS_PORT/PIN` (niveau actif configurable) et `USBH_LL_DriverVBUS()`.
+- Le contrôleur OTG FS est configuré avec `vbus_sensing_enable = DISABLE` et `use_external_vbus = ENABLE`.
 - ChibiOS fournit `hal.h` et le support du HAL STM32H7 ; `HAL_PWREx_EnableUSBVoltageDetector()` est disponible.
 
 ## Limitations actuelles
