@@ -1,6 +1,6 @@
 /**
  * @file usbh_platform_chibios_h7.h
- * @brief Low-level USB Host glue for STM32H7 running ChibiOS.
+ * @brief Low-level USB Host glue for STM32H7 running ChibiOS without VBUS sensing.
  */
 
 #ifndef USBH_PLATFORM_CHIBIOS_H7_H
@@ -18,15 +18,15 @@ extern "C" {
 #endif
 
 #ifndef BOARD_USB_VBUS_PORT
-#define BOARD_USB_VBUS_PORT         GPIOB
+#define BOARD_USB_VBUS_PORT           GPIOB
 #endif
 
 #ifndef BOARD_USB_VBUS_PIN
-#define BOARD_USB_VBUS_PIN          GPIO_PIN_13
+#define BOARD_USB_VBUS_PIN            GPIO_PIN_13
 #endif
 
 #ifndef BOARD_USB_VBUS_ACTIVE_STATE
-#define BOARD_USB_VBUS_ACTIVE_STATE GPIO_PIN_SET
+#define BOARD_USB_VBUS_ACTIVE_STATE   GPIO_PIN_SET
 #endif
 
 #ifndef BOARD_USB_VBUS_INACTIVE_STATE
