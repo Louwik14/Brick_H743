@@ -59,6 +59,11 @@ static inline void midi_usb_flush_tx_cache(const void *addr, size_t len) {
 }
 #endif
 
+/* Callback faible pour injection dans le moteur MIDI interne. */
+__attribute__((weak)) void midi_internal_receive(const uint8_t *msg, size_t len) {
+  (void)msg; (void)len;
+}
+
 /* ====================================================================== */
 /*                         CONFIGURATION / ÉTAT                            */
 /* ====================================================================== */
@@ -98,6 +103,18 @@ static CCM_DATA msg_t     midi_usb_queue[MIDI_USB_QUEUE_LEN];
 static uint16_t  midi_usb_queue_fill = 0;
 static uint16_t  midi_usb_queue_high_water = 0;
 
+/**
+ * @brief Taille de la file (mailbox) de réception USB-MIDI (paquets 4 octets).
+ */
+#define MIDI_USB_RX_QUEUE_LEN 128
+
+/** @brief Mailbox de réception brute USB-MIDI (alimentée en ISR). */
+static CCM_DATA mailbox_t midi_usb_rx_mb;
+/** @brief Buffer circulaire pour la mailbox de réception. */
+static CCM_DATA msg_t     midi_usb_rx_queue[MIDI_USB_RX_QUEUE_LEN];
+static uint16_t midi_usb_rx_queue_fill = 0;
+static uint16_t midi_usb_rx_queue_high_water = 0;
+
 static inline void midi_usb_queue_increment(void) {
   osalSysLock();
   if (midi_usb_queue_fill < MIDI_USB_QUEUE_LEN) {
@@ -117,11 +134,58 @@ static inline void midi_usb_queue_decrement(void) {
   osalSysUnlock();
 }
 
+static inline void midi_usb_rx_queue_increment_i(void) {
+  if (midi_usb_rx_queue_fill < MIDI_USB_RX_QUEUE_LEN) {
+    midi_usb_rx_queue_fill++;
+    if (midi_usb_rx_queue_fill > midi_usb_rx_queue_high_water) {
+      midi_usb_rx_queue_high_water = midi_usb_rx_queue_fill;
+    }
+  }
+}
+
+static inline void midi_usb_rx_queue_decrement(void) {
+  osalSysLock();
+  if (midi_usb_rx_queue_fill > 0U) {
+    midi_usb_rx_queue_fill--;
+  }
+  osalSysUnlock();
+}
+
 static inline void midi_usb_start_tx(const uint8_t *buffer, size_t len) {
   midi_usb_flush_tx_cache(buffer, len);
   osalSysLock();
   usbStartTransmitI(&USBD1, MIDI_EP_IN, buffer, len);
   osalSysUnlock();
+}
+
+void midi_usb_rx_submit_from_isr(const uint8_t *packet, size_t len) {
+  if ((packet == NULL) || (len < 4U)) {
+    return;
+  }
+
+  const size_t packets = len / 4U;
+
+  osalSysLockFromISR();
+  if (midi_usb_rx_mb.buffer == NULL) {
+    osalSysUnlockFromISR();
+    return;
+  }
+
+  for (size_t i = 0; i < packets; i++) {
+    msg_t m = ((msg_t)packet[0] << 24) |
+              ((msg_t)packet[1] << 16) |
+              ((msg_t)packet[2] << 8)  |
+              ((msg_t)packet[3]);
+
+    if (chMBPostI(&midi_usb_rx_mb, m) == MSG_OK) {
+      midi_usb_rx_queue_increment_i();
+      midi_rx_stats.usb_rx_enqueued++;
+    } else {
+      midi_rx_stats.usb_rx_drops++;
+    }
+    packet += 4U;
+  }
+  osalSysUnlockFromISR();
 }
 
 /**
@@ -133,6 +197,12 @@ binary_semaphore_t sof_sem;
 
 /** @brief Statistiques globales de transmission MIDI (USB/DIN). */
 midi_tx_stats_t midi_tx_stats = {0};
+
+/** @brief Statistiques globales de réception MIDI. */
+midi_rx_stats_t midi_rx_stats = {0};
+
+/** @brief Destination actuelle pour le routage des messages entrants. */
+static midi_dest_t midi_rx_dest = MIDI_DEST_BOTH;
 
 /* ====================================================================== */
 /*                        VÉRIFICATIONS DE CONFIG EP                      */
@@ -147,6 +217,8 @@ midi_tx_stats_t midi_tx_stats = {0};
 #if MIDI_EP_SIZE != 64
 #error "MIDI_EP_SIZE doit valoir 64."
 #endif
+
+static void midi_process_usb_rx(void);
 
 /* ====================================================================== */
 /*                        THREAD DE TRANSMISSION USB                      */
@@ -181,6 +253,8 @@ static THD_FUNCTION(thdMidiUsbTx, arg) {
   size_t n = 0;
 
   while (true) {
+    midi_process_usb_rx();
+
     msg_t msg;
     msg_t res = chMBFetchTimeout(&midi_usb_mb, &msg, TIME_MS2I(1));
 
@@ -244,7 +318,10 @@ void midi_init(void) {
   sdStart(MIDI_UART, &uart_cfg);
   midi_usb_queue_fill = 0;
   midi_usb_queue_high_water = 0;
+  midi_usb_rx_queue_fill = 0;
+  midi_usb_rx_queue_high_water = 0;
   chMBObjectInit(&midi_usb_mb, midi_usb_queue, MIDI_USB_QUEUE_LEN);
+  chMBObjectInit(&midi_usb_rx_mb, midi_usb_rx_queue, MIDI_USB_RX_QUEUE_LEN);
   chBSemObjectInit(&tx_sem, true);
   chBSemObjectInit(&sof_sem, true);
   chThdCreateStatic(waMidiUsbTx, sizeof(waMidiUsbTx),
@@ -286,6 +363,107 @@ static void post_mb_or_drop(msg_t m, bool force_drop_oldest) {
     }
   } else {
     midi_usb_queue_increment();
+  }
+}
+
+/* ====================================================================== */
+/*                        RÉCEPTION USB (DÉCODAGE)                        */
+/* ====================================================================== */
+
+static bool usb_midi_decode_packet(const uint8_t pkt[4], midi_msg_t *out) {
+  if (out == NULL) {
+    return false;
+  }
+
+  const uint8_t cin = (uint8_t)(pkt[0] & 0x0F);
+
+  switch (cin) {
+    case 0x08: /* Note Off */
+    case 0x09: /* Note On */
+    case 0x0A: /* Poly Aftertouch */
+    case 0x0B: /* Control Change */
+    case 0x0E: /* Pitch Bend */
+      out->len = 3U;
+      out->data[0] = pkt[1];
+      out->data[1] = pkt[2];
+      out->data[2] = pkt[3];
+      return true;
+
+    case 0x0C: /* Program Change */
+    case 0x0D: /* Channel Pressure */
+      out->len = 2U;
+      out->data[0] = pkt[1];
+      out->data[1] = pkt[2];
+      return true;
+
+    case 0x02: /* System Common 2 bytes (MTC Quarter Frame / Song Select) */
+      out->len = 2U;
+      out->data[0] = pkt[1];
+      out->data[1] = pkt[2];
+      return true;
+
+    case 0x03: /* System Common 3 bytes (Song Position Pointer) */
+      out->len = 3U;
+      out->data[0] = pkt[1];
+      out->data[1] = pkt[2];
+      out->data[2] = pkt[3];
+      return true;
+
+    case 0x0F: /* Single-byte real-time */
+      switch (pkt[1]) {
+        case 0xF8: /* Clock */
+        case 0xFA: /* Start */
+        case 0xFB: /* Continue */
+        case 0xFC: /* Stop */
+        case 0xFE: /* Active Sensing */
+        case 0xFF: /* System Reset */
+          out->len = 1U;
+          out->data[0] = pkt[1];
+          return true;
+        default:
+          return false;
+      }
+      break;
+
+    default:
+      break;
+  }
+
+  return false;
+}
+
+static void midi_dispatch_rx_message(const midi_msg_t *msg) {
+  midi_internal_receive(msg->data, msg->len);
+
+  if ((midi_rx_dest == MIDI_DEST_UART) || (midi_rx_dest == MIDI_DEST_BOTH)) {
+    send_uart(msg->data, msg->len);
+  }
+}
+
+static void midi_process_usb_rx(void) {
+  const uint32_t max_burst = 16U;
+  uint32_t processed = 0U;
+  msg_t raw;
+
+  while ((processed < max_burst) &&
+         (chMBFetchTimeout(&midi_usb_rx_mb, &raw, TIME_IMMEDIATE) == MSG_OK)) {
+    midi_usb_rx_queue_decrement();
+
+    uint8_t pkt[4];
+    pkt[0] = (uint8_t)((raw >> 24) & 0xFF);
+    pkt[1] = (uint8_t)((raw >> 16) & 0xFF);
+    pkt[2] = (uint8_t)((raw >> 8)  & 0xFF);
+    pkt[3] = (uint8_t)( raw        & 0xFF);
+
+    midi_msg_t msg;
+    if (usb_midi_decode_packet(pkt, &msg)) {
+      midi_dispatch_rx_message(&msg);
+      midi_rx_stats.usb_rx_decoded++;
+    } else {
+      midi_rx_stats.usb_rx_ignored++;
+    }
+
+    processed++;
   }
 }
 
@@ -391,6 +569,23 @@ static void midi_send(midi_dest_t d, const uint8_t *m, size_t n){
     case MIDI_DEST_BOTH: send_uart(m,n); send_usb(m,n); break;
     default: break;
   }
+}
+
+void midi_set_rx_destination(midi_dest_t dest) {
+  switch (dest) {
+    case MIDI_DEST_UART:
+    case MIDI_DEST_USB:
+    case MIDI_DEST_BOTH:
+      midi_rx_dest = dest;
+      break;
+    default:
+      midi_rx_dest = MIDI_DEST_BOTH;
+      break;
+  }
+}
+
+midi_dest_t midi_get_rx_destination(void) {
+  return midi_rx_dest;
 }
 
 /* ====================================================================== */
@@ -536,9 +731,14 @@ uint16_t midi_usb_queue_high_watermark(void) {
   return midi_usb_queue_high_water;
 }
 
+uint16_t midi_usb_rx_high_watermark(void) {
+  return midi_usb_rx_queue_high_water;
+}
+
 /**
  * @brief Réinitialise les statistiques de transmission MIDI.
  */
 void midi_stats_reset(void){
   midi_tx_stats=(midi_tx_stats_t){0};
+  midi_rx_stats=(midi_rx_stats_t){0};
 }

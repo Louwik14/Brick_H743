@@ -24,3 +24,11 @@ Rôle des threads / sémaphores / callbacks
 - Callback USB_EVENT_CONFIGURED : initialise les endpoints, invalide le buffer RX, réarme la réception, marque usb_midi_tx_ready sous verrou ISR, et libère tx_sem.
 - Callback EP1 OUT : invalide D-Cache du buffer RX puis relance la réception sans bloquer.
 - Callback EP2 IN : réveille le producteur via tx_sem pour le cycle suivant.
+
+Réception MIDI USB
+- Pipeline : PC → EP1 OUT → invalidation D-Cache → midi_usb_rx_submit_from_isr() → mailbox RX (128 paquets) → thread MIDI → décodage USB-MIDI (CIN filtrés) → moteur interne → optionnellement DIN selon midi_set_rx_destination().
+- Décodage supporté : Note On/Off, CC, Program Change, Channel Pressure, Pitch Bend, MTC QF/Song Select/Song Position, Realtime (Clock/Start/Continue/Stop/Active Sensing/System Reset). CIN non supportés ignorés proprement.
+- File logicielle RX : mailbox sans alloc dynamique, compteurs de remplissage + drops (midi_rx_stats). Défilement par rafale (max 16 paquets/loop) pour ne pas perturber le TX.
+- Injection moteur : callback faible midi_internal_receive() appelé pour chaque message décodé. Routage DIN appliqué si destination = UART ou BOTH, aucune boucle vers l’USB.
+- Latence RX estimée : <1 ms typique (boucle thread avec timeout 1 ms + traitement O(1) par paquet), sans attente active en ISR.
+- Limitations connues : pas de SysEx long, pas d’USB Host, CIN hors standard ignorés, pas d’écho USB pour éviter les boucles.
