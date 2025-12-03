@@ -51,7 +51,7 @@ void usb_host_midi_init(void)
   (void)chMBObjectInit(&tx_mailbox, tx_queue_buf, USB_HOST_MIDI_TX_MAILBOX_SIZE);
 
   (void)USBH_Init(&hUsbHostFS, USBH_UserProcess, 0U);
-  (void)USBH_RegisterClass(&hUsbHostFS, USBH_MIDI_Class.ClassCode, &USBH_MIDI_Class);
+  (void)USBH_RegisterClass(&hUsbHostFS, &USBH_MIDI_Class);
   (void)USBH_Start(&hUsbHostFS);
 
   (void)chThdCreateStatic(usb_host_midi_wa, sizeof(usb_host_midi_wa),
@@ -118,11 +118,8 @@ static THD_FUNCTION(usb_host_midi_thread, arg)
   {
     (void)USBH_Process(&hUsbHostFS);
 
-    if (usb_host_midi_is_ready())
-    {
-      pump_rx_events();
-      pump_tx_events();
-    }
+    pump_rx_events();
+    pump_tx_events();
 
     chThdSleepMilliseconds(1);
   }
@@ -134,14 +131,15 @@ static void USBH_UserProcess(USBH_HandleTypeDef *pHost, uint8_t id)
   {
     case HOST_USER_CONNECTION:
       device_attached = true;
-      if (attach_cb != NULL)
-      {
-        attach_cb();
-      }
+      midi_ready = false;
       break;
 
     case HOST_USER_CLASS_ACTIVE:
       midi_ready = true;
+      if (attach_cb != NULL)
+      {
+        attach_cb();
+      }
       break;
 
     case HOST_USER_DISCONNECTION:
@@ -163,6 +161,11 @@ static void pump_rx_events(void)
   uint8_t packet[4];
   midi_mailbox_msg_t msg;
 
+  if (!usb_host_midi_is_ready())
+  {
+    return;
+  }
+
   while (USBH_MIDI_ReadEvent(&hUsbHostFS, packet))
   {
     (void)memcpy(msg.bytes, packet, 4U);
@@ -176,6 +179,11 @@ static void pump_rx_events(void)
 static void pump_tx_events(void)
 {
   midi_mailbox_msg_t msg;
+
+  if (!usb_host_midi_is_ready())
+  {
+    return;
+  }
 
   while (chMBFetchTimeout(&tx_mailbox, &msg.msg, TIME_IMMEDIATE) == MSG_OK)
   {

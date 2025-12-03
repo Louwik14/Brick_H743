@@ -34,7 +34,13 @@ USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef *phost)
 
   phost->pData = &ll_ctx;
 
-  /* TODO: configure USBHDriver instance, GPIOs for VBUS, ID, OC and clocks. */
+  /* TODO: configure USBHDriver instance, GPIOs for VBUS, ID, OC and clocks.
+     This typically means:
+     - enabling the OTG HS/FS clock tree (RCC, PLLSAI if needed)
+     - configuring DM/DP pins and optional ID/OC inputs
+     - connecting the ChibiOS USBHDriver (HCD) instance and assigning it to
+       phost->pData if you rely on the HAL/LL driver provided by ChibiOS.
+     For now we only keep an in-RAM context so upper layers can link. */
   return USBH_OK;
 }
 
@@ -48,14 +54,16 @@ USBH_StatusTypeDef USBH_LL_DeInit(USBH_HandleTypeDef *phost)
 USBH_StatusTypeDef USBH_LL_Start(USBH_HandleTypeDef *phost)
 {
   (void)phost;
-  /* TODO: start host controller through ChibiOS USBH driver. */
+  /* TODO: start host controller through ChibiOS USBH driver.
+     In a real port this is where the OTG interrupt and power domain
+     are enabled. */
   return USBH_OK;
 }
 
 USBH_StatusTypeDef USBH_LL_Stop(USBH_HandleTypeDef *phost)
 {
   (void)phost;
-  /* TODO: stop host controller safely. */
+  /* TODO: stop host controller safely and gate OTG clocks. */
   return USBH_OK;
 }
 
@@ -68,7 +76,8 @@ USBH_SpeedTypeDef USBH_LL_GetSpeed(USBH_HandleTypeDef *phost)
 USBH_StatusTypeDef USBH_LL_ResetPort(USBH_HandleTypeDef *phost)
 {
   (void)phost;
-  /* TODO: drive port reset using OTG registers. */
+  /* TODO: drive port reset using OTG registers. In the mock we simply
+     report success so enumeration can proceed. */
   return USBH_OK;
 }
 
@@ -163,7 +172,8 @@ USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8_t state)
 {
   (void)phost;
   (void)state;
-  /* TODO: drive VBUS switch GPIO. */
+  /* TODO: drive VBUS switch GPIO. In the mock nothing is toggled, but a
+     production port must enable/disable power to the USB connector. */
   return USBH_OK;
 }
 
