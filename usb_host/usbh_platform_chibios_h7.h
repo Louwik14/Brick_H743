@@ -17,22 +17,6 @@ extern "C" {
 #define USBH_USE_FS_PORT            1
 #endif
 
-#ifndef BOARD_USB_VBUS_PORT
-#define BOARD_USB_VBUS_PORT           GPIOB
-#endif
-
-#ifndef BOARD_USB_VBUS_PIN
-#define BOARD_USB_VBUS_PIN            GPIO_PIN_13
-#endif
-
-#ifndef BOARD_USB_VBUS_ACTIVE_STATE
-#define BOARD_USB_VBUS_ACTIVE_STATE   GPIO_PIN_SET
-#endif
-
-#ifndef BOARD_USB_VBUS_INACTIVE_STATE
-#define BOARD_USB_VBUS_INACTIVE_STATE GPIO_PIN_RESET
-#endif
-
 USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef *phost);
 USBH_StatusTypeDef USBH_LL_DeInit(USBH_HandleTypeDef *phost);
 USBH_StatusTypeDef USBH_LL_Start(USBH_HandleTypeDef *phost);
