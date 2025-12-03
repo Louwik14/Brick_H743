@@ -88,7 +88,7 @@ INCDIR += $(USB_HOST_APP_DIR)
 ##############################################################################
 # STM32 MW USB HOST MIDDLEWARE (dans usb_host/)
 ##############################################################################
-USB_HOST_MW_DIR := ./usb_host/stm32-mw-usb-host-master
+USB_HOST_MW_DIR := ./usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master
 
 # Core USB Host
 CSRC   += $(wildcard $(USB_HOST_MW_DIR)/Core/Src/*.c)
