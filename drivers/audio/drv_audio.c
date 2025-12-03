@@ -17,11 +17,11 @@
  * seule la documentation rappelle la contrainte de section.
  */
 
-static int32_t AUDIO_DMA_BUFFER_ATTR audio_in_buffers[2][AUDIO_FRAMES_PER_BUFFER][AUDIO_NUM_INPUT_CHANNELS];
-static int32_t AUDIO_DMA_BUFFER_ATTR audio_out_buffers[2][AUDIO_FRAMES_PER_BUFFER][AUDIO_NUM_OUTPUT_CHANNELS];
+static volatile int32_t AUDIO_DMA_BUFFER_ATTR audio_in_buffers[2][AUDIO_FRAMES_PER_BUFFER][AUDIO_NUM_INPUT_CHANNELS];
+static volatile int32_t AUDIO_DMA_BUFFER_ATTR audio_out_buffers[2][AUDIO_FRAMES_PER_BUFFER][AUDIO_NUM_OUTPUT_CHANNELS];
 
-static spilink_audio_block_t AUDIO_DMA_BUFFER_ATTR spi_in_buffers;
-static spilink_audio_block_t AUDIO_DMA_BUFFER_ATTR spi_out_buffers;
+static volatile spilink_audio_block_t AUDIO_DMA_BUFFER_ATTR spi_in_buffers;
+static volatile spilink_audio_block_t AUDIO_DMA_BUFFER_ATTR spi_out_buffers;
 
 static volatile uint8_t audio_in_ready_index = 0xFFU;
 static volatile uint8_t audio_out_ready_index = 0xFFU;
@@ -88,10 +88,10 @@ void drv_audio_init(void) {
     adau1979_init();
     audio_codec_pcm4104_init();
 
-    memset(audio_in_buffers, 0, sizeof(audio_in_buffers));
-    memset(audio_out_buffers, 0, sizeof(audio_out_buffers));
-    memset(spi_in_buffers, 0, sizeof(spi_in_buffers));
-    memset(spi_out_buffers, 0, sizeof(spi_out_buffers));
+    memset((void *)audio_in_buffers, 0, sizeof(audio_in_buffers));
+    memset((void *)audio_out_buffers, 0, sizeof(audio_out_buffers));
+    memset((void *)spi_in_buffers, 0, sizeof(spi_in_buffers));
+    memset((void *)spi_out_buffers, 0, sizeof(spi_out_buffers));
     audio_routes_reset_defaults();
 
     /* Les GPIO SAI sont déjà configurés via board.h. */
@@ -155,11 +155,11 @@ void drv_audio_release_buffers(uint8_t in_index, uint8_t out_index) {
 }
 
 int32_t (*drv_audio_get_spi_in_buffers(void))[AUDIO_FRAMES_PER_BUFFER][4] {
-    return spi_in_buffers;
+    return (int32_t (*)[AUDIO_FRAMES_PER_BUFFER][4])spi_in_buffers;
 }
 
 int32_t (*drv_audio_get_spi_out_buffers(void))[AUDIO_FRAMES_PER_BUFFER][4] {
-    return spi_out_buffers;
+    return (int32_t (*)[AUDIO_FRAMES_PER_BUFFER][4])spi_out_buffers;
 }
 
 size_t drv_audio_get_spi_frames(void) {
@@ -323,24 +323,24 @@ static THD_FUNCTION(audioThread, arg) {
         chSysUnlock();
 
         const int32_t *in_buf = (const int32_t *)audio_in_buffers[in_idx];
-        int32_t *out_buf = audio_out_buffers[out_idx];
+        int32_t *out_buf = (int32_t *)audio_out_buffers[out_idx];
 
         /* Récupère l'audio des cartouches si disponible. */
         if (spilink_pull_cb != NULL) {
-            spilink_pull_cb(spi_in_buffers, frames);
+            spilink_pull_cb((int32_t (*)[AUDIO_FRAMES_PER_BUFFER][4])spi_in_buffers, frames);
         } else {
-            memset(spi_in_buffers, 0, sizeof(spi_in_buffers));
+            memset((void *)spi_in_buffers, 0, sizeof(spi_in_buffers));
         }
 
         drv_audio_process_block(in_buf,
-                                 spi_in_buffers,
+                                 (int32_t (*)[AUDIO_FRAMES_PER_BUFFER][4])spi_in_buffers,
                                  out_buf,
-                                 spi_out_buffers,
+                                 (int32_t (*)[AUDIO_FRAMES_PER_BUFFER][4])spi_out_buffers,
                                  frames);
 
         /* Exporte le flux vers les cartouches si besoin. */
         if (spilink_push_cb != NULL) {
-            spilink_push_cb(spi_out_buffers, frames);
+            spilink_push_cb((int32_t (*)[AUDIO_FRAMES_PER_BUFFER][4])spi_out_buffers, frames);
         }
     }
 }
@@ -423,7 +423,7 @@ static void audio_dma_start(void) {
                        STM32_DMA_CR_TCIE;
 
     dmaStreamSetPeripheral(sai_rx_dma, &AUDIO_SAI_RX_BLOCK->DR);
-    dmaStreamSetMemory0(sai_rx_dma, audio_in_buffers);
+    dmaStreamSetMemory0(sai_rx_dma, (void *)audio_in_buffers);
     dmaStreamSetTransactionSize(sai_rx_dma, AUDIO_DMA_IN_SAMPLES);
     dmaStreamSetMode(sai_rx_dma, rx_mode);
 
@@ -438,7 +438,7 @@ static void audio_dma_start(void) {
                        STM32_DMA_CR_TCIE;
 
     dmaStreamSetPeripheral(sai_tx_dma, &AUDIO_SAI_TX_BLOCK->DR);
-    dmaStreamSetMemory0(sai_tx_dma, audio_out_buffers);
+    dmaStreamSetMemory0(sai_tx_dma, (void *)audio_out_buffers);
     dmaStreamSetTransactionSize(sai_tx_dma, AUDIO_DMA_OUT_SAMPLES);
     dmaStreamSetMode(sai_tx_dma, tx_mode);
 
@@ -476,7 +476,7 @@ static void audio_dma_stop(void) {
 static void audio_dma_rx_cb(void *p, uint32_t flags) {
     (void)p;
     if ((flags & (STM32_DMA_ISR_TEIF | STM32_DMA_ISR_DMEIF | STM32_DMA_ISR_FEIF)) != 0U) {
-        chSysHalt("AUDIO DMA ERROR");
+        chSysHaltI();
     }
     if ((flags & STM32_DMA_ISR_HTIF) != 0U) {
         audio_in_ready_index = 0U;
@@ -489,7 +489,7 @@ static void audio_dma_rx_cb(void *p, uint32_t flags) {
 static void audio_dma_tx_cb(void *p, uint32_t flags) {
     (void)p;
     if ((flags & (STM32_DMA_ISR_TEIF | STM32_DMA_ISR_DMEIF | STM32_DMA_ISR_FEIF)) != 0U) {
-        chSysHalt("AUDIO DMA ERROR");
+        chSysHaltI();
     }
     if ((flags & STM32_DMA_ISR_HTIF) != 0U) {
         audio_out_ready_index = 0U;
