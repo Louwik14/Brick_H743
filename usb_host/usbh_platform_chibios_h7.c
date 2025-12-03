@@ -8,6 +8,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifndef assert_param
+#define assert_param(expr) ((void)0U)
+#endif
+
 static HCD_HandleTypeDef hhcd_USB_OTG_FS;
 static volatile uint32_t port_reset_count = 0U;
 static const uint32_t cache_line_size = 32U;
@@ -105,9 +109,28 @@ USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef *phost)
     return USBH_FAIL;
   }
 
-  HAL_HCDEx_SetRxFiFo(&hhcd_USB_OTG_FS, 0x80U);
-  HAL_HCDEx_SetTxFiFo(&hhcd_USB_OTG_FS, 0, 0x40U);
-  HAL_HCDEx_SetTxFiFo(&hhcd_USB_OTG_FS, 1, 0x80U);
+  /* ---- USB OTG FS FIFO CONFIGURATION (Direct register access, HAL H7 safe) ---- */
+
+  USB_OTG_GlobalTypeDef *USBx = hhcd_USB_OTG_FS.Instance;
+
+  /* Rx FIFO size (in 32-bit words) */
+  USBx->GRXFSIZ = 0x80U;
+
+  /* Non-periodic Tx FIFO (EP0 / Control) */
+  USBx->DIEPTXF0_HNPTXFSIZ = (0x40U << 16) | 0U;
+
+  /* Host periodic Tx FIFO */
+  USBx->HPTXFSIZ = (0x80U << 16) | 0x40U;
+
+  /* Flush all Tx FIFOs */
+  USBx->GRSTCTL = USB_OTG_GRSTCTL_TXFFLSH | (0x10U << 6);
+  while (USBx->GRSTCTL & USB_OTG_GRSTCTL_TXFFLSH) {}
+
+  /* Flush Rx FIFO */
+  USBx->GRSTCTL = USB_OTG_GRSTCTL_RXFFLSH;
+  while (USBx->GRSTCTL & USB_OTG_GRSTCTL_RXFFLSH) {}
+
+
 
   return USBH_OK;
 }

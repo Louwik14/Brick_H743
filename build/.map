@@ -1564,7 +1564,7 @@ Discarded input sections
  .text.HAL_HCD_MspDeInit
                 0x00000000       0x3c ./build/obj/usbh_platform_chibios_h7.o
  .text.USBH_LL_Init
-                0x00000000       0x60 ./build/obj/usbh_platform_chibios_h7.o
+                0x00000000       0x68 ./build/obj/usbh_platform_chibios_h7.o
  .text.USBH_LL_DeInit
                 0x00000000       0x18 ./build/obj/usbh_platform_chibios_h7.o
  .text.USBH_LL_Start
@@ -1611,18 +1611,18 @@ Discarded input sections
                 0x00000000      0x3e0 ./build/obj/usbh_platform_chibios_h7.o
  .bss.port_reset_count
                 0x00000000        0x4 ./build/obj/usbh_platform_chibios_h7.o
- .debug_info    0x00000000     0x2bab ./build/obj/usbh_platform_chibios_h7.o
- .debug_abbrev  0x00000000      0x567 ./build/obj/usbh_platform_chibios_h7.o
+ .debug_info    0x00000000     0x2b34 ./build/obj/usbh_platform_chibios_h7.o
+ .debug_abbrev  0x00000000      0x561 ./build/obj/usbh_platform_chibios_h7.o
  .debug_loclists
-                0x00000000      0x7c2 ./build/obj/usbh_platform_chibios_h7.o
+                0x00000000      0x7cd ./build/obj/usbh_platform_chibios_h7.o
  .debug_aranges
                 0x00000000       0xd8 ./build/obj/usbh_platform_chibios_h7.o
  .debug_rnglists
-                0x00000000      0x111 ./build/obj/usbh_platform_chibios_h7.o
- .debug_line    0x00000000      0x93d ./build/obj/usbh_platform_chibios_h7.o
- .debug_str     0x00000000     0x20d3 ./build/obj/usbh_platform_chibios_h7.o
+                0x00000000      0x10e ./build/obj/usbh_platform_chibios_h7.o
+ .debug_line    0x00000000      0x9b8 ./build/obj/usbh_platform_chibios_h7.o
+ .debug_str     0x00000000     0x20b0 ./build/obj/usbh_platform_chibios_h7.o
  .comment       0x00000000       0x34 ./build/obj/usbh_platform_chibios_h7.o
- .debug_frame   0x00000000      0x23c ./build/obj/usbh_platform_chibios_h7.o
+ .debug_frame   0x00000000      0x238 ./build/obj/usbh_platform_chibios_h7.o
  .ARM.attributes
                 0x00000000       0x32 ./build/obj/usbh_platform_chibios_h7.o
  .text          0x00000000        0x0 ./build/obj/usbh_core.o
@@ -1862,7 +1862,7 @@ Discarded input sections
  .text.HAL_GetTickPrio
                 0x00000000        0xc ./build/obj/stm32h7xx_hal.o
  .text.HAL_SetTickFreq
-                0x00000000       0x44 ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x28 ./build/obj/stm32h7xx_hal.o
  .text.HAL_GetTickFreq
                 0x00000000        0xc ./build/obj/stm32h7xx_hal.o
  .text.HAL_Delay
@@ -1884,25 +1884,25 @@ Discarded input sections
  .text.HAL_GetUIDw2
                 0x00000000        0xc ./build/obj/stm32h7xx_hal.o
  .text.HAL_SYSCFG_VREFBUF_VoltageScalingConfig
-                0x00000000       0x3c ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x14 ./build/obj/stm32h7xx_hal.o
  .text.HAL_SYSCFG_VREFBUF_HighImpedanceConfig
-                0x00000000       0x24 ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x14 ./build/obj/stm32h7xx_hal.o
  .text.HAL_SYSCFG_VREFBUF_TrimmingConfig
-                0x00000000       0x24 ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x14 ./build/obj/stm32h7xx_hal.o
  .text.HAL_SYSCFG_EnableVREFBUF
                 0x00000000       0x30 ./build/obj/stm32h7xx_hal.o
  .text.HAL_SYSCFG_DisableVREFBUF
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal.o
  .text.HAL_SYSCFG_ETHInterfaceSelect
-                0x00000000       0x24 ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x14 ./build/obj/stm32h7xx_hal.o
  .text.HAL_SYSCFG_AnalogSwitchConfig
-                0x00000000       0x2c ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x14 ./build/obj/stm32h7xx_hal.o
  .text.HAL_SYSCFG_EnableBOOST
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal.o
  .text.HAL_SYSCFG_DisableBOOST
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal.o
  .text.HAL_SYSCFG_CM7BootAddConfig
-                0x00000000       0x54 ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x34 ./build/obj/stm32h7xx_hal.o
  .text.HAL_EnableCompensationCell
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal.o
  .text.HAL_DisableCompensationCell
@@ -1912,9 +1912,9 @@ Discarded input sections
  .text.HAL_SYSCFG_DisableIOSpeedOptimize
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal.o
  .text.HAL_SYSCFG_CompensationCodeSelect
-                0x00000000       0x24 ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x14 ./build/obj/stm32h7xx_hal.o
  .text.HAL_SYSCFG_CompensationCodeConfig
-                0x00000000       0x38 ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x18 ./build/obj/stm32h7xx_hal.o
  .text.HAL_DBGMCU_EnableDBGSleepMode
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal.o
  .text.HAL_DBGMCU_DisableDBGSleepMode
@@ -1928,73 +1928,69 @@ Discarded input sections
  .text.HAL_DBGMCU_DisableDBGStandbyMode
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal.o
  .text.HAL_SetFMCMemorySwappingConfig
-                0x00000000       0x2c ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x14 ./build/obj/stm32h7xx_hal.o
  .text.HAL_GetFMCMemorySwappingConfig
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal.o
  .text.HAL_EXTI_EdgeConfig
-                0x00000000       0x80 ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x40 ./build/obj/stm32h7xx_hal.o
  .text.HAL_EXTI_GenerateSWInterrupt
-                0x00000000       0x48 ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x1c ./build/obj/stm32h7xx_hal.o
  .text.HAL_EXTI_D1_ClearFlag
-                0x00000000       0x30 ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x18 ./build/obj/stm32h7xx_hal.o
  .text.HAL_EXTI_D1_EventInputConfig
-                0x00000000       0xb0 ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x9c ./build/obj/stm32h7xx_hal.o
  .text.HAL_EXTI_D3_EventInputConfig
-                0x00000000       0x88 ./build/obj/stm32h7xx_hal.o
+                0x00000000       0x68 ./build/obj/stm32h7xx_hal.o
  .bss.uwTick    0x00000000        0x4 ./build/obj/stm32h7xx_hal.o
  .data.uwTickFreq
                 0x00000000        0x1 ./build/obj/stm32h7xx_hal.o
  .data.uwTickPrio
                 0x00000000        0x4 ./build/obj/stm32h7xx_hal.o
- .rodata.CSWTCH.62
-                0x00000000       0x5c ./build/obj/stm32h7xx_hal.o
- .rodata.CSWTCH.66
-                0x00000000       0x59 ./build/obj/stm32h7xx_hal.o
- .debug_info    0x00000000     0x19ea ./build/obj/stm32h7xx_hal.o
- .debug_abbrev  0x00000000      0x31f ./build/obj/stm32h7xx_hal.o
+ .debug_info    0x00000000     0x16aa ./build/obj/stm32h7xx_hal.o
+ .debug_abbrev  0x00000000      0x312 ./build/obj/stm32h7xx_hal.o
  .debug_loclists
-                0x00000000      0x450 ./build/obj/stm32h7xx_hal.o
+                0x00000000      0x3a8 ./build/obj/stm32h7xx_hal.o
  .debug_aranges
                 0x00000000      0x190 ./build/obj/stm32h7xx_hal.o
  .debug_rnglists
-                0x00000000      0x12b ./build/obj/stm32h7xx_hal.o
- .debug_line    0x00000000      0xadf ./build/obj/stm32h7xx_hal.o
- .debug_str     0x00000000     0x14be ./build/obj/stm32h7xx_hal.o
+                0x00000000      0x129 ./build/obj/stm32h7xx_hal.o
+ .debug_line    0x00000000      0x9c3 ./build/obj/stm32h7xx_hal.o
+ .debug_str     0x00000000     0x14b1 ./build/obj/stm32h7xx_hal.o
  .comment       0x00000000       0x34 ./build/obj/stm32h7xx_hal.o
- .debug_frame   0x00000000      0x3d4 ./build/obj/stm32h7xx_hal.o
+ .debug_frame   0x00000000      0x37c ./build/obj/stm32h7xx_hal.o
  .ARM.attributes
                 0x00000000       0x32 ./build/obj/stm32h7xx_hal.o
  .text          0x00000000        0x0 ./build/obj/stm32h7xx_hal_gpio.o
  .data          0x00000000        0x0 ./build/obj/stm32h7xx_hal_gpio.o
  .bss           0x00000000        0x0 ./build/obj/stm32h7xx_hal_gpio.o
  .text.HAL_GPIO_Init
-                0x00000000      0x3d8 ./build/obj/stm32h7xx_hal_gpio.o
+                0x00000000      0x2b0 ./build/obj/stm32h7xx_hal_gpio.o
  .text.HAL_GPIO_DeInit
-                0x00000000      0x218 ./build/obj/stm32h7xx_hal_gpio.o
+                0x00000000      0x190 ./build/obj/stm32h7xx_hal_gpio.o
  .text.HAL_GPIO_ReadPin
-                0x00000000       0x1c ./build/obj/stm32h7xx_hal_gpio.o
+                0x00000000        0xc ./build/obj/stm32h7xx_hal_gpio.o
  .text.HAL_GPIO_WritePin
-                0x00000000       0x28 ./build/obj/stm32h7xx_hal_gpio.o
+                0x00000000        0x8 ./build/obj/stm32h7xx_hal_gpio.o
  .text.HAL_GPIO_TogglePin
-                0x00000000       0x24 ./build/obj/stm32h7xx_hal_gpio.o
+                0x00000000       0x14 ./build/obj/stm32h7xx_hal_gpio.o
  .text.HAL_GPIO_LockPin
-                0x00000000       0xa8 ./build/obj/stm32h7xx_hal_gpio.o
+                0x00000000       0x2c ./build/obj/stm32h7xx_hal_gpio.o
  .text.HAL_GPIO_EXTI_Callback
                 0x00000000        0x4 ./build/obj/stm32h7xx_hal_gpio.o
  .text.HAL_GPIO_EXTI_IRQHandler
                 0x00000000       0x1c ./build/obj/stm32h7xx_hal_gpio.o
- .debug_info    0x00000000      0xe38 ./build/obj/stm32h7xx_hal_gpio.o
- .debug_abbrev  0x00000000      0x292 ./build/obj/stm32h7xx_hal_gpio.o
+ .debug_info    0x00000000      0xc92 ./build/obj/stm32h7xx_hal_gpio.o
+ .debug_abbrev  0x00000000      0x253 ./build/obj/stm32h7xx_hal_gpio.o
  .debug_loclists
-                0x00000000      0x3c6 ./build/obj/stm32h7xx_hal_gpio.o
+                0x00000000      0x2b9 ./build/obj/stm32h7xx_hal_gpio.o
  .debug_aranges
                 0x00000000       0x58 ./build/obj/stm32h7xx_hal_gpio.o
  .debug_rnglists
-                0x00000000       0x5c ./build/obj/stm32h7xx_hal_gpio.o
- .debug_line    0x00000000      0xa0f ./build/obj/stm32h7xx_hal_gpio.o
- .debug_str     0x00000000      0x6ea ./build/obj/stm32h7xx_hal_gpio.o
+                0x00000000       0x57 ./build/obj/stm32h7xx_hal_gpio.o
+ .debug_line    0x00000000      0x7de ./build/obj/stm32h7xx_hal_gpio.o
+ .debug_str     0x00000000      0x6cb ./build/obj/stm32h7xx_hal_gpio.o
  .comment       0x00000000       0x34 ./build/obj/stm32h7xx_hal_gpio.o
- .debug_frame   0x00000000      0x114 ./build/obj/stm32h7xx_hal_gpio.o
+ .debug_frame   0x00000000      0x100 ./build/obj/stm32h7xx_hal_gpio.o
  .ARM.attributes
                 0x00000000       0x32 ./build/obj/stm32h7xx_hal_gpio.o
  .text          0x00000000        0x0 ./build/obj/stm32h7xx_hal_rcc.o
@@ -2005,9 +2001,9 @@ Discarded input sections
  .text.HAL_RCC_DeInit
                 0x00000000      0x1a0 ./build/obj/stm32h7xx_hal_rcc.o
  .text.HAL_RCC_OscConfig
-                0x00000000      0x758 ./build/obj/stm32h7xx_hal_rcc.o
+                0x00000000      0x5e8 ./build/obj/stm32h7xx_hal_rcc.o
  .text.HAL_RCC_MCOConfig
-                0x00000000      0x12c ./build/obj/stm32h7xx_hal_rcc.o
+                0x00000000       0xa4 ./build/obj/stm32h7xx_hal_rcc.o
  .text.HAL_RCC_EnableCSS
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal_rcc.o
  .text.HAL_RCC_DisableCSS
@@ -2015,7 +2011,7 @@ Discarded input sections
  .text.HAL_RCC_GetSysClockFreq
                 0x00000000       0x44 ./build/obj/stm32h7xx_hal_rcc.o
  .text.HAL_RCC_ClockConfig
-                0x00000000      0x3ac ./build/obj/stm32h7xx_hal_rcc.o
+                0x00000000      0x250 ./build/obj/stm32h7xx_hal_rcc.o
  .text.HAL_RCC_GetHCLKFreq
                 0x00000000       0x80 ./build/obj/stm32h7xx_hal_rcc.o
  .text.HAL_RCC_GetPCLK1Freq
@@ -2030,20 +2026,18 @@ Discarded input sections
                 0x00000000        0x4 ./build/obj/stm32h7xx_hal_rcc.o
  .text.HAL_RCC_NMI_IRQHandler
                 0x00000000       0x1c ./build/obj/stm32h7xx_hal_rcc.o
- .rodata.CSWTCH.30
-                0x00000000       0x3c ./build/obj/stm32h7xx_hal_rcc.o
- .debug_info    0x00000000     0x13db ./build/obj/stm32h7xx_hal_rcc.o
- .debug_abbrev  0x00000000      0x343 ./build/obj/stm32h7xx_hal_rcc.o
+ .debug_info    0x00000000     0x121a ./build/obj/stm32h7xx_hal_rcc.o
+ .debug_abbrev  0x00000000      0x325 ./build/obj/stm32h7xx_hal_rcc.o
  .debug_loclists
-                0x00000000      0x54f ./build/obj/stm32h7xx_hal_rcc.o
+                0x00000000      0x5fb ./build/obj/stm32h7xx_hal_rcc.o
  .debug_aranges
                 0x00000000       0x90 ./build/obj/stm32h7xx_hal_rcc.o
  .debug_rnglists
-                0x00000000      0x117 ./build/obj/stm32h7xx_hal_rcc.o
- .debug_line    0x00000000     0x16aa ./build/obj/stm32h7xx_hal_rcc.o
- .debug_str     0x00000000      0xa1e ./build/obj/stm32h7xx_hal_rcc.o
+                0x00000000      0x10b ./build/obj/stm32h7xx_hal_rcc.o
+ .debug_line    0x00000000     0x1454 ./build/obj/stm32h7xx_hal_rcc.o
+ .debug_str     0x00000000      0xa11 ./build/obj/stm32h7xx_hal_rcc.o
  .comment       0x00000000       0x34 ./build/obj/stm32h7xx_hal_rcc.o
- .debug_frame   0x00000000      0x1d0 ./build/obj/stm32h7xx_hal_rcc.o
+ .debug_frame   0x00000000      0x1d4 ./build/obj/stm32h7xx_hal_rcc.o
  .ARM.attributes
                 0x00000000       0x32 ./build/obj/stm32h7xx_hal_rcc.o
  .text          0x00000000        0x0 ./build/obj/stm32h7xx_hal_pwr.o
@@ -2056,19 +2050,19 @@ Discarded input sections
  .text.HAL_PWR_DisableBkUpAccess
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal_pwr.o
  .text.HAL_PWR_ConfigPVD
-                0x00000000       0xcc ./build/obj/stm32h7xx_hal_pwr.o
+                0x00000000       0x94 ./build/obj/stm32h7xx_hal_pwr.o
  .text.HAL_PWR_EnablePVD
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal_pwr.o
  .text.HAL_PWR_DisablePVD
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal_pwr.o
  .text.HAL_PWR_EnableWakeUpPin
-                0x00000000       0x68 ./build/obj/stm32h7xx_hal_pwr.o
+                0x00000000       0x18 ./build/obj/stm32h7xx_hal_pwr.o
  .text.HAL_PWR_DisableWakeUpPin
-                0x00000000       0x68 ./build/obj/stm32h7xx_hal_pwr.o
+                0x00000000       0x14 ./build/obj/stm32h7xx_hal_pwr.o
  .text.HAL_PWR_EnterSLEEPMode
-                0x00000000       0x38 ./build/obj/stm32h7xx_hal_pwr.o
+                0x00000000       0x1c ./build/obj/stm32h7xx_hal_pwr.o
  .text.HAL_PWR_EnterSTOPMode
-                0x00000000       0x6c ./build/obj/stm32h7xx_hal_pwr.o
+                0x00000000       0x54 ./build/obj/stm32h7xx_hal_pwr.o
  .text.HAL_PWR_EnterSTANDBYMode
                 0x00000000       0x30 ./build/obj/stm32h7xx_hal_pwr.o
  .text.HAL_PWR_EnableSleepOnExit
@@ -2083,55 +2077,55 @@ Discarded input sections
                 0x00000000        0x4 ./build/obj/stm32h7xx_hal_pwr.o
  .text.HAL_PWR_PVD_IRQHandler
                 0x00000000       0x24 ./build/obj/stm32h7xx_hal_pwr.o
- .debug_info    0x00000000      0xa99 ./build/obj/stm32h7xx_hal_pwr.o
- .debug_abbrev  0x00000000      0x1bf ./build/obj/stm32h7xx_hal_pwr.o
+ .debug_info    0x00000000      0x928 ./build/obj/stm32h7xx_hal_pwr.o
+ .debug_abbrev  0x00000000      0x196 ./build/obj/stm32h7xx_hal_pwr.o
  .debug_loclists
-                0x00000000       0xeb ./build/obj/stm32h7xx_hal_pwr.o
+                0x00000000       0x5b ./build/obj/stm32h7xx_hal_pwr.o
  .debug_aranges
                 0x00000000       0xa0 ./build/obj/stm32h7xx_hal_pwr.o
  .debug_rnglists
                 0x00000000       0x74 ./build/obj/stm32h7xx_hal_pwr.o
- .debug_line    0x00000000      0x4ff ./build/obj/stm32h7xx_hal_pwr.o
- .debug_str     0x00000000      0x619 ./build/obj/stm32h7xx_hal_pwr.o
+ .debug_line    0x00000000      0x480 ./build/obj/stm32h7xx_hal_pwr.o
+ .debug_str     0x00000000      0x60c ./build/obj/stm32h7xx_hal_pwr.o
  .comment       0x00000000       0x34 ./build/obj/stm32h7xx_hal_pwr.o
- .debug_frame   0x00000000      0x15c ./build/obj/stm32h7xx_hal_pwr.o
+ .debug_frame   0x00000000      0x140 ./build/obj/stm32h7xx_hal_pwr.o
  .ARM.attributes
                 0x00000000       0x32 ./build/obj/stm32h7xx_hal_pwr.o
  .text          0x00000000        0x0 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .data          0x00000000        0x0 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .bss           0x00000000        0x0 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_ConfigSupply
-                0x00000000       0x58 ./build/obj/stm32h7xx_hal_pwr_ex.o
+                0x00000000       0x48 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_GetSupplyConfig
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_ControlVoltageScaling
-                0x00000000       0xe8 ./build/obj/stm32h7xx_hal_pwr_ex.o
+                0x00000000       0xb8 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_GetVoltageRange
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_ControlStopModeVoltageScaling
-                0x00000000       0x30 ./build/obj/stm32h7xx_hal_pwr_ex.o
+                0x00000000       0x18 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_GetStopModeVoltageRange
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_EnterSTOPMode
-                0x00000000       0x84 ./build/obj/stm32h7xx_hal_pwr_ex.o
+                0x00000000       0x60 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_ClearPendingEvent
                 0x00000000        0x4 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_EnterSTANDBYMode
-                0x00000000       0x48 ./build/obj/stm32h7xx_hal_pwr_ex.o
+                0x00000000       0x38 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_ConfigD3Domain
-                0x00000000       0x24 ./build/obj/stm32h7xx_hal_pwr_ex.o
+                0x00000000       0x14 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_EnableFlashPowerDown
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_DisableFlashPowerDown
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_EnableWakeUpPin
-                0x00000000      0x120 ./build/obj/stm32h7xx_hal_pwr_ex.o
+                0x00000000       0x84 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_DisableWakeUpPin
-                0x00000000       0x64 ./build/obj/stm32h7xx_hal_pwr_ex.o
+                0x00000000       0x10 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_GetWakeupFlag
-                0x00000000       0x44 ./build/obj/stm32h7xx_hal_pwr_ex.o
+                0x00000000        0xc ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_ClearWakeupFlag
-                0x00000000       0x50 ./build/obj/stm32h7xx_hal_pwr_ex.o
+                0x00000000       0x18 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_WKUP1_Callback
                 0x00000000        0x4 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_WKUP2_Callback
@@ -2159,7 +2153,7 @@ Discarded input sections
  .text.HAL_PWREx_DisableUSBVoltageDetector
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_EnableBatteryCharging
-                0x00000000       0x2c ./build/obj/stm32h7xx_hal_pwr_ex.o
+                0x00000000       0x1c ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_DisableBatteryCharging
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_EnableMonitoring
@@ -2171,7 +2165,7 @@ Discarded input sections
  .text.HAL_PWREx_GetVBATLevel
                 0x00000000       0x20 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_ConfigAVD
-                0x00000000       0xc0 ./build/obj/stm32h7xx_hal_pwr_ex.o
+                0x00000000       0x8c ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_EnableAVD
                 0x00000000       0x10 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_DisableAVD
@@ -2180,18 +2174,18 @@ Discarded input sections
                 0x00000000        0x4 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text.HAL_PWREx_PVD_AVD_IRQHandler
                 0x00000000       0x60 ./build/obj/stm32h7xx_hal_pwr_ex.o
- .debug_info    0x00000000     0x13cc ./build/obj/stm32h7xx_hal_pwr_ex.o
- .debug_abbrev  0x00000000      0x2f8 ./build/obj/stm32h7xx_hal_pwr_ex.o
+ .debug_info    0x00000000     0x10dc ./build/obj/stm32h7xx_hal_pwr_ex.o
+ .debug_abbrev  0x00000000      0x302 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .debug_loclists
-                0x00000000      0x3a9 ./build/obj/stm32h7xx_hal_pwr_ex.o
+                0x00000000      0x317 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .debug_aranges
                 0x00000000      0x128 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .debug_rnglists
-                0x00000000       0xdd ./build/obj/stm32h7xx_hal_pwr_ex.o
- .debug_line    0x00000000      0xcab ./build/obj/stm32h7xx_hal_pwr_ex.o
- .debug_str     0x00000000      0xa47 ./build/obj/stm32h7xx_hal_pwr_ex.o
+                0x00000000       0xe8 ./build/obj/stm32h7xx_hal_pwr_ex.o
+ .debug_line    0x00000000      0xa9f ./build/obj/stm32h7xx_hal_pwr_ex.o
+ .debug_str     0x00000000      0xa3a ./build/obj/stm32h7xx_hal_pwr_ex.o
  .comment       0x00000000       0x34 ./build/obj/stm32h7xx_hal_pwr_ex.o
- .debug_frame   0x00000000      0x344 ./build/obj/stm32h7xx_hal_pwr_ex.o
+ .debug_frame   0x00000000      0x318 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .ARM.attributes
                 0x00000000       0x32 ./build/obj/stm32h7xx_hal_pwr_ex.o
  .text          0x00000000        0x0 ./build/obj/stm32h7xx_hal_hcd.o
@@ -2204,7 +2198,7 @@ Discarded input sections
  .text.HAL_HCD_MspInit
                 0x00000000        0x4 ./build/obj/stm32h7xx_hal_hcd.o
  .text.HAL_HCD_Init
-                0x00000000       0x98 ./build/obj/stm32h7xx_hal_hcd.o
+                0x00000000       0x78 ./build/obj/stm32h7xx_hal_hcd.o
  .text.HAL_HCD_MspDeInit
                 0x00000000        0x4 ./build/obj/stm32h7xx_hal_hcd.o
  .text.HAL_HCD_DeInit
@@ -2247,16 +2241,16 @@ Discarded input sections
                 0x00000000       0x4c ./build/obj/stm32h7xx_hal_hcd.o
  .text.HAL_HCD_HC_ClearHubInfo
                 0x00000000       0x14 ./build/obj/stm32h7xx_hal_hcd.o
- .debug_info    0x00000000     0x18cb ./build/obj/stm32h7xx_hal_hcd.o
- .debug_abbrev  0x00000000      0x3bf ./build/obj/stm32h7xx_hal_hcd.o
+ .debug_info    0x00000000     0x18a2 ./build/obj/stm32h7xx_hal_hcd.o
+ .debug_abbrev  0x00000000      0x3a3 ./build/obj/stm32h7xx_hal_hcd.o
  .debug_loclists
-                0x00000000      0xb42 ./build/obj/stm32h7xx_hal_hcd.o
+                0x00000000      0xb4b ./build/obj/stm32h7xx_hal_hcd.o
  .debug_aranges
                 0x00000000       0xb0 ./build/obj/stm32h7xx_hal_hcd.o
  .debug_rnglists
-                0x00000000      0x158 ./build/obj/stm32h7xx_hal_hcd.o
- .debug_line    0x00000000     0x1352 ./build/obj/stm32h7xx_hal_hcd.o
- .debug_str     0x00000000      0xca4 ./build/obj/stm32h7xx_hal_hcd.o
+                0x00000000      0x157 ./build/obj/stm32h7xx_hal_hcd.o
+ .debug_line    0x00000000     0x1347 ./build/obj/stm32h7xx_hal_hcd.o
+ .debug_str     0x00000000      0xc97 ./build/obj/stm32h7xx_hal_hcd.o
  .comment       0x00000000       0x34 ./build/obj/stm32h7xx_hal_hcd.o
  .debug_frame   0x00000000      0x258 ./build/obj/stm32h7xx_hal_hcd.o
  .ARM.attributes
@@ -2281,39 +2275,39 @@ Discarded input sections
  .text.HAL_FLASH_GetError
                 0x00000000        0xc ./build/obj/stm32h7xx_hal_flash.o
  .text.FLASH_WaitForLastOperation
-                0x00000000       0xd0 ./build/obj/stm32h7xx_hal_flash.o
+                0x00000000       0xc0 ./build/obj/stm32h7xx_hal_flash.o
  .text.HAL_FLASH_Program
-                0x00000000       0xe8 ./build/obj/stm32h7xx_hal_flash.o
+                0x00000000       0xc8 ./build/obj/stm32h7xx_hal_flash.o
  .text.HAL_FLASH_Program_IT
-                0x00000000       0xd4 ./build/obj/stm32h7xx_hal_flash.o
+                0x00000000       0xb8 ./build/obj/stm32h7xx_hal_flash.o
  .text.FLASH_OB_WaitForLastOperation
                 0x00000000       0x54 ./build/obj/stm32h7xx_hal_flash.o
  .text.FLASH_CRC_WaitForLastOperation
-                0x00000000       0xa8 ./build/obj/stm32h7xx_hal_flash.o
+                0x00000000       0x98 ./build/obj/stm32h7xx_hal_flash.o
  .text.HAL_FLASH_OB_Launch
-                0x00000000       0x6c ./build/obj/stm32h7xx_hal_flash.o
+                0x00000000       0x64 ./build/obj/stm32h7xx_hal_flash.o
  .bss.pFlash    0x00000000       0x1c ./build/obj/stm32h7xx_hal_flash.o
- .debug_info    0x00000000      0xc4e ./build/obj/stm32h7xx_hal_flash.o
- .debug_abbrev  0x00000000      0x3c3 ./build/obj/stm32h7xx_hal_flash.o
+ .debug_info    0x00000000      0xb41 ./build/obj/stm32h7xx_hal_flash.o
+ .debug_abbrev  0x00000000      0x392 ./build/obj/stm32h7xx_hal_flash.o
  .debug_loclists
-                0x00000000      0x60d ./build/obj/stm32h7xx_hal_flash.o
+                0x00000000      0x6e5 ./build/obj/stm32h7xx_hal_flash.o
  .debug_aranges
                 0x00000000       0x80 ./build/obj/stm32h7xx_hal_flash.o
  .debug_rnglists
                 0x00000000       0x72 ./build/obj/stm32h7xx_hal_flash.o
- .debug_line    0x00000000      0xc9d ./build/obj/stm32h7xx_hal_flash.o
- .debug_str     0x00000000      0x6fc ./build/obj/stm32h7xx_hal_flash.o
+ .debug_line    0x00000000      0xc81 ./build/obj/stm32h7xx_hal_flash.o
+ .debug_str     0x00000000      0x6ef ./build/obj/stm32h7xx_hal_flash.o
  .comment       0x00000000       0x34 ./build/obj/stm32h7xx_hal_flash.o
- .debug_frame   0x00000000      0x15c ./build/obj/stm32h7xx_hal_flash.o
+ .debug_frame   0x00000000      0x158 ./build/obj/stm32h7xx_hal_flash.o
  .ARM.attributes
                 0x00000000       0x32 ./build/obj/stm32h7xx_hal_flash.o
  .text          0x00000000        0x0 ./build/obj/stm32h7xx_hal_flash_ex.o
  .data          0x00000000        0x0 ./build/obj/stm32h7xx_hal_flash_ex.o
  .bss           0x00000000        0x0 ./build/obj/stm32h7xx_hal_flash_ex.o
  .text.FLASH_MassErase
-                0x00000000       0xbc ./build/obj/stm32h7xx_hal_flash_ex.o
+                0x00000000       0x84 ./build/obj/stm32h7xx_hal_flash_ex.o
  .text.HAL_FLASHEx_OBProgram
-                0x00000000      0x47c ./build/obj/stm32h7xx_hal_flash_ex.o
+                0x00000000      0x238 ./build/obj/stm32h7xx_hal_flash_ex.o
  .text.HAL_FLASHEx_OBGetConfig
                 0x00000000      0x104 ./build/obj/stm32h7xx_hal_flash_ex.o
  .text.HAL_FLASHEx_Unlock_Bank1
@@ -2325,25 +2319,25 @@ Discarded input sections
  .text.HAL_FLASHEx_Lock_Bank2
                 0x00000000       0x18 ./build/obj/stm32h7xx_hal_flash_ex.o
  .text.HAL_FLASHEx_ComputeCRC
-                0x00000000      0x204 ./build/obj/stm32h7xx_hal_flash_ex.o
+                0x00000000      0x174 ./build/obj/stm32h7xx_hal_flash_ex.o
  .text.FLASH_Erase_Sector
-                0x00000000       0x78 ./build/obj/stm32h7xx_hal_flash_ex.o
+                0x00000000       0x4c ./build/obj/stm32h7xx_hal_flash_ex.o
  .text.HAL_FLASHEx_Erase
-                0x00000000      0x168 ./build/obj/stm32h7xx_hal_flash_ex.o
+                0x00000000      0x148 ./build/obj/stm32h7xx_hal_flash_ex.o
  .text.HAL_FLASHEx_Erase_IT
-                0x00000000      0x108 ./build/obj/stm32h7xx_hal_flash_ex.o
- .debug_info    0x00000000     0x185b ./build/obj/stm32h7xx_hal_flash_ex.o
- .debug_abbrev  0x00000000      0x3b8 ./build/obj/stm32h7xx_hal_flash_ex.o
+                0x00000000       0xe8 ./build/obj/stm32h7xx_hal_flash_ex.o
+ .debug_info    0x00000000     0x128c ./build/obj/stm32h7xx_hal_flash_ex.o
+ .debug_abbrev  0x00000000      0x36e ./build/obj/stm32h7xx_hal_flash_ex.o
  .debug_loclists
-                0x00000000      0x888 ./build/obj/stm32h7xx_hal_flash_ex.o
+                0x00000000      0x7ca ./build/obj/stm32h7xx_hal_flash_ex.o
  .debug_aranges
                 0x00000000       0x70 ./build/obj/stm32h7xx_hal_flash_ex.o
  .debug_rnglists
-                0x00000000      0x148 ./build/obj/stm32h7xx_hal_flash_ex.o
- .debug_line    0x00000000     0x101a ./build/obj/stm32h7xx_hal_flash_ex.o
- .debug_str     0x00000000      0x9ac ./build/obj/stm32h7xx_hal_flash_ex.o
+                0x00000000       0xdc ./build/obj/stm32h7xx_hal_flash_ex.o
+ .debug_line    0x00000000      0xe2b ./build/obj/stm32h7xx_hal_flash_ex.o
+ .debug_str     0x00000000      0x99f ./build/obj/stm32h7xx_hal_flash_ex.o
  .comment       0x00000000       0x34 ./build/obj/stm32h7xx_hal_flash_ex.o
- .debug_frame   0x00000000      0x13c ./build/obj/stm32h7xx_hal_flash_ex.o
+ .debug_frame   0x00000000      0x114 ./build/obj/stm32h7xx_hal_flash_ex.o
  .ARM.attributes
                 0x00000000       0x32 ./build/obj/stm32h7xx_hal_flash_ex.o
  .text          0x00000000       0xa0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libgcc.a(_aeabi_ldivmod.o)
@@ -6476,8 +6470,6 @@ HAL_GetTickPrio                                   ./build/obj/stm32h7xx_hal.o
 HAL_GetUIDw0                                      ./build/obj/stm32h7xx_hal.o
 HAL_GetUIDw1                                      ./build/obj/stm32h7xx_hal.o
 HAL_GetUIDw2                                      ./build/obj/stm32h7xx_hal.o
-HAL_HCDEx_SetRxFiFo                               ./build/obj/usbh_platform_chibios_h7.o
-HAL_HCDEx_SetTxFiFo                               ./build/obj/usbh_platform_chibios_h7.o
 HAL_HCD_Connect_Callback                          ./build/obj/usbh_platform_chibios_h7.o
 HAL_HCD_DeInit                                    ./build/obj/stm32h7xx_hal_hcd.o
                                                   ./build/obj/usbh_platform_chibios_h7.o
@@ -7560,14 +7552,6 @@ adc_lld_stop                                      ./build/obj/hal_adc_lld.o
                                                   ./build/obj/hal_adc.o
 adc_lld_stop_conversion                           ./build/obj/hal_adc_lld.o
                                                   ./build/obj/hal_adc.o
-assert_param                                      ./build/obj/stm32h7xx_hal_flash_ex.o
-                                                  ./build/obj/stm32h7xx_hal_flash.o
-                                                  ./build/obj/stm32h7xx_hal_hcd.o
-                                                  ./build/obj/stm32h7xx_hal_pwr_ex.o
-                                                  ./build/obj/stm32h7xx_hal_pwr.o
-                                                  ./build/obj/stm32h7xx_hal_rcc.o
-                                                  ./build/obj/stm32h7xx_hal_gpio.o
-                                                  ./build/obj/stm32h7xx_hal.o
 bdmaInit                                          ./build/obj/stm32_bdma.o
                                                   ./build/obj/hal_lld.o
 bdmaSetRequestSource                              ./build/obj/stm32_bdma.o

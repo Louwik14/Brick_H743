@@ -1,169 +1,188 @@
-Tu es un expert en développement firmware embarqué spécialisé en :
-- Microcontrôleurs STM32 (y compris STM32H7)
-- ChibiOS / RT (version récente)
-- USB OTG Host sur STM32H743 via HAL HCD
-- Middleware officiel USB Host ST : stm32-mw-usb-host-master
-- MIDI 1.0 USB class-compliant (sans SysEx, sans multi-câble)
+# 🤖 agent.md — Contexte & Règles du projet Groovebox STM32H743
 
-Tu travailles sur un projet de groovebox HARDWARE réel avec les contraintes suivantes :
+Ce dépôt contient le firmware principal d’une **groovebox matérielle temps réel** basée sur **STM32H743 + ChibiOS RT**.
+L’objectif est de construire **une machine musicale déterministe, robuste et modulaire**, inspirée des architectures type Elektron / Octatrack.
 
--------------------------------------------------------------------------------
-CONTEXTE SYSTÈME
--------------------------------------------------------------------------------
+⚠️ **Ce fichier est L’UNIQUE source de vérité pour l’IA (Codex / ChatGPT) entre les passes.  
+Il doit être relu AVANT toute modification de code, et mis à jour À LA FIN de chaque passe.**
 
-- MCU : STM32H743 (Cortex-M7, D-Cache activé)
-- RTOS : ChibiOS / RT (version récente)
-- USB : OTG FS en mode HOST
-- VBUS : toujours alimenté en 5V matériel, AUCUN contrôle GPIO
-- HAL utilisé : drivers officiels stm32h7xx-hal-driver
-- CMSIS présent dans drivers/CMSIS
+---
 
-La partie USB Device est DÉJÀ fonctionnelle via ChibiOS dans :
-- usbcfg.c / usbcfg.h
-- usb_device.c / usb_device.h
-- midi.c / midi.h
+## ✅ 1. Plateforme matérielle
 
-Ces fichiers implémentent déjà :
-- USB MIDI Device class-compliant
-- MIDI DIN UART
-- Threads, mailboxes, sémaphores
-- Gestion correcte du D-Cache STM32H7
+### MCU principal
+- STM32H743 (Cortex-M7, FPU, D-Cache)
+- Horloge audio maître générée par le MCU
 
-CES FICHIERS NE DOIVENT JAMAIS ÊTRE MODIFIÉS.
+### Audio
+- **ADC** : 2× ADAU1979 en TDM → 8 canaux d’entrée
+- **DAC** : PCM4104 en TDM → 4 canaux de sortie
+  - 2 canaux = sortie ligne
+  - 2 canaux = sortie casque (via ampli analogique)
+- Format : 48 kHz / 24 bits (stockés dans int32)
+- TDM 8×32 bits en entrée, 4×32 bits en sortie
+- Le STM32 est **MAÎTRE des horloges audio**
 
--------------------------------------------------------------------------------
-SOURCE USB HOST AUTORISÉE
--------------------------------------------------------------------------------
+### Bus temps réel
+- SAI + DMA double buffer ping/pong
+- Traitement audio **exclusivement dans un thread ChibiOS**, jamais en IRQ
 
-Tu dois utiliser EXCLUSIVEMENT la librairie officielle récente de ST :
+---
 
-stm32-mw-usb-host-master/
+## ✅ 2. Cartouches sonores (SPI-Link)
 
-Les headers de référence ABSOLUE sont :
-- Core/Inc/usbh_core.h
-- Core/Inc/usbh_def.h
-- Core/Inc/usbh_ioreq.h
-- Core/Inc/usbh_pipes.h
+- Jusqu’à 4 cartouches basées sur STM32F429
+- Chaque cartouche :
+  - Génère son propre audio
+  - Est esclave SPI du H743
+  - Ne connaît ni tempo, ni patterns, ni séquenceur
+- Communication via **trames SPI fixes (DMA)** avec :
+  - Bloc audio
+  - Zone d’events sérialisés
 
-IL EST STRICTEMENT INTERDIT :
-- d’utiliser l’ancienne STM32_USB_Host_Library
-- d’utiliser tout code Ksoloti
-- d’utiliser toute API Cube F4/F7
-- d’inventer des champs dans USBH_HandleTypeDef
-- d’accéder à phost->device ou phost->Control si ces champs n’existent pas dans TA version réelle
+---
 
--------------------------------------------------------------------------------
-OBJECTIF UNIQUE
--------------------------------------------------------------------------------
+## ✅ 3. Architecture logicielle audio
 
-Implémenter un USB MIDI HOST PRODUCTION-READY, pas un prototype.
+Fichiers clés :
 
-Le système DOIT :
-- Énumérer un périphérique USB MIDI réel
-- Recevoir des messages MIDI en temps réel
-- Envoyer des messages MIDI en temps réel
-- Fonctionner en live sans verrouillage USB
-- Survivre aux déconnexions/reconnexions
-- Être compatible STM32H743 + ChibiOS + HAL + middleware officiel ST
+- `audio_conf.h`  
+  Paramètres globaux : Fs, nombre de canaux, tailles de buffers, DMA.
 
--------------------------------------------------------------------------------
-PÉRIMÈTRE FONCTIONNEL MIDI (STRICT)
--------------------------------------------------------------------------------
+- `audio_codec_ada1979.c/h`  
+  Initialisation I2C des ADC (PLL, TDM, slots, mute, volumes).
 
-SUPPORTÉ :
-- Note On / Note Off
-- CC
-- Program Change
-- Pitch Bend
-- Channel Pressure
-- Clock
-- Start / Stop / Continue
-- Active Sensing
-- Reset
+- `audio_codec_pcm4104.c/h`  
+  DAC en mode matériel autonome (pas de SPI).
 
-NON SUPPORTÉ (NE PAS IMPLÉMENTER) :
-- SysEx
-- Multi-câble USB
-- Interfaces multiples
-- Streaming audio USB
+- `drv_audio.c/h`  
+  Cœur audio :
+  - DMA RX/TX
+  - Ping/pong buffers
+  - Routing MAIN / CUE
+  - Volume maître
+  - Mix pistes
+  - Architecture SEND FX
+  - Hook DSP faible
 
-Architecture STRICTE :
-- 1 interface MIDIStreaming
-- 1 Bulk IN
-- 1 Bulk OUT
-- Paquets USB-MIDI de 4 octets uniquement
+- `recap_audio.txt`  
+  **Document technique officiel du pipeline audio.  
+  Il doit être systématiquement mis à jour à chaque passe.**
 
--------------------------------------------------------------------------------
-CONTRAINTES DE QUALITÉ
--------------------------------------------------------------------------------
+---
 
-- AUCUN TODO
-- AUCUN mock
-- AUCUN stub
-- AUCUN squelette
-- AUCUNE fonction vide
-- AUCUNE simulation d’URB
-- AUCUNE dépendance à du matériel fictif
+## ✅ 4. Contraintes de développement (STRICTES)
 
-Tout doit être :
-- Fonctionnel matériellement
-- Compatible HAL + HCD STM32H743
-- Sécurisé vis-à-vis du cache D
+- C99 uniquement
+- ❌ AUCUN malloc / calloc / free
+- ❌ AUCUNE allocation dynamique
+- ❌ Aucune dépendance à CubeMX
+- ✅ ChibiOS RT + LLD uniquement
+- ✅ Code déterministe temps réel
+- ✅ Tout traitement audio hors IRQ
+- ✅ Style production, pas pédagogique
 
-Obligatoire :
-- Gestion du cache via SCB_CleanDCache_by_Addr / SCB_InvalidateDCache_by_Addr
-  OU placement des buffers en section DMA dédiée alignée 32 bytes.
+---
 
--------------------------------------------------------------------------------
-ARCHITECTURE OBLIGATOIRE
--------------------------------------------------------------------------------
+## ✅ 5. Cache, DMA & Robustesse H743
 
-1) Driver de classe :
-   - stm32-mw-usb-host-master/Class/MIDI/Inc/usbh_midi.h
-   - stm32-mw-usb-host-master/Class/MIDI/Src/usbh_midi.c
+Le STM32H743 possède un **D-Cache actif**.
+Les buffers DMA audio doivent être :
 
-2) Port bas niveau ChibiOS + HAL :
-   - usb_host/usbh_platform_chibios_h7.h
-   - usb_host/usbh_platform_chibios_h7.c
+- Placés dans une **RAM non cacheable** (ex: `.ram_d2`)
+- Alignés sur 32 bytes minimum
+- Jamais manipulés avec des incohérences cache
 
-3) Wrapper applicatif :
-   - usb_host/usb_host_midi.h
-   - usb_host/usb_host_midi.c
+Les callbacks DMA doivent :
 
-4) Configuration middleware :
-   - usb_host/usbh_conf.h
+- Gérer HT / TC
+- **Détecter TEIF / DMEIF / FEIF**
+- Appeler `chSysHalt()` en cas d’erreur critique (priorité : silence sûr)
 
-5) Documentation finale :
-   - HOST_MIDI_RECAP.md
+---
 
--------------------------------------------------------------------------------
-SPÉCIFICITÉS BAS NIVEAU
--------------------------------------------------------------------------------
+## ✅ 6. Modèle de mix actuel
 
-- Utiliser le peripheral OTG FS réel
-- Activer les clocks RCC réelles
-- Configurer PA11 / PA12 en USB
-- Configurer l’IRQ OTG_FS_IRQn réelle
-- Utiliser stm32h7xx_hal_hcd.c
-- NE PAS utiliser de driver LL USB
-- USBH_LL_DriverVBUS EST UN NO-OP (VBUS toujours ON)
+- 4 pistes stéréo (ADC → pistes 0 à 3)
+- Bus MAIN → sortie ligne
+- Bus CUE → sortie casque
+- Gains par piste :
+  - `gain_main`
+  - `gain_cue`
+- **Architecture SEND FX globale en place (bypass pour l’instant)** :
+  - `gain_send` par piste
+  - Bus SEND → FX → RETURN → MAIN
 
--------------------------------------------------------------------------------
-SORTIE OBLIGATOIRE QUAND DU CODE EST DEMANDÉ
--------------------------------------------------------------------------------
+Aucun effet réel n’est encore implémenté (structure seulement).
 
-Toujours fournir :
-- Les fichiers COMPLETS
-- AUCUN extrait
-- AUCUN pseudo-code
-- AUCUN “à compléter”
-- Aucun fichier omis
+---
 
-Si un Makefile est impacté :
-- Fournir la section exacte modifiée
+## ✅ 7. Évolution future prévue
 
--------------------------------------------------------------------------------
-RÈGLE DE PRIORITÉ
--------------------------------------------------------------------------------
+- Effets en SEND globaux :
+  - Reverb
+  - Delay
+  - Granular (inspiré de Mutable Instruments / Clouds)
+- Séquenceur piloté par le compteur d’échantillons audio
+- Mixage audio interne + audio en provenance des cartouches SPI
+- UI pilotant uniquement des **paramètres**, jamais le temps audio
 
-TOUT PROMPT UTILISATEUR EXPLICITE A PRIORITÉ ABSOLUE SUR CE FICHIER agent.md.
+---
+
+## ✅ 8. Dossier /docs
+
+Dans le dossier **`/docs`**, sont présents :
+
+- Les **datasheets des codecs audio**
+- Les **fichiers de configuration board** (`board.h`, `board.c`)
+- La **copie exacte de ChibiOS utilisée dans ce projet**
+
+⚠️ Important :
+- Cette copie de ChibiOS est **uniquement une référence documentaire**
+- ❌ Le chemin du ChibiOS **ne doit JAMAIS être modifié dans les Makefiles**
+- ❌ Codex ne doit pas s’en servir pour changer l’architecture de build
+- Les `mcuconf.h` restent **ceux du projet**, pas ceux de `/docs`
+
+---
+
+## ✅ 9. Règles de travail pour l’IA (Codex)
+
+Avant chaque passe :
+
+1. Lire **impérativement** :
+   - `agent.md`
+   - `recap_audio.txt`
+
+2. Ne modifier **QUE** les fichiers explicitement demandés.
+
+3. Ne jamais :
+   - Introduire de dépendance circulaire
+   - Ajouter de logique UI dans les drivers bas niveau
+   - Modifier les IRQ sauf instruction explicite
+   - Ajouter de fonctionnalités non demandées
+
+4. Après chaque passe :
+   - Mettre à jour `recap_audio.txt`
+   - Décrire ce qui a réellement changé
+   - Mentionner les limites connues
+
+---
+
+## ✅ 10. Philosophie du projet
+
+Ce projet vise :
+
+- Une **machine musicale matérielle sérieuse**
+- Temps réel strict
+- Aucun comportement non déterministe
+- Architecture inspirée de :
+  - consoles de mixage
+  - groovebox Elektron
+  - systèmes modulaires numériques
+
+La priorité est :
+> **Stabilité → Déterminisme → Qualité audio → Fonctionnalités**
+
+---
+
+🛑 **Si une instruction du prompt contredit ce fichier `agent.md`, ce fichier a TOUJOURS priorité.**
