@@ -1,0 +1,449 @@
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc5k7yE7.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 2
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"audio_codec_pcm4104.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.audio_codec_pcm4104_init,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 2,,3
+  21              		.global	audio_codec_pcm4104_init
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  25              		.type	audio_codec_pcm4104_init, %function
+  26              	audio_codec_pcm4104_init:
+  27              	.LFB448:
+  28              		.file 1 "drivers/audio_codec_pcm4104.c"
+  29              		.loc 1 19 37 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34              		.loc 1 26 1 view .LVU1
+  35 0000 7047     		bx	lr
+  36              		.cfi_endproc
+  37              	.LFE448:
+  38              		.size	audio_codec_pcm4104_init, .-audio_codec_pcm4104_init
+  39 0002 00BF     		.section	.text.audio_codec_pcm4104_set_mute,"ax",%progbits
+  40              		.align	1
+  41              		.p2align 2,,3
+  42              		.global	audio_codec_pcm4104_set_mute
+  43              		.syntax unified
+  44              		.thumb
+  45              		.thumb_func
+  46              		.type	audio_codec_pcm4104_set_mute, %function
+  47              	audio_codec_pcm4104_set_mute:
+  48              	.LVL0:
+  49              	.LFB449:
+  50              		.loc 1 28 46 view -0
+  51              		.cfi_startproc
+  52              		@ args = 0, pretend = 0, frame = 0
+  53              		@ frame_needed = 0, uses_anonymous_args = 0
+  54              		@ link register save eliminated.
+  55              		.loc 1 37 5 view .LVU3
+  56              		.loc 1 39 1 is_stmt 0 view .LVU4
+  57 0000 7047     		bx	lr
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc5k7yE7.s 			page 2
+
+
+  58              		.cfi_endproc
+  59              	.LFE449:
+  60              		.size	audio_codec_pcm4104_set_mute, .-audio_codec_pcm4104_set_mute
+  61 0002 00BF     		.text
+  62              	.Letext0:
+  63              		.section	.debug_info,"",%progbits
+  64              	.Ldebug_info0:
+  65 0000 B5000000 		.4byte	0xb5
+  66 0004 0500     		.2byte	0x5
+  67 0006 01       		.byte	0x1
+  68 0007 04       		.byte	0x4
+  69 0008 00000000 		.4byte	.Ldebug_abbrev0
+  70 000c 02       		.uleb128 0x2
+  71 000d 93000000 		.4byte	.LASF12
+  72 0011 1D       		.byte	0x1d
+  73 0012 26000000 		.4byte	.LASF13
+  74 0016 42010000 		.4byte	.LASF14
+  75 001a 0C000000 		.4byte	.LLRL0
+  76 001e 00000000 		.4byte	0
+  77 0022 00000000 		.4byte	.Ldebug_line0
+  78 0026 03       		.uleb128 0x3
+  79 0027 04       		.byte	0x4
+  80 0028 05       		.byte	0x5
+  81 0029 696E7400 		.ascii	"int\000"
+  82 002d 01       		.uleb128 0x1
+  83 002e 04       		.byte	0x4
+  84 002f 07       		.byte	0x7
+  85 0030 19000000 		.4byte	.LASF0
+  86 0034 01       		.uleb128 0x1
+  87 0035 08       		.byte	0x8
+  88 0036 05       		.byte	0x5
+  89 0037 5B000000 		.4byte	.LASF1
+  90 003b 01       		.uleb128 0x1
+  91 003c 08       		.byte	0x8
+  92 003d 04       		.byte	0x4
+  93 003e 9F010000 		.4byte	.LASF2
+  94 0042 01       		.uleb128 0x1
+  95 0043 01       		.byte	0x1
+  96 0044 06       		.byte	0x6
+  97 0045 93010000 		.4byte	.LASF3
+  98 0049 01       		.uleb128 0x1
+  99 004a 01       		.byte	0x1
+ 100 004b 08       		.byte	0x8
+ 101 004c 80000000 		.4byte	.LASF4
+ 102 0050 01       		.uleb128 0x1
+ 103 0051 02       		.byte	0x2
+ 104 0052 05       		.byte	0x5
+ 105 0053 C8010000 		.4byte	.LASF5
+ 106 0057 01       		.uleb128 0x1
+ 107 0058 02       		.byte	0x2
+ 108 0059 07       		.byte	0x7
+ 109 005a 80010000 		.4byte	.LASF6
+ 110 005e 01       		.uleb128 0x1
+ 111 005f 04       		.byte	0x4
+ 112 0060 05       		.byte	0x5
+ 113 0061 33010000 		.4byte	.LASF7
+ 114 0065 01       		.uleb128 0x1
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc5k7yE7.s 			page 3
+
+
+ 115 0066 04       		.byte	0x4
+ 116 0067 07       		.byte	0x7
+ 117 0068 49000000 		.4byte	.LASF8
+ 118 006c 01       		.uleb128 0x1
+ 119 006d 08       		.byte	0x8
+ 120 006e 07       		.byte	0x7
+ 121 006f 69000000 		.4byte	.LASF9
+ 122 0073 01       		.uleb128 0x1
+ 123 0074 01       		.byte	0x1
+ 124 0075 08       		.byte	0x8
+ 125 0076 8E000000 		.4byte	.LASF10
+ 126 007a 01       		.uleb128 0x1
+ 127 007b 01       		.byte	0x1
+ 128 007c 02       		.byte	0x2
+ 129 007d 3C010000 		.4byte	.LASF11
+ 130 0081 04       		.uleb128 0x4
+ 131 0082 AB010000 		.4byte	.LASF15
+ 132 0086 01       		.byte	0x1
+ 133 0087 1C       		.byte	0x1c
+ 134 0088 06       		.byte	0x6
+ 135 0089 00000000 		.4byte	.LFB449
+ 136 008d 02000000 		.4byte	.LFE449-.LFB449
+ 137 0091 01       		.uleb128 0x1
+ 138 0092 9C       		.byte	0x9c
+ 139 0093 A6000000 		.4byte	0xa6
+ 140 0097 05       		.uleb128 0x5
+ 141 0098 44000000 		.4byte	.LASF16
+ 142 009c 01       		.byte	0x1
+ 143 009d 1C       		.byte	0x1c
+ 144 009e 28       		.byte	0x28
+ 145 009f 7A000000 		.4byte	0x7a
+ 146 00a3 01       		.uleb128 0x1
+ 147 00a4 50       		.byte	0x50
+ 148 00a5 00       		.byte	0
+ 149 00a6 06       		.uleb128 0x6
+ 150 00a7 00000000 		.4byte	.LASF17
+ 151 00ab 01       		.byte	0x1
+ 152 00ac 13       		.byte	0x13
+ 153 00ad 06       		.byte	0x6
+ 154 00ae 00000000 		.4byte	.LFB448
+ 155 00b2 02000000 		.4byte	.LFE448-.LFB448
+ 156 00b6 01       		.uleb128 0x1
+ 157 00b7 9C       		.byte	0x9c
+ 158 00b8 00       		.byte	0
+ 159              		.section	.debug_abbrev,"",%progbits
+ 160              	.Ldebug_abbrev0:
+ 161 0000 01       		.uleb128 0x1
+ 162 0001 24       		.uleb128 0x24
+ 163 0002 00       		.byte	0
+ 164 0003 0B       		.uleb128 0xb
+ 165 0004 0B       		.uleb128 0xb
+ 166 0005 3E       		.uleb128 0x3e
+ 167 0006 0B       		.uleb128 0xb
+ 168 0007 03       		.uleb128 0x3
+ 169 0008 0E       		.uleb128 0xe
+ 170 0009 00       		.byte	0
+ 171 000a 00       		.byte	0
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc5k7yE7.s 			page 4
+
+
+ 172 000b 02       		.uleb128 0x2
+ 173 000c 11       		.uleb128 0x11
+ 174 000d 01       		.byte	0x1
+ 175 000e 25       		.uleb128 0x25
+ 176 000f 0E       		.uleb128 0xe
+ 177 0010 13       		.uleb128 0x13
+ 178 0011 0B       		.uleb128 0xb
+ 179 0012 03       		.uleb128 0x3
+ 180 0013 0E       		.uleb128 0xe
+ 181 0014 1B       		.uleb128 0x1b
+ 182 0015 0E       		.uleb128 0xe
+ 183 0016 55       		.uleb128 0x55
+ 184 0017 17       		.uleb128 0x17
+ 185 0018 11       		.uleb128 0x11
+ 186 0019 01       		.uleb128 0x1
+ 187 001a 10       		.uleb128 0x10
+ 188 001b 17       		.uleb128 0x17
+ 189 001c 00       		.byte	0
+ 190 001d 00       		.byte	0
+ 191 001e 03       		.uleb128 0x3
+ 192 001f 24       		.uleb128 0x24
+ 193 0020 00       		.byte	0
+ 194 0021 0B       		.uleb128 0xb
+ 195 0022 0B       		.uleb128 0xb
+ 196 0023 3E       		.uleb128 0x3e
+ 197 0024 0B       		.uleb128 0xb
+ 198 0025 03       		.uleb128 0x3
+ 199 0026 08       		.uleb128 0x8
+ 200 0027 00       		.byte	0
+ 201 0028 00       		.byte	0
+ 202 0029 04       		.uleb128 0x4
+ 203 002a 2E       		.uleb128 0x2e
+ 204 002b 01       		.byte	0x1
+ 205 002c 3F       		.uleb128 0x3f
+ 206 002d 19       		.uleb128 0x19
+ 207 002e 03       		.uleb128 0x3
+ 208 002f 0E       		.uleb128 0xe
+ 209 0030 3A       		.uleb128 0x3a
+ 210 0031 0B       		.uleb128 0xb
+ 211 0032 3B       		.uleb128 0x3b
+ 212 0033 0B       		.uleb128 0xb
+ 213 0034 39       		.uleb128 0x39
+ 214 0035 0B       		.uleb128 0xb
+ 215 0036 27       		.uleb128 0x27
+ 216 0037 19       		.uleb128 0x19
+ 217 0038 11       		.uleb128 0x11
+ 218 0039 01       		.uleb128 0x1
+ 219 003a 12       		.uleb128 0x12
+ 220 003b 06       		.uleb128 0x6
+ 221 003c 40       		.uleb128 0x40
+ 222 003d 18       		.uleb128 0x18
+ 223 003e 7A       		.uleb128 0x7a
+ 224 003f 19       		.uleb128 0x19
+ 225 0040 01       		.uleb128 0x1
+ 226 0041 13       		.uleb128 0x13
+ 227 0042 00       		.byte	0
+ 228 0043 00       		.byte	0
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc5k7yE7.s 			page 5
+
+
+ 229 0044 05       		.uleb128 0x5
+ 230 0045 05       		.uleb128 0x5
+ 231 0046 00       		.byte	0
+ 232 0047 03       		.uleb128 0x3
+ 233 0048 0E       		.uleb128 0xe
+ 234 0049 3A       		.uleb128 0x3a
+ 235 004a 0B       		.uleb128 0xb
+ 236 004b 3B       		.uleb128 0x3b
+ 237 004c 0B       		.uleb128 0xb
+ 238 004d 39       		.uleb128 0x39
+ 239 004e 0B       		.uleb128 0xb
+ 240 004f 49       		.uleb128 0x49
+ 241 0050 13       		.uleb128 0x13
+ 242 0051 02       		.uleb128 0x2
+ 243 0052 18       		.uleb128 0x18
+ 244 0053 00       		.byte	0
+ 245 0054 00       		.byte	0
+ 246 0055 06       		.uleb128 0x6
+ 247 0056 2E       		.uleb128 0x2e
+ 248 0057 00       		.byte	0
+ 249 0058 3F       		.uleb128 0x3f
+ 250 0059 19       		.uleb128 0x19
+ 251 005a 03       		.uleb128 0x3
+ 252 005b 0E       		.uleb128 0xe
+ 253 005c 3A       		.uleb128 0x3a
+ 254 005d 0B       		.uleb128 0xb
+ 255 005e 3B       		.uleb128 0x3b
+ 256 005f 0B       		.uleb128 0xb
+ 257 0060 39       		.uleb128 0x39
+ 258 0061 0B       		.uleb128 0xb
+ 259 0062 27       		.uleb128 0x27
+ 260 0063 19       		.uleb128 0x19
+ 261 0064 11       		.uleb128 0x11
+ 262 0065 01       		.uleb128 0x1
+ 263 0066 12       		.uleb128 0x12
+ 264 0067 06       		.uleb128 0x6
+ 265 0068 40       		.uleb128 0x40
+ 266 0069 18       		.uleb128 0x18
+ 267 006a 7A       		.uleb128 0x7a
+ 268 006b 19       		.uleb128 0x19
+ 269 006c 00       		.byte	0
+ 270 006d 00       		.byte	0
+ 271 006e 00       		.byte	0
+ 272              		.section	.debug_aranges,"",%progbits
+ 273 0000 24000000 		.4byte	0x24
+ 274 0004 0200     		.2byte	0x2
+ 275 0006 00000000 		.4byte	.Ldebug_info0
+ 276 000a 04       		.byte	0x4
+ 277 000b 00       		.byte	0
+ 278 000c 0000     		.2byte	0
+ 279 000e 0000     		.2byte	0
+ 280 0010 00000000 		.4byte	.LFB448
+ 281 0014 02000000 		.4byte	.LFE448-.LFB448
+ 282 0018 00000000 		.4byte	.LFB449
+ 283 001c 02000000 		.4byte	.LFE449-.LFB449
+ 284 0020 00000000 		.4byte	0
+ 285 0024 00000000 		.4byte	0
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc5k7yE7.s 			page 6
+
+
+ 286              		.section	.debug_rnglists,"",%progbits
+ 287              	.Ldebug_ranges0:
+ 288 0000 15000000 		.4byte	.Ldebug_ranges3-.Ldebug_ranges2
+ 289              	.Ldebug_ranges2:
+ 290 0004 0500     		.2byte	0x5
+ 291 0006 04       		.byte	0x4
+ 292 0007 00       		.byte	0
+ 293 0008 00000000 		.4byte	0
+ 294              	.LLRL0:
+ 295 000c 07       		.byte	0x7
+ 296 000d 00000000 		.4byte	.LFB448
+ 297 0011 02       		.uleb128 .LFE448-.LFB448
+ 298 0012 07       		.byte	0x7
+ 299 0013 00000000 		.4byte	.LFB449
+ 300 0017 02       		.uleb128 .LFE449-.LFB449
+ 301 0018 00       		.byte	0
+ 302              	.Ldebug_ranges3:
+ 303              		.section	.debug_line,"",%progbits
+ 304              	.Ldebug_line0:
+ 305 0000 68000000 		.section	.debug_str,"MS",%progbits,1
+ 305      03003400 
+ 305      00000201 
+ 305      FB0E0D00 
+ 305      01010101 
+ 306              	.LASF17:
+ 307 0000 61756469 		.ascii	"audio_codec_pcm4104_init\000"
+ 307      6F5F636F 
+ 307      6465635F 
+ 307      70636D34 
+ 307      3130345F 
+ 308              	.LASF0:
+ 309 0019 756E7369 		.ascii	"unsigned int\000"
+ 309      676E6564 
+ 309      20696E74 
+ 309      00
+ 310              	.LASF13:
+ 311 0026 64726976 		.ascii	"drivers/audio_codec_pcm4104.c\000"
+ 311      6572732F 
+ 311      61756469 
+ 311      6F5F636F 
+ 311      6465635F 
+ 312              	.LASF16:
+ 313 0044 6D757465 		.ascii	"mute\000"
+ 313      00
+ 314              	.LASF8:
+ 315 0049 6C6F6E67 		.ascii	"long unsigned int\000"
+ 315      20756E73 
+ 315      69676E65 
+ 315      6420696E 
+ 315      7400
+ 316              	.LASF1:
+ 317 005b 6C6F6E67 		.ascii	"long long int\000"
+ 317      206C6F6E 
+ 317      6720696E 
+ 317      7400
+ 318              	.LASF9:
+ 319 0069 6C6F6E67 		.ascii	"long long unsigned int\000"
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc5k7yE7.s 			page 7
+
+
+ 319      206C6F6E 
+ 319      6720756E 
+ 319      7369676E 
+ 319      65642069 
+ 320              	.LASF4:
+ 321 0080 756E7369 		.ascii	"unsigned char\000"
+ 321      676E6564 
+ 321      20636861 
+ 321      7200
+ 322              	.LASF10:
+ 323 008e 63686172 		.ascii	"char\000"
+ 323      00
+ 324              	.LASF12:
+ 325 0093 474E5520 		.ascii	"GNU C17 11.3.1 20220712 -mcpu=cortex-m7 -mthumb -mf"
+ 325      43313720 
+ 325      31312E33 
+ 325      2E312032 
+ 325      30323230 
+ 326 00c6 6C6F6174 		.ascii	"loat-abi=hard -mfpu=fpv5-d16 -march=armv7e-m+fp.dp "
+ 326      2D616269 
+ 326      3D686172 
+ 326      64202D6D 
+ 326      6670753D 
+ 327 00f9 2D676764 		.ascii	"-ggdb -O2 -ffunction-sections -fdata-sections -fno-"
+ 327      62202D4F 
+ 327      32202D66 
+ 327      66756E63 
+ 327      74696F6E 
+ 328 012c 636F6D6D 		.ascii	"common\000"
+ 328      6F6E00
+ 329              	.LASF7:
+ 330 0133 6C6F6E67 		.ascii	"long int\000"
+ 330      20696E74 
+ 330      00
+ 331              	.LASF11:
+ 332 013c 5F426F6F 		.ascii	"_Bool\000"
+ 332      6C00
+ 333              	.LASF14:
+ 334 0142 433A5C43 		.ascii	"C:\\ChibiStudio\\ChibiOS-master\\demos\\STM32\\CUST"
+ 334      68696269 
+ 334      53747564 
+ 334      696F5C43 
+ 334      68696269 
+ 335 0170 4F4D5F48 		.ascii	"OM_H743IIT6_maj\000"
+ 335      37343349 
+ 335      4954365F 
+ 335      6D616A00 
+ 336              	.LASF6:
+ 337 0180 73686F72 		.ascii	"short unsigned int\000"
+ 337      7420756E 
+ 337      7369676E 
+ 337      65642069 
+ 337      6E7400
+ 338              	.LASF3:
+ 339 0193 7369676E 		.ascii	"signed char\000"
+ 339      65642063 
+ 339      68617200 
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc5k7yE7.s 			page 8
+
+
+ 340              	.LASF2:
+ 341 019f 6C6F6E67 		.ascii	"long double\000"
+ 341      20646F75 
+ 341      626C6500 
+ 342              	.LASF15:
+ 343 01ab 61756469 		.ascii	"audio_codec_pcm4104_set_mute\000"
+ 343      6F5F636F 
+ 343      6465635F 
+ 343      70636D34 
+ 343      3130345F 
+ 344              	.LASF5:
+ 345 01c8 73686F72 		.ascii	"short int\000"
+ 345      7420696E 
+ 345      7400
+ 346              		.ident	"GCC: (Arm GNU Toolchain 11.3.Rel1) 11.3.1 20220712"
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc5k7yE7.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 audio_codec_pcm4104.c
+C:\Users\DEVELO~1\AppData\Local\Temp\cc5k7yE7.s:19     .text.audio_codec_pcm4104_init:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\cc5k7yE7.s:26     .text.audio_codec_pcm4104_init:00000000 audio_codec_pcm4104_init
+C:\Users\DEVELO~1\AppData\Local\Temp\cc5k7yE7.s:40     .text.audio_codec_pcm4104_set_mute:00000000 $t
+C:\Users\DEVELO~1\AppData\Local\Temp\cc5k7yE7.s:47     .text.audio_codec_pcm4104_set_mute:00000000 audio_codec_pcm4104_set_mute
+
+NO UNDEFINED SYMBOLS

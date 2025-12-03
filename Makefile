@@ -81,7 +81,7 @@ ASMXSRC = $(ALLXASMSRC)
 # Includes
 ##############################################################################
 INCDIR = $(CONFDIR) $(ALLINC)
-UINCDIR = cfg drivers ui
+UINCDIR = cfg drivers ui 
 
 ##############################################################################
 # Defines

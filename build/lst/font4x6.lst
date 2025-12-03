@@ -1,0 +1,589 @@
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 2
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"font4x6.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	font4x6
+  19              		.global	font4x6_height
+  20              		.global	font4x6_width
+  21              		.section	.rodata.font4x6,"a"
+  22              		.align	2
+  23              		.type	font4x6, %object
+  24              		.size	font4x6, 384
+  25              	font4x6:
+  26 0000 000000   		.ascii	"\000\000\000"
+  27 0003 000000   		.ascii	"\000\000\000"
+  28 0006 000000   		.ascii	"\000\000\000"
+  29 0009 000000   		.ascii	"\000\000\000"
+  30 000c 000000   		.ascii	"\000\000\000"
+  31 000f 000000   		.ascii	"\000\000\000"
+  32 0012 000000   		.ascii	"\000\000\000"
+  33 0015 000000   		.ascii	"\000\000\000"
+  34 0018 000000   		.ascii	"\000\000\000"
+  35 001b 000000   		.ascii	"\000\000\000"
+  36 001e 000000   		.ascii	"\000\000\000"
+  37 0021 000000   		.ascii	"\000\000\000"
+  38 0024 000000   		.ascii	"\000\000\000"
+  39 0027 000000   		.ascii	"\000\000\000"
+  40 002a 000000   		.ascii	"\000\000\000"
+  41 002d 000000   		.ascii	"\000\000\000"
+  42 0030 000000   		.ascii	"\000\000\000"
+  43 0033 000000   		.ascii	"\000\000\000"
+  44 0036 000000   		.ascii	"\000\000\000"
+  45 0039 000000   		.ascii	"\000\000\000"
+  46 003c 000000   		.ascii	"\000\000\000"
+  47 003f 000000   		.ascii	"\000\000\000"
+  48 0042 000000   		.ascii	"\000\000\000"
+  49 0045 000000   		.ascii	"\000\000\000"
+  50 0048 000000   		.ascii	"\000\000\000"
+  51 004b 000000   		.ascii	"\000\000\000"
+  52 004e 000000   		.ascii	"\000\000\000"
+  53 0051 000000   		.ascii	"\000\000\000"
+  54 0054 000000   		.ascii	"\000\000\000"
+  55 0057 000000   		.ascii	"\000\000\000"
+  56 005a 000000   		.ascii	"\000\000\000"
+  57 005d 000000   		.ascii	"\000\000\000"
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s 			page 2
+
+
+  58 0060 000000   		.ascii	"\000\000\000"
+  59 0063 222020   		.ascii	"\"  "
+  60 0066 550000   		.ascii	"U\000\000"
+  61 0069 575750   		.ascii	"WWP"
+  62 006c 636720   		.ascii	"cg "
+  63 006f 542150   		.ascii	"T!P"
+  64 0072 636560   		.ascii	"ce`"
+  65 0075 220000   		.ascii	"\"\000\000"
+  66 0078 211120   		.ascii	"!\021 "
+  67 007b 244420   		.ascii	"$D "
+  68 007e 525000   		.ascii	"RP\000"
+  69 0081 027200   		.ascii	"\002r\000"
+  70 0084 000021   		.ascii	"\000\000!"
+  71 0087 007000   		.ascii	"\000p\000"
+  72 008a 000010   		.ascii	"\000\000\020"
+  73 008d 442110   		.ascii	"D!\020"
+  74 0090 755570   		.ascii	"uUp"
+  75 0093 322270   		.ascii	"2\"p"
+  76 0096 747170   		.ascii	"tqp"
+  77 0099 747470   		.ascii	"ttp"
+  78 009c 557440   		.ascii	"Ut@"
+  79 009f 717470   		.ascii	"qtp"
+  80 00a2 717570   		.ascii	"qup"
+  81 00a5 744440   		.ascii	"tD@"
+  82 00a8 757570   		.ascii	"uup"
+  83 00ab 757470   		.ascii	"utp"
+  84 00ae 002020   		.ascii	"\000  "
+  85 00b1 002021   		.ascii	"\000 !"
+  86 00b4 421240   		.ascii	"B\022@"
+  87 00b7 070700   		.ascii	"\007\007\000"
+  88 00ba 124210   		.ascii	"\022B\020"
+  89 00bd 746020   		.ascii	"t` "
+  90 00c0 255160   		.ascii	"%Q`"
+  91 00c3 257550   		.ascii	"%uP"
+  92 00c6 353530   		.ascii	"550"
+  93 00c9 611160   		.ascii	"a\021`"
+  94 00cc 355530   		.ascii	"5U0"
+  95 00cf 713170   		.ascii	"q1p"
+  96 00d2 713110   		.ascii	"q1\020"
+  97 00d5 615560   		.ascii	"aU`"
+  98 00d8 557550   		.ascii	"UuP"
+  99 00db 722270   		.ascii	"r\"p"
+ 100 00de 444520   		.ascii	"DE "
+ 101 00e1 553550   		.ascii	"U5P"
+ 102 00e4 111170   		.ascii	"\021\021p"
+ 103 00e7 577550   		.ascii	"WuP"
+ 104 00ea 755550   		.ascii	"uUP"
+ 105 00ed 255520   		.ascii	"%U "
+ 106 00f0 757110   		.ascii	"uq\020"
+ 107 00f3 655360   		.ascii	"eS`"
+ 108 00f6 353550   		.ascii	"55P"
+ 109 00f9 617430   		.ascii	"at0"
+ 110 00fc 722220   		.ascii	"r\" "
+ 111 00ff 555570   		.ascii	"UUp"
+ 112 0102 555220   		.ascii	"UR "
+ 113 0105 557750   		.ascii	"UwP"
+ 114 0108 552550   		.ascii	"U%P"
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s 			page 3
+
+
+ 115 010b 552220   		.ascii	"U\" "
+ 116 010e 742170   		.ascii	"t!p"
+ 117 0111 622260   		.ascii	"b\"`"
+ 118 0114 112440   		.ascii	"\021$@"
+ 119 0117 322230   		.ascii	"2\"0"
+ 120 011a 250000   		.ascii	"%\000\000"
+ 121 011d 000070   		.ascii	"\000\000p"
+ 122 0120 120000   		.ascii	"\022\000\000"
+ 123 0123 065560   		.ascii	"\006U`"
+ 124 0126 135530   		.ascii	"\023U0"
+ 125 0129 061160   		.ascii	"\006\021`"
+ 126 012c 465560   		.ascii	"FU`"
+ 127 012f 025360   		.ascii	"\002S`"
+ 128 0132 427220   		.ascii	"Br "
+ 129 0135 025642   		.ascii	"\002VB"
+ 130 0138 113550   		.ascii	"\0215P"
+ 131 013b 020220   		.ascii	"\002\002 "
+ 132 013e 020221   		.ascii	"\002\002!"
+ 133 0141 153550   		.ascii	"\0255P"
+ 134 0144 222240   		.ascii	"\"\"@"
+ 135 0147 057550   		.ascii	"\005uP"
+ 136 014a 035550   		.ascii	"\003UP"
+ 137 014d 025520   		.ascii	"\002U "
+ 138 0150 035531   		.ascii	"\003U1"
+ 139 0153 065564   		.ascii	"\006Ud"
+ 140 0156 025110   		.ascii	"\002Q\020"
+ 141 0159 061430   		.ascii	"\006\0240"
+ 142 015c 272240   		.ascii	"'\"@"
+ 143 015f 055560   		.ascii	"\005U`"
+ 144 0162 055220   		.ascii	"\005R "
+ 145 0165 055750   		.ascii	"\005WP"
+ 146 0168 052250   		.ascii	"\005\"P"
+ 147 016b 055642   		.ascii	"\005VB"
+ 148 016e 074170   		.ascii	"\007Ap"
+ 149 0171 621260   		.ascii	"b\022`"
+ 150 0174 222220   		.ascii	"\"\" "
+ 151 0177 324230   		.ascii	"2B0"
+ 152 017a 036000   		.ascii	"\003`\000"
+ 153 017d 000000   		.ascii	"\000\000\000"
+ 154              		.section	.rodata.font4x6_height,"a"
+ 155              		.type	font4x6_height, %object
+ 156              		.size	font4x6_height, 1
+ 157              	font4x6_height:
+ 158 0000 06       		.byte	6
+ 159              		.section	.rodata.font4x6_width,"a"
+ 160              		.type	font4x6_width, %object
+ 161              		.size	font4x6_width, 1
+ 162              	font4x6_width:
+ 163 0000 04       		.byte	4
+ 164              		.text
+ 165              	.Letext0:
+ 166              		.file 1 "c:\\chibistudio\\tools\\gnu tools arm embedded\\11.3 2022.08\\arm-none-eabi\\include\\mac
+ 167              		.file 2 "c:\\chibistudio\\tools\\gnu tools arm embedded\\11.3 2022.08\\arm-none-eabi\\include\\sys
+ 168              		.file 3 "ui/font4x6.h"
+ 169              		.file 4 "ui/font4x6.c"
+ 170              		.section	.debug_info,"",%progbits
+ 171              	.Ldebug_info0:
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s 			page 4
+
+
+ 172 0000 F7000000 		.4byte	0xf7
+ 173 0004 0500     		.2byte	0x5
+ 174 0006 01       		.byte	0x1
+ 175 0007 04       		.byte	0x4
+ 176 0008 00000000 		.4byte	.Ldebug_abbrev0
+ 177 000c 08       		.uleb128 0x8
+ 178 000d 9E000000 		.4byte	.LASF14
+ 179 0011 1D       		.byte	0x1d
+ 180 0012 00000000 		.4byte	.LASF15
+ 181 0016 58000000 		.4byte	.LASF16
+ 182 001a 00000000 		.4byte	.Ldebug_line0
+ 183 001e 01       		.uleb128 0x1
+ 184 001f 01       		.byte	0x1
+ 185 0020 06       		.byte	0x6
+ 186 0021 9A010000 		.4byte	.LASF0
+ 187 0025 05       		.uleb128 0x5
+ 188 0026 0D000000 		.4byte	.LASF9
+ 189 002a 01       		.byte	0x1
+ 190 002b 2B       		.byte	0x2b
+ 191 002c 18       		.byte	0x18
+ 192 002d 31000000 		.4byte	0x31
+ 193 0031 01       		.uleb128 0x1
+ 194 0032 01       		.byte	0x1
+ 195 0033 08       		.byte	0x8
+ 196 0034 17000000 		.4byte	.LASF1
+ 197 0038 01       		.uleb128 0x1
+ 198 0039 02       		.byte	0x2
+ 199 003a 05       		.byte	0x5
+ 200 003b 87010000 		.4byte	.LASF2
+ 201 003f 01       		.uleb128 0x1
+ 202 0040 02       		.byte	0x2
+ 203 0041 07       		.byte	0x7
+ 204 0042 37000000 		.4byte	.LASF3
+ 205 0046 01       		.uleb128 0x1
+ 206 0047 04       		.byte	0x4
+ 207 0048 05       		.byte	0x5
+ 208 0049 91010000 		.4byte	.LASF4
+ 209 004d 01       		.uleb128 0x1
+ 210 004e 04       		.byte	0x4
+ 211 004f 07       		.byte	0x7
+ 212 0050 25000000 		.4byte	.LASF5
+ 213 0054 01       		.uleb128 0x1
+ 214 0055 08       		.byte	0x8
+ 215 0056 05       		.byte	0x5
+ 216 0057 79010000 		.4byte	.LASF6
+ 217 005b 01       		.uleb128 0x1
+ 218 005c 08       		.byte	0x8
+ 219 005d 07       		.byte	0x7
+ 220 005e 5A010000 		.4byte	.LASF7
+ 221 0062 09       		.uleb128 0x9
+ 222 0063 04       		.byte	0x4
+ 223 0064 05       		.byte	0x5
+ 224 0065 696E7400 		.ascii	"int\000"
+ 225 0069 01       		.uleb128 0x1
+ 226 006a 04       		.byte	0x4
+ 227 006b 07       		.byte	0x7
+ 228 006c 3E010000 		.4byte	.LASF8
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s 			page 5
+
+
+ 229 0070 05       		.uleb128 0x5
+ 230 0071 71010000 		.4byte	.LASF10
+ 231 0075 02       		.byte	0x2
+ 232 0076 18       		.byte	0x18
+ 233 0077 13       		.byte	0x13
+ 234 0078 25000000 		.4byte	0x25
+ 235 007c 02       		.uleb128 0x2
+ 236 007d 70000000 		.4byte	0x70
+ 237 0081 06       		.uleb128 0x6
+ 238 0082 7C000000 		.4byte	0x7c
+ 239 0086 92000000 		.4byte	0x92
+ 240 008a 0A       		.uleb128 0xa
+ 241 008b 03       		.uleb128 0x3
+ 242 008c 69000000 		.4byte	0x69
+ 243 0090 02       		.byte	0x2
+ 244 0091 00       		.byte	0
+ 245 0092 02       		.uleb128 0x2
+ 246 0093 81000000 		.4byte	0x81
+ 247 0097 04       		.uleb128 0x4
+ 248 0098 96000000 		.4byte	.LASF11
+ 249 009c 1D       		.byte	0x1d
+ 250 009d 92000000 		.4byte	0x92
+ 251 00a1 04       		.uleb128 0x4
+ 252 00a2 4A000000 		.4byte	.LASF12
+ 253 00a6 20       		.byte	0x20
+ 254 00a7 7C000000 		.4byte	0x7c
+ 255 00ab 04       		.uleb128 0x4
+ 256 00ac 4B010000 		.4byte	.LASF13
+ 257 00b0 23       		.byte	0x23
+ 258 00b1 7C000000 		.4byte	0x7c
+ 259 00b5 07       		.uleb128 0x7
+ 260 00b6 A1000000 		.4byte	0xa1
+ 261 00ba 1D       		.byte	0x1d
+ 262 00bb 05       		.uleb128 0x5
+ 263 00bc 03       		.byte	0x3
+ 264 00bd 00000000 		.4byte	font4x6_width
+ 265 00c1 07       		.uleb128 0x7
+ 266 00c2 AB000000 		.4byte	0xab
+ 267 00c6 20       		.byte	0x20
+ 268 00c7 05       		.uleb128 0x5
+ 269 00c8 03       		.byte	0x3
+ 270 00c9 00000000 		.4byte	font4x6_height
+ 271 00cd 06       		.uleb128 0x6
+ 272 00ce 7C000000 		.4byte	0x7c
+ 273 00d2 E3000000 		.4byte	0xe3
+ 274 00d6 03       		.uleb128 0x3
+ 275 00d7 69000000 		.4byte	0x69
+ 276 00db 7F       		.byte	0x7f
+ 277 00dc 03       		.uleb128 0x3
+ 278 00dd 69000000 		.4byte	0x69
+ 279 00e1 02       		.byte	0x2
+ 280 00e2 00       		.byte	0
+ 281 00e3 02       		.uleb128 0x2
+ 282 00e4 CD000000 		.4byte	0xcd
+ 283 00e8 0B       		.uleb128 0xb
+ 284 00e9 97000000 		.4byte	0x97
+ 285 00ed 04       		.byte	0x4
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s 			page 6
+
+
+ 286 00ee 29       		.byte	0x29
+ 287 00ef 0F       		.byte	0xf
+ 288 00f0 E3000000 		.4byte	0xe3
+ 289 00f4 05       		.uleb128 0x5
+ 290 00f5 03       		.byte	0x3
+ 291 00f6 00000000 		.4byte	font4x6
+ 292 00fa 00       		.byte	0
+ 293              		.section	.debug_abbrev,"",%progbits
+ 294              	.Ldebug_abbrev0:
+ 295 0000 01       		.uleb128 0x1
+ 296 0001 24       		.uleb128 0x24
+ 297 0002 00       		.byte	0
+ 298 0003 0B       		.uleb128 0xb
+ 299 0004 0B       		.uleb128 0xb
+ 300 0005 3E       		.uleb128 0x3e
+ 301 0006 0B       		.uleb128 0xb
+ 302 0007 03       		.uleb128 0x3
+ 303 0008 0E       		.uleb128 0xe
+ 304 0009 00       		.byte	0
+ 305 000a 00       		.byte	0
+ 306 000b 02       		.uleb128 0x2
+ 307 000c 26       		.uleb128 0x26
+ 308 000d 00       		.byte	0
+ 309 000e 49       		.uleb128 0x49
+ 310 000f 13       		.uleb128 0x13
+ 311 0010 00       		.byte	0
+ 312 0011 00       		.byte	0
+ 313 0012 03       		.uleb128 0x3
+ 314 0013 21       		.uleb128 0x21
+ 315 0014 00       		.byte	0
+ 316 0015 49       		.uleb128 0x49
+ 317 0016 13       		.uleb128 0x13
+ 318 0017 2F       		.uleb128 0x2f
+ 319 0018 0B       		.uleb128 0xb
+ 320 0019 00       		.byte	0
+ 321 001a 00       		.byte	0
+ 322 001b 04       		.uleb128 0x4
+ 323 001c 34       		.uleb128 0x34
+ 324 001d 00       		.byte	0
+ 325 001e 03       		.uleb128 0x3
+ 326 001f 0E       		.uleb128 0xe
+ 327 0020 3A       		.uleb128 0x3a
+ 328 0021 21       		.uleb128 0x21
+ 329 0022 03       		.sleb128 3
+ 330 0023 3B       		.uleb128 0x3b
+ 331 0024 0B       		.uleb128 0xb
+ 332 0025 39       		.uleb128 0x39
+ 333 0026 21       		.uleb128 0x21
+ 334 0027 16       		.sleb128 22
+ 335 0028 49       		.uleb128 0x49
+ 336 0029 13       		.uleb128 0x13
+ 337 002a 3F       		.uleb128 0x3f
+ 338 002b 19       		.uleb128 0x19
+ 339 002c 3C       		.uleb128 0x3c
+ 340 002d 19       		.uleb128 0x19
+ 341 002e 00       		.byte	0
+ 342 002f 00       		.byte	0
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s 			page 7
+
+
+ 343 0030 05       		.uleb128 0x5
+ 344 0031 16       		.uleb128 0x16
+ 345 0032 00       		.byte	0
+ 346 0033 03       		.uleb128 0x3
+ 347 0034 0E       		.uleb128 0xe
+ 348 0035 3A       		.uleb128 0x3a
+ 349 0036 0B       		.uleb128 0xb
+ 350 0037 3B       		.uleb128 0x3b
+ 351 0038 0B       		.uleb128 0xb
+ 352 0039 39       		.uleb128 0x39
+ 353 003a 0B       		.uleb128 0xb
+ 354 003b 49       		.uleb128 0x49
+ 355 003c 13       		.uleb128 0x13
+ 356 003d 00       		.byte	0
+ 357 003e 00       		.byte	0
+ 358 003f 06       		.uleb128 0x6
+ 359 0040 01       		.uleb128 0x1
+ 360 0041 01       		.byte	0x1
+ 361 0042 49       		.uleb128 0x49
+ 362 0043 13       		.uleb128 0x13
+ 363 0044 01       		.uleb128 0x1
+ 364 0045 13       		.uleb128 0x13
+ 365 0046 00       		.byte	0
+ 366 0047 00       		.byte	0
+ 367 0048 07       		.uleb128 0x7
+ 368 0049 34       		.uleb128 0x34
+ 369 004a 00       		.byte	0
+ 370 004b 47       		.uleb128 0x47
+ 371 004c 13       		.uleb128 0x13
+ 372 004d 3A       		.uleb128 0x3a
+ 373 004e 21       		.uleb128 0x21
+ 374 004f 04       		.sleb128 4
+ 375 0050 3B       		.uleb128 0x3b
+ 376 0051 0B       		.uleb128 0xb
+ 377 0052 39       		.uleb128 0x39
+ 378 0053 21       		.uleb128 0x21
+ 379 0054 0F       		.sleb128 15
+ 380 0055 02       		.uleb128 0x2
+ 381 0056 18       		.uleb128 0x18
+ 382 0057 00       		.byte	0
+ 383 0058 00       		.byte	0
+ 384 0059 08       		.uleb128 0x8
+ 385 005a 11       		.uleb128 0x11
+ 386 005b 01       		.byte	0x1
+ 387 005c 25       		.uleb128 0x25
+ 388 005d 0E       		.uleb128 0xe
+ 389 005e 13       		.uleb128 0x13
+ 390 005f 0B       		.uleb128 0xb
+ 391 0060 03       		.uleb128 0x3
+ 392 0061 0E       		.uleb128 0xe
+ 393 0062 1B       		.uleb128 0x1b
+ 394 0063 0E       		.uleb128 0xe
+ 395 0064 10       		.uleb128 0x10
+ 396 0065 17       		.uleb128 0x17
+ 397 0066 00       		.byte	0
+ 398 0067 00       		.byte	0
+ 399 0068 09       		.uleb128 0x9
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s 			page 8
+
+
+ 400 0069 24       		.uleb128 0x24
+ 401 006a 00       		.byte	0
+ 402 006b 0B       		.uleb128 0xb
+ 403 006c 0B       		.uleb128 0xb
+ 404 006d 3E       		.uleb128 0x3e
+ 405 006e 0B       		.uleb128 0xb
+ 406 006f 03       		.uleb128 0x3
+ 407 0070 08       		.uleb128 0x8
+ 408 0071 00       		.byte	0
+ 409 0072 00       		.byte	0
+ 410 0073 0A       		.uleb128 0xa
+ 411 0074 21       		.uleb128 0x21
+ 412 0075 00       		.byte	0
+ 413 0076 00       		.byte	0
+ 414 0077 00       		.byte	0
+ 415 0078 0B       		.uleb128 0xb
+ 416 0079 34       		.uleb128 0x34
+ 417 007a 00       		.byte	0
+ 418 007b 47       		.uleb128 0x47
+ 419 007c 13       		.uleb128 0x13
+ 420 007d 3A       		.uleb128 0x3a
+ 421 007e 0B       		.uleb128 0xb
+ 422 007f 3B       		.uleb128 0x3b
+ 423 0080 0B       		.uleb128 0xb
+ 424 0081 39       		.uleb128 0x39
+ 425 0082 0B       		.uleb128 0xb
+ 426 0083 49       		.uleb128 0x49
+ 427 0084 13       		.uleb128 0x13
+ 428 0085 02       		.uleb128 0x2
+ 429 0086 18       		.uleb128 0x18
+ 430 0087 00       		.byte	0
+ 431 0088 00       		.byte	0
+ 432 0089 00       		.byte	0
+ 433              		.section	.debug_aranges,"",%progbits
+ 434 0000 14000000 		.4byte	0x14
+ 435 0004 0200     		.2byte	0x2
+ 436 0006 00000000 		.4byte	.Ldebug_info0
+ 437 000a 04       		.byte	0x4
+ 438 000b 00       		.byte	0
+ 439 000c 0000     		.2byte	0
+ 440 000e 0000     		.2byte	0
+ 441 0010 00000000 		.4byte	0
+ 442 0014 00000000 		.4byte	0
+ 443              		.section	.debug_line,"",%progbits
+ 444              	.Ldebug_line0:
+ 445 0000 04010000 		.section	.debug_str,"MS",%progbits,1
+ 445      0300FE00 
+ 445      00000201 
+ 445      FB0E0D00 
+ 445      01010101 
+ 446              	.LASF15:
+ 447 0000 75692F66 		.ascii	"ui/font4x6.c\000"
+ 447      6F6E7434 
+ 447      78362E63 
+ 447      00
+ 448              	.LASF9:
+ 449 000d 5F5F7569 		.ascii	"__uint8_t\000"
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s 			page 9
+
+
+ 449      6E74385F 
+ 449      7400
+ 450              	.LASF1:
+ 451 0017 756E7369 		.ascii	"unsigned char\000"
+ 451      676E6564 
+ 451      20636861 
+ 451      7200
+ 452              	.LASF5:
+ 453 0025 6C6F6E67 		.ascii	"long unsigned int\000"
+ 453      20756E73 
+ 453      69676E65 
+ 453      6420696E 
+ 453      7400
+ 454              	.LASF3:
+ 455 0037 73686F72 		.ascii	"short unsigned int\000"
+ 455      7420756E 
+ 455      7369676E 
+ 455      65642069 
+ 455      6E7400
+ 456              	.LASF12:
+ 457 004a 666F6E74 		.ascii	"font4x6_width\000"
+ 457      3478365F 
+ 457      77696474 
+ 457      6800
+ 458              	.LASF16:
+ 459 0058 433A5C43 		.ascii	"C:\\ChibiStudio\\ChibiOS-master\\demos\\STM32\\CUST"
+ 459      68696269 
+ 459      53747564 
+ 459      696F5C43 
+ 459      68696269 
+ 460 0086 4F4D5F48 		.ascii	"OM_H743IIT6_maj\000"
+ 460      37343349 
+ 460      4954365F 
+ 460      6D616A00 
+ 461              	.LASF11:
+ 462 0096 666F6E74 		.ascii	"font4x6\000"
+ 462      34783600 
+ 463              	.LASF14:
+ 464 009e 474E5520 		.ascii	"GNU C17 11.3.1 20220712 -mcpu=cortex-m7 -mthumb -mf"
+ 464      43313720 
+ 464      31312E33 
+ 464      2E312032 
+ 464      30323230 
+ 465 00d1 6C6F6174 		.ascii	"loat-abi=hard -mfpu=fpv5-d16 -march=armv7e-m+fp.dp "
+ 465      2D616269 
+ 465      3D686172 
+ 465      64202D6D 
+ 465      6670753D 
+ 466 0104 2D676764 		.ascii	"-ggdb -O2 -ffunction-sections -fdata-sections -fno-"
+ 466      62202D4F 
+ 466      32202D66 
+ 466      66756E63 
+ 466      74696F6E 
+ 467 0137 636F6D6D 		.ascii	"common\000"
+ 467      6F6E00
+ 468              	.LASF8:
+ 469 013e 756E7369 		.ascii	"unsigned int\000"
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s 			page 10
+
+
+ 469      676E6564 
+ 469      20696E74 
+ 469      00
+ 470              	.LASF13:
+ 471 014b 666F6E74 		.ascii	"font4x6_height\000"
+ 471      3478365F 
+ 471      68656967 
+ 471      687400
+ 472              	.LASF7:
+ 473 015a 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 473      206C6F6E 
+ 473      6720756E 
+ 473      7369676E 
+ 473      65642069 
+ 474              	.LASF10:
+ 475 0171 75696E74 		.ascii	"uint8_t\000"
+ 475      385F7400 
+ 476              	.LASF6:
+ 477 0179 6C6F6E67 		.ascii	"long long int\000"
+ 477      206C6F6E 
+ 477      6720696E 
+ 477      7400
+ 478              	.LASF2:
+ 479 0187 73686F72 		.ascii	"short int\000"
+ 479      7420696E 
+ 479      7400
+ 480              	.LASF4:
+ 481 0191 6C6F6E67 		.ascii	"long int\000"
+ 481      20696E74 
+ 481      00
+ 482              	.LASF0:
+ 483 019a 7369676E 		.ascii	"signed char\000"
+ 483      65642063 
+ 483      68617200 
+ 484              		.ident	"GCC: (Arm GNU Toolchain 11.3.Rel1) 11.3.1 20220712"
+ARM GAS  C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 font4x6.c
+C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s:25     .rodata.font4x6:00000000 font4x6
+C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s:157    .rodata.font4x6_height:00000000 font4x6_height
+C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s:162    .rodata.font4x6_width:00000000 font4x6_width
+C:\Users\DEVELO~1\AppData\Local\Temp\cc9hCpzc.s:22     .rodata.font4x6:00000000 $d
+
+NO UNDEFINED SYMBOLS
