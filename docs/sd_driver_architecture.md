@@ -263,3 +263,8 @@
 ## Build/FatFS – correction 2025-06-02
 - Rappel de build : compilation forcée de tous les fichiers FatFS/SD via `CSRC += $(wildcard drivers/sd/*.c)` et `$(wildcard drivers/sd/ff16/*.c)` dans le Makefile.
 - Chemins d’include : `UINCDIR` ajoute explicitement `drivers/sd` et `drivers/sd/ff16` pour que `ff.h`, `diskio.h` et les headers `drv_sd*.h` soient résolus lors de la compilation.
+
+## Build/FatFS – synchronisation R0.16 locale (2025-06-02)
+- Les sources FatFS R0.16 sont désormais stockées localement dans `drivers/sd/ff16/` et fournissent les symboles attendus par le Makefile.
+- Fichiers présents : `ff.c`, `ff.h`, `ffconf.h`, `diskio.c`, `diskio.h`, `ffsystem.c`, `ffunicode.c`.
+- Le répertoire `drivers/sd/` ne contient plus de doublons FatFS : seuls les fichiers `drv_sd*.c/.h` restent à la racine, toutes les implémentations FatFS vivent sous `drivers/sd/ff16/`.
