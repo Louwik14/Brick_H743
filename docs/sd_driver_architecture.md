@@ -255,3 +255,7 @@
 ## Correctifs finaux – 2025-05-29
 - Flush physique systématique : `drv_sd_hal_sync()` est appelé après chaque `f_sync`, avant `f_unmount` et juste avant l’arrêt HAL pour garantir la vidange des buffers SDMMC.
 - Chemins déterministes sans `snprintf` : construction des chemins `/projects/...` et `/samples/...` par concaténation bornée (`SD_PATH_MAX`) afin d’éliminer tout formatage non déterministe dans le thread SD.
+
+## Build system – intégration SD (2025-05-31)
+- Méthode d’intégration : ajout explicite des sources SD via `$(wildcard drivers/sd/*.c)` dans `CSRC`, calqué sur la stratégie existante des autres sous-dossiers drivers.
+- Variables impactées : `CSRC` inclut désormais les fichiers `drivers/sd/*.c` et `UINCDIR` référence `drivers/sd` pour l’accessibilité des headers.
