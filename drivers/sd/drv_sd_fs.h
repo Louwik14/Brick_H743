@@ -29,6 +29,7 @@ typedef enum {
 sd_error_t drv_sd_fs_mount(sd_fs_mode_t mode);
 void       drv_sd_fs_unmount(void);
 bool       drv_sd_fs_is_mounted(void);
+bool       drv_sd_fs_is_read_only(void);
 sd_error_t drv_sd_fs_open(sd_fs_file_t *handle, const char *path, BYTE mode);
 void       drv_sd_fs_close(sd_fs_file_t *handle);
 sd_error_t drv_sd_fs_read(sd_fs_file_t *handle, void *buffer, UINT btr, UINT *br);
@@ -39,6 +40,7 @@ sd_error_t drv_sd_fs_rename(const char *oldp, const char *newp);
 sd_error_t drv_sd_fs_delete(const char *path);
 sd_error_t drv_sd_fs_mkdir(const char *path);
 sd_error_t drv_sd_fs_list_dir(const char *path, FRESULT (*cb)(FILINFO *info, void *arg), void *arg);
+bool       drv_sd_fs_consume_write_protect_event(void);
 
 #ifdef __cplusplus
 }

@@ -25,6 +25,33 @@ static sd_request_t sd_requests[SD_FIFO_DEPTH];
 static bool sd_request_in_use[SD_FIFO_DEPTH];
 static mutex_t sd_alloc_mutex;
 
+static bool sd_request_is_write(const sd_request_t *req) {
+    if (req == NULL) {
+        return false;
+    }
+    return (req->type == SD_REQ_SAVE_PATTERN);
+}
+
+static void sd_purge_write_requests(void) {
+    sd_request_t *pending[SD_FIFO_DEPTH];
+    size_t pending_count = 0U;
+    msg_t msg;
+    while (chMBFetch(&sd_mb, &msg, TIME_IMMEDIATE) == MSG_OK) {
+        sd_request_t *req = (sd_request_t *)msg;
+        if (sd_request_is_write(req)) {
+            req->result = SD_ERR_FS;
+            g_sd_last_error = SD_ERR_FS;
+            chBSemSignal(&req->done);
+            drv_sd_thread_release(req);
+        } else {
+            pending[pending_count++] = req;
+        }
+    }
+    for (size_t i = 0; i < pending_count; ++i) {
+        (void)chMBPost(&sd_mb, (msg_t)pending[i], TIME_IMMEDIATE);
+    }
+}
+
 static void sd_stats_record(sd_error_t res, uint32_t latency_us) {
     g_sd_stats.ops_total++;
     if (res == SD_OK) {
@@ -60,6 +87,13 @@ static void sd_set_state(sd_state_t new_state) {
     g_sd_state = new_state;
 }
 
+static void sd_handle_write_protect_flag(void) {
+    if (drv_sd_fs_consume_write_protect_event()) {
+        sd_set_state(SD_STATE_MOUNTED_RO);
+        sd_purge_write_requests();
+    }
+}
+
 static sd_error_t sd_handle_init(void) {
     drv_sd_hal_init();
     drv_sd_fs_unmount();
@@ -67,14 +101,14 @@ static sd_error_t sd_handle_init(void) {
 }
 
 static sd_error_t sd_handle_mount(bool read_only) {
-    (void)read_only;
     if (!drv_sd_hal_is_card_present()) {
         sd_set_state(SD_STATE_UNMOUNTED);
         return SD_ERR_NO_CARD;
     }
     sd_error_t res = drv_sd_fs_mount(read_only ? SD_FS_RO : SD_FS_RW);
     if (res == SD_OK) {
-        sd_set_state(read_only ? SD_STATE_MOUNTED_RO : SD_STATE_MOUNTED_RW);
+        bool fs_ro = drv_sd_fs_is_read_only();
+        sd_set_state((read_only || fs_ro) ? SD_STATE_MOUNTED_RO : SD_STATE_MOUNTED_RW);
     } else {
         sd_set_state(SD_STATE_UNMOUNTED);
     }
@@ -179,7 +213,10 @@ static THD_FUNCTION(sdThread, arg) {
         sd_request_t *req = (sd_request_t *)msg;
         systime_t start = chVTGetSystemTimeX();
         sd_state_t prev_state = g_sd_state;
-        sd_set_state(SD_STATE_BUSY);
+        bool io_request = (req->type != SD_REQ_INIT && req->type != SD_REQ_GET_STATS && req->type != SD_REQ_CLEAR_STATS);
+        if (io_request) {
+            sd_set_state(SD_STATE_BUSY);
+        }
         sd_error_t res = SD_ERR_PARAM;
         switch (req->type) {
         case SD_REQ_INIT:
@@ -224,9 +261,13 @@ static THD_FUNCTION(sdThread, arg) {
         req->result = res;
         g_sd_last_error = res;
         sd_apply_error_state(res);
+        sd_handle_write_protect_flag();
         uint32_t latency_us = (uint32_t)ST2US(chVTTimeElapsedSinceX(start));
         sd_stats_record(res, latency_us);
         chBSemSignal(&req->done);
+        if (req->auto_release) {
+            drv_sd_thread_release(req);
+        }
     }
 }
 

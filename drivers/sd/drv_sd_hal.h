@@ -27,6 +27,8 @@ typedef enum {
 void            drv_sd_hal_init(void);
 void            drv_sd_hal_deinit(void);
 bool            drv_sd_hal_is_card_present(void);
+sd_hal_status_t drv_sd_hal_connect(void);
+void            drv_sd_hal_disconnect(void);
 sd_hal_status_t drv_sd_hal_read_blocks(uint8_t *buffer, uint32_t sector, uint32_t count);
 sd_hal_status_t drv_sd_hal_write_blocks(const uint8_t *buffer, uint32_t sector, uint32_t count);
 void            drv_sd_hal_sync(void);

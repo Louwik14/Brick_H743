@@ -61,6 +61,7 @@ struct sd_request_s {
     sd_request_type_t type;
     sd_error_t        result;
     binary_semaphore_t done;
+    bool              auto_release;
     union {
         bool                mount_ro;
         sd_pattern_params_t pattern;
