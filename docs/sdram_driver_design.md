@@ -4,6 +4,7 @@
 - Driver bas niveau + petite abstraction mémoire, auto-suffisant côté drivers, sans dépendance aux couches UI / audio / applicatives encore absentes.
 - Aucun allocateur dynamique : seules des régions statiques prédéfinies sont exposées.
 - Compatible ChibiOS/RT avec D-Cache actif ; ne doit pas perturber la chaîne audio validée (buffers audio restent en SRAM interne non-cacheable).
+- **La SDRAM W9825G6KH-6I est dédiée en priorité au traitement audio live** (loops, delays longs, buffers FX temps réel) et doit être exploitable simultanément par le CPU et les DMA audio **sans maintenance de cache**.
 
 ## 2. Couche FMC / HAL SDRAM (bas niveau)
 **Rôle :** configurer le contrôleur FMC pour la W9825G6KH-6I, appliquer la séquence d'initialisation JEDEC/datasheet, surveiller les erreurs matérielles et fournir l'accès brut mémoire.
@@ -61,15 +62,15 @@
 **Rôle :** définir des régions nommées, à taille fixe, alignées, avec attributs cache/MPU prédéfinis. Aucun allocateur ni sous-allocation dynamique.
 
 ### 4.1 Propositions de régions
-- **SAMPLES_CACHE** : grande zone cacheable pour stockage de samples audio ou tables wavetable (lecture CPU seulement, pas de DMA). Alignement 32 octets, taille majoritaire (~4–5 MiB).
-- **PATTERNS_CACHE** : zone cacheable pour structures séquenceur/Patterns volumineux ; alignement 32 octets, taille ~1–2 MiB.
-- **WORKSPACE_NONCACHE** : zone non-cacheable (MPU) pour futurs périphériques DMA non audio (ex: accélération graphique, stockage temporaire de données partagées) ; alignement 32 octets, taille ~0.5–1 MiB.
-- **TRACE_LOG** : zone cacheable pour buffers de log/trace volumineux ; taille ~0.5 MiB.
+- **SDRAM_AUDIO_LOOP** : zone non-cacheable réservée aux boucles live longues, accessibles par CPU et DMA audio sans clean/invalidate ; alignement ≥ 64 octets ; taille cible ≥ 3–4 MiB.
+- **SDRAM_AUDIO_DELAY** : zone non-cacheable pour les lignes de délai longues et buffers de feedback ; alignement ≥ 64 octets ; taille cible ≥ 2–3 MiB.
+- **SDRAM_AUDIO_FX/WORK** : zone non-cacheable pour buffers de travail FX temps réel (granular, pitch-shift, convolution) ; alignement ≥ 64 octets ; taille cible ~1–2 MiB.
+- **(Optionnel) SDRAM_CACHE_RESIDUAL** : petite zone cacheable (≤ 1 MiB) pour données CPU-only non audio si besoin futur ; non prioritaire et absente par défaut dans le modèle A.
 
 ### 4.2 Attributs et alignement
-- Alignement minimum 32 octets pour compatibilité D-Cache line size et éventuels nettoyages/invalidation ciblés.
-- Régions non-cacheables configurées via MPU subregioning sur la base SDRAM (zones multiples de 256 KiB/1 MiB selon alignement MPU H7).
-- Les tailles finales seront définies statiquement dans un en-tête driver ; aucune exportation de symboles linker dynamiques.
+- Alignement minimum 64 octets (compatible D-Cache line size et burst audio) ; alignement 32 octets acceptable uniquement pour structures légères.
+- Régions **majoritairement non-cacheables** configurées via MPU subregioning sur la base SDRAM (zones multiples de 256 KiB/1 MiB selon alignement MPU H7) afin d’autoriser l’accès DMA/CPU sans maintenance de cache.
+- Les tailles finales seront définies statiquement dans un en-tête driver ; aucune exportation de symboles linker dynamiques ; aucune adresse SDRAM ne doit être hardcodée en dehors de l’API `sdram_get_region(...)`.
 
 ### 4.3 Usage par couches supérieures
 - Chaque région est référencée par un identifiant énuméré ; le driver fournit base + taille + attribut cache. Les couches UI/Backend/AUDIO pourront obtenir ces métadonnées sans connaître la configuration FMC.
@@ -84,10 +85,11 @@
 
 ## 6. Stratégie mémoire / cache / MPU
 - **Mapping attendu** : FMC Bank1 SDRAM, base 0xC0000000, taille 8 MiB (512K x 16). FMC mapping confirmé par STM32H7 RM ; la totalité est adressable linéairement.
-- **Partitionnement cache** :
-  - Régions cacheables : SAMPLES_CACHE, PATTERNS_CACHE, TRACE_LOG (accès CPU uniquement, haut débit CPU favorisé).
-  - Régions non-cacheables : WORKSPACE_NONCACHE (pour futurs usages DMA potentiels via SDRAM). Configurées via MPU avec attributs Strongly Ordered/Device ou Normal non-cacheable selon besoin.
-- **Contraintes D-Cache** : alignement 32 bytes ; si DMA futur sur SDRAM, prévoir buffers entiers en région non-cacheable pour éviter clean/invalidate en boucle. Aucune interaction avec pipeline audio (reste en SRAM D2).
+- **Partitionnement cache (modèle A)** :
+  - **≥ 80 % de la capacité en non-cacheable** (Normal non-cacheable, non-bufferable, shareable) pour `SDRAM_AUDIO_LOOP`, `SDRAM_AUDIO_DELAY`, `SDRAM_AUDIO_FX/WORK` utilisés conjointement par CPU et DMA audio.
+  - **(Optionnel) ≤ 20 % cacheable** pour `SDRAM_CACHE_RESIDUAL` si une zone CPU-only est jugée utile ultérieurement ; cette zone n’est pas utilisée par le pipeline audio.
+- **Contraintes D-Cache** : aucune opération `clean/invalidate` ne doit être requise en runtime audio ; tout buffer audio SDRAM est placé dans une région non-cacheable alignée (64 B recommandé). Les buffers audio principaux, SPI et SD restent en SRAM D2 non-cacheable inchangée.
+- **Contraintes temps réel** : aucune transition cache/non-cache en runtime audio, aucune opération bloquante sur SDRAM pendant le traitement audio ; CPU et DMA doivent accéder aux buffers SDRAM sans contention ni maintenance de cache.
 
 ## 7. API publique (conceptuelle, sans prototypes C)
 - **Fonctions** :
@@ -101,7 +103,7 @@
   - Codes d’erreur : NONE, FMC_TIMEOUT, FMC_CONFIG_ERROR, INIT_SEQUENCE_ERROR, REFRESH_CONFIG_ERROR, BIST_FAILED, PARAM_INVALID, NOT_INITIALIZED.
   - États : NON_INITIALIZED, INITIALIZING, READY, FAULT, DEGRADED.
   - Résultat BIST : statut (SUCCESS/FAIL), nombre d’octets testés, patterns exécutés, adresse de première faute, compteur de fautes, durée du test.
-  - Identifiants de régions : SAMPLES_CACHE, PATTERNS_CACHE, WORKSPACE_NONCACHE, TRACE_LOG.
+  - Identifiants de régions : SDRAM_AUDIO_LOOP, SDRAM_AUDIO_DELAY, SDRAM_AUDIO_FX/WORK, (optionnel) SDRAM_CACHE_RESIDUAL.
 
 ## 8. Gestion des erreurs & mode dégradé
 - **Catégories d’erreurs** :
@@ -173,26 +175,27 @@ POWER_OFF
 
 | Région | Base | Taille MPU | Sous-régions actives | Attributs | Usage |
 | --- | --- | --- | --- | --- | --- |
-| SDRAM_CACHE | 0xC0000000 | 8 MiB | Sous-régions 0–5 actives (0–5 MiB), 6–7 désactivées | Normal memory, cacheable (write-back write-allocate), non-shareable, bufferable | Zones SAMPLES_CACHE, PATTERNS_CACHE, TRACE_LOG regroupées dans les 6 MiB bas, accès CPU uniquement. |
-| SDRAM_NONCACHE | 0xC0600000 | 2 MiB | Sous-régions 0–1 actives (2 blocs de 1 MiB) | Normal memory, non-cacheable, non-bufferable, shareable | WORKSPACE_NONCACHE pour buffers futurs DMA ou BIST sans pollution cache. |
+| SDRAM_AUDIO_MAIN | 0xC0000000 | 8 MiB | Sous-régions 0–6 actives (0–7 MiB), 7 partiellement activable selon partage optionnel | Normal memory, **non-cacheable**, non-bufferable, shareable | `SDRAM_AUDIO_LOOP`, `SDRAM_AUDIO_DELAY`, `SDRAM_AUDIO_FX/WORK` pour audio live CPU + DMA, zéro clean/invalidate. |
+| (Optionnel) SDRAM_CACHE_RESIDUAL | 0xC0700000 | 1 MiB | Sous-région 7 activée si besoin (1 MiB) | Normal memory, cacheable (write-back write-allocate), non-shareable, bufferable | Petite zone CPU-only non audio ; désactivée par défaut dans le modèle A. |
 
 Contraintes d’alignement linker :
-- Toute section placée en SDRAM_CACHE doit être bornée dans l’intervalle [0xC0000000 ; 0xC05FFFFF] et alignée au minimum sur 32 B (taille de ligne D-Cache), idéalement sur 64 B pour futures optimisations.
-- Toute section placée en SDRAM_NONCACHE doit être bornée dans [0xC0600000 ; 0xC07FFFFF] et alignée sur 32 B ; aucune structure ne doit chevaucher la frontière 0xC0600000.
+- Toute section placée dans `SDRAM_AUDIO_*` doit être bornée dans l’intervalle [0xC0000000 ; 0xC06FFFFF] et alignée au minimum sur 64 B ; aucune structure ne doit chevaucher la frontière 0xC0700000.
+- Si `SDRAM_CACHE_RESIDUAL` est activée, son contenu doit rester CPU-only et ne jamais être lu/écrit par DMA.
 - Pas de fragmentation sous 1 MiB : chaque sous-région reste homogène (cacheable ou non) pour éviter les artefacts de partage MPU.
 
-BIST : à exécuter en région non-cacheable (SDRAM_NONCACHE) pour éliminer tout effet de cohérence ; si test d’une zone cacheable, imposer clean+invalidate complet avant lecture de comparaison pour éviter faux négatifs.
+BIST : à exécuter en région non-cacheable (`SDRAM_AUDIO_*`) pour éliminer tout effet de cohérence ; si test d’une zone cacheable optionnelle, imposer clean+invalidate complet avant lecture de comparaison pour éviter faux négatifs.
 
 ### 10.4 BIST — Spécification formelle
 #### 10.4.1 Tests minimaux obligatoires
 - Patterns : 0x0000, 0xFFFF, 0xAAAA, 0x5555, walking 1 (bit unique à 1), walking 0 (bit unique à 0).
-- Taille minimale : 1 MiB contigu dans SDRAM_NONCACHE (aligné 32 B), couvrant au moins une sous-région complète.
-- Ordre de balayage : linéaire croissant par mot 16 bits, pas de permutation ; adresse de départ alignée 32 B.
+- Taille minimale : 1 MiB contigu dans `SDRAM_AUDIO_*` (aligné 64 B), couvrant au moins une sous-région complète non-cacheable réellement utilisée par l’audio.
+- Ordre de balayage : linéaire croissant par mot 16 bits, pas de permutation ; adresse de départ alignée 64 B.
 - Détection : comparer lecture vs motif écrit ; détecte fautes de données (bit collé), fautes d’adresse (aliasing) via motifs alternés, fautes de ligne bloquée via walking 1/0.
 
 #### 10.4.2 Tests étendus (maintenance)
 - Couverture : totalité des 8 MiB, motifs de 10.4.1 + motif pseudo-aléatoire déterministe (LFSR 16 bits seed fixe) exécuté en lecture/écriture séquentielle.
-- Durée estimée @100 MHz (accès CPU) : ~35–40 ms par MiB pour jeu complet de motifs (6 motifs statiques + walking 1 + walking 0 + pseudo-aléatoire), soit ≈ 320–360 ms pour 8 MiB.
+- Ajouter un **stress test séquentiel large bloc** (écritures/lectures contiguës sur blocs ≥ 256 KiB) pour émuler un flux audio continu boucle/delay.
+- Durée estimée @100 MHz (accès CPU) : ~35–40 ms par MiB pour jeu complet de motifs (6 motifs statiques + walking 1 + walking 0 + pseudo-aléatoire) hors stress test ; ajouter la durée du stress test sur la zone audio active.
 - Conditions : exécuté hors boot, en mode maintenance uniquement, audio suspendu ou buffers déconnectés de SDRAM ; interdiction d’accès SDRAM concurrent pendant le test.
 
 #### 10.4.3 Rapport BIST normalisé
@@ -222,14 +225,14 @@ Champs obligatoires :
 - Interdictions en DEGRADED :
   - Aucune région SDRAM exposée aux modules supérieurs (get_region retourne NULL/base=0, size=0).
   - Pointeurs vers SDRAM renvoyés NULL ; allocations internes forcées vers SRAM interne uniquement.
-  - Pas d’écriture/lecture SDRAM par UI/audio ; audio continue exclusivement en SRAM interne D2.
+  - Pas d’écriture/lecture SDRAM par UI/audio ; audio continue exclusivement en SRAM interne D2 ; **les fonctionnalités dépendant du live looping/delay en SDRAM sont désactivées**.
 - Autorisations : audio temps réel et séquenceur restent actifs en RAM interne ; tasks maintenance peuvent lire l’état et relancer un BIST mais ne peuvent pas déverrouiller SDRAM sans reboot.
 
 ### 10.7 API — Nommage contractuel (sans prototypes)
 - Services publics : `sdram_init`, `sdram_status`, `sdram_run_bist`, `sdram_get_region`, `sdram_get_error`.
 - États : `SDRAM_NOT_INITIALIZED`, `SDRAM_INITIALIZING`, `SDRAM_READY`, `SDRAM_DEGRADED`, `SDRAM_FAULT`.
 - Erreurs : `SDRAM_ERR_NONE`, `SDRAM_ERR_FMC_TIMEOUT`, `SDRAM_ERR_FMC_CMD`, `SDRAM_ERR_REFRESH`, `SDRAM_ERR_BIST_FAIL`, `SDRAM_ERR_PARAM`.
-- Régions : `SDRAM_REGION_CACHE`, `SDRAM_REGION_NONCACHE`, `SDRAM_REGION_INVALID` (pour retour NULL).
+- Régions : `SDRAM_AUDIO_LOOP`, `SDRAM_AUDIO_DELAY`, `SDRAM_AUDIO_FX`, `(optionnel) SDRAM_CACHE_RESIDUAL`, `SDRAM_REGION_INVALID` (pour retour NULL). API obligatoire : **toute utilisation applicative passe par `sdram_get_region(...)`, aucune adresse hardcodée**.
 - BIST résultat : `BIST_PASS`, `BIST_FAIL`, `BIST_ABORT` avec champs du rapport 10.4.3.
 
 ### 10.8 Checklist de validation labo (post-bringup)
