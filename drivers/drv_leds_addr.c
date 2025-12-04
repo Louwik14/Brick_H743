@@ -2,18 +2,14 @@
 #include "ch.h"
 #include "hal.h"
 #include "stm32h7xx.h"
-#include "stm32_bdma.h"
 
 /* ================= CONFIG ================= */
 
 #define TIM_WS              TIM8
 #define TIM_WS_CH           2
 
-#define WS_BDMA             STM32_BDMA1_STREAM0
-
-#ifndef STM32_BDMA1_CH0_PRIORITY
-#define STM32_BDMA1_CH0_PRIORITY STM32_IRQ_EXTI0_PRIORITY
-#endif
+#define WS_DMA_STREAM_ID    STM32_DMA_STREAM_ID(2, 1)
+#define WS_DMA_PRIORITY     STM32_IRQ_EXTI0_PRIORITY
 
 #define TIMER_CLOCK         200000000U
 #define WS_FREQ             800000U
@@ -66,30 +62,24 @@ static inline void ws_tim_resync(void) {
     TIM_WS->CNT = 0;
 }
 
-static inline uint32_t ws_bdma_get_status(const stm32_bdma_stream_t *bdma) {
-    return (bdma->bdma->ISR >> bdma->shift) & STM32_BDMA_ISR_MASK;
-}
+/* ================= DMA STATE ================= */
 
-/* ================= BDMA INIT ================= */
+static const stm32_dma_stream_t *ws_dma_stream = NULL;
+static uint32_t ws_dma_mode = 0U;
+static void ws_dma_callback(void *p, uint32_t flags);
 
-static void ws_bdma_init(void) {
-    rccEnableBDMA1(true);
+static void ws_dma_init(void) {
+    ws_dma_stream = dmaStreamAlloc(WS_DMA_STREAM_ID,
+                                   WS_DMA_PRIORITY,
+                                   ws_dma_callback,
+                                   NULL);
+    chDbgAssert(ws_dma_stream != NULL, "WS DMA alloc failed");
 
-    const stm32_bdma_stream_t *const bdma = WS_BDMA;
+#if STM32_DMA_SUPPORTS_DMAMUX == TRUE
+    dmaSetRequestSource(ws_dma_stream, STM32_DMAMUX1_TIM8_CH2);
+#endif
 
-    bdmaStreamDisable(bdma);
-    bdmaStreamSetPeripheral(bdma, &TIM_WS->CCR2);
-    bdmaStreamSetMemory(bdma, pwm_buffer);
-    bdmaStreamSetTransactionSize(bdma, 0U);
-    bdmaStreamSetMode(bdma,
-                      STM32_BDMA_CR_MINC |
-                      STM32_BDMA_CR_DIR_M2P |
-                      STM32_BDMA_CR_PSIZE_HWORD |
-                      STM32_BDMA_CR_MSIZE_HWORD |
-                      STM32_BDMA_CR_TCIE |
-                      STM32_BDMA_CR_TEIE);
-
-    nvicEnableVector(STM32_BDMA1_CH0_NUMBER, STM32_BDMA1_CH0_PRIORITY);
+    ws_dma_prepare_stream();
 }
 
 /* ================= WS2812 ENCODAGE ================= */
@@ -116,51 +106,45 @@ static void ws_prepare_buffer(void) {
     chDbgAssert(idx == LED_TOTAL_SLOTS, "PWM buffer length mismatch");
 }
 
+static void ws_dma_prepare_stream(void) {
+    ws_dma_mode = STM32_DMA_CR_MINC |
+                  STM32_DMA_CR_DIR_M2P |
+                  STM32_DMA_CR_PSIZE_HWORD |
+                  STM32_DMA_CR_MSIZE_HWORD |
+                  STM32_DMA_CR_TCIE |
+                  STM32_DMA_CR_TEIE |
+                  STM32_DMA_CR_DMEIE;
+
+    dmaStreamSetPeripheral(ws_dma_stream, &TIM_WS->CCR2);
+}
+
 static inline void ws_dma_start_locked(void) {
     ws_tim_resync();
 
-    const stm32_bdma_stream_t *const bdma = WS_BDMA;
-
-    bdmaStreamDisable(bdma);
-    bdmaStreamClearInterrupt(bdma);
-    bdmaStreamSetMemory(bdma, pwm_buffer);
-    bdmaStreamSetTransactionSize(bdma, LED_TOTAL_SLOTS);
-    bdmaStreamSetMode(bdma,
-                      STM32_BDMA_CR_MINC |
-                      STM32_BDMA_CR_DIR_M2P |
-                      STM32_BDMA_CR_PSIZE_HWORD |
-                      STM32_BDMA_CR_MSIZE_HWORD |
-                      STM32_BDMA_CR_TCIE |
-                      STM32_BDMA_CR_TEIE);
+    dmaStreamDisable(ws_dma_stream);
+    dmaStreamSetMemory0(ws_dma_stream, pwm_buffer);
+    dmaStreamSetTransactionSize(ws_dma_stream, LED_TOTAL_SLOTS);
+    dmaStreamSetMode(ws_dma_stream, ws_dma_mode);
 
     const size_t pwm_bytes = LED_PWM_BUFFER_SIZE * sizeof(uint16_t);
     SCB_CleanDCache_by_Addr((uint32_t *)pwm_buffer, (int32_t)((pwm_bytes + 31U) & ~31U));
 
     led_dma_busy = true;
     last_frame_start = chVTGetSystemTimeX();
-    bdmaStreamEnable(bdma);
+    dmaStreamEnable(ws_dma_stream);
 }
 
-static inline void ws_dma_restart_on_error_i(void) {
-    const stm32_bdma_stream_t *const bdma = WS_BDMA;
-
-    bdmaStreamDisable(bdma);
-    bdmaStreamClearInterrupt(bdma);
-
+static inline void ws_dma_restart_i(void) {
+    dmaStreamDisable(ws_dma_stream);
     ws_tim_resync();
 
-    bdmaStreamSetMemory(bdma, pwm_buffer);
-    bdmaStreamSetTransactionSize(bdma, LED_TOTAL_SLOTS);
+    dmaStreamSetMemory0(ws_dma_stream, pwm_buffer);
+    dmaStreamSetTransactionSize(ws_dma_stream, LED_TOTAL_SLOTS);
+    dmaStreamSetMode(ws_dma_stream, ws_dma_mode);
+
     led_dma_busy = true;
     last_frame_start = chVTGetSystemTimeX();
-    bdmaStreamSetMode(bdma,
-                      STM32_BDMA_CR_MINC |
-                      STM32_BDMA_CR_DIR_M2P |
-                      STM32_BDMA_CR_PSIZE_HWORD |
-                      STM32_BDMA_CR_MSIZE_HWORD |
-                      STM32_BDMA_CR_TCIE |
-                      STM32_BDMA_CR_TEIE);
-    bdmaStreamEnable(bdma);
+    dmaStreamEnable(ws_dma_stream);
 }
 
 /* ================= API ================= */
@@ -173,7 +157,7 @@ void drv_leds_addr_init(void) {
     last_frame_start = 0;
 
     ws_tim_init();
-    ws_bdma_init();
+    ws_dma_init();
     drv_leds_addr_clear();
 }
 
@@ -264,31 +248,27 @@ void drv_leds_addr_render(void) {
     chMtxUnlock(&leds_mutex);
 }
 
-OSAL_IRQ_HANDLER(STM32_BDMA1_CH0_HANDLER) {
-    OSAL_IRQ_PROLOGUE();
+static void ws_dma_callback(void *p, uint32_t flags) {
+    (void)p;
 
-    const stm32_bdma_stream_t *const bdma = WS_BDMA;
-    const uint32_t flags = ws_bdma_get_status(bdma);
+    const uint32_t error_flags = STM32_DMA_ISR_TEIF |
+                                 STM32_DMA_ISR_DMEIF |
+                                 STM32_DMA_ISR_FEIF;
 
-    if ((flags & STM32_BDMA_ISR_TEIF) != 0U) {
-        bdmaStreamClearInterrupt(bdma);
+    if ((flags & error_flags) != 0U) {
         chSysLockFromISR();
         led_dma_errors++;
         chSysUnlockFromISR();
-        ws_dma_restart_on_error_i();
-        OSAL_IRQ_EPILOGUE();
+        ws_dma_restart_i();
         return;
     }
 
-    if ((flags & STM32_BDMA_ISR_TCIF) != 0U) {
-        bdmaStreamClearInterrupt(bdma);
+    if ((flags & STM32_DMA_ISR_TCIF) != 0U) {
         chSysLockFromISR();
         led_dma_busy = false;
         last_frame_time_us = TIME_I2US(chVTTimeElapsedSinceX(last_frame_start));
         chSysUnlockFromISR();
     }
-
-    OSAL_IRQ_EPILOGUE();
 }
 
 bool drv_leds_addr_is_busy(void) {

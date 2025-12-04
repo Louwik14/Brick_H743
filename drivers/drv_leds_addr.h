@@ -91,7 +91,7 @@ extern led_state_t drv_leds_addr_state[NUM_ADRESS_LEDS];
  *                              API
  * ======================================================================= */
 
-/** Driver init (mutex, timer, BDMA). */
+/** Driver init (mutex, timer, DMA). */
 void drv_leds_addr_init(void);
 
 /**
