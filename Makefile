@@ -131,12 +131,18 @@ INCDIR += \
 ./drivers/CMSIS/Device/ST/STM32H7xx/Include
 
 ##############################################################################
-# Includes
+# Includes (✅ CORRIGÉ POUR FATFS)
 ##############################################################################
 INCDIR += $(CONFDIR) $(ALLINC)
-UINCDIR = cfg drivers drivers/HallEffect drivers/audio drivers/usb drivers/usb/usb_host ui
-UINCDIR += drivers/sd
-UINCDIR += drivers/sd/ff16
+
+INCDIR += drivers
+INCDIR += drivers/HallEffect
+INCDIR += drivers/audio
+INCDIR += drivers/usb
+INCDIR += drivers/usb/usb_host
+INCDIR += drivers/sd
+INCDIR += drivers/sd/ff16
+INCDIR += ui
 
 ##############################################################################
 # Defines
