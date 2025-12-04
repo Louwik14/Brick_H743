@@ -66,6 +66,7 @@ static inline void ws_tim_resync(void) {
 
 static const stm32_dma_stream_t *ws_dma_stream = NULL;
 static uint32_t ws_dma_mode = 0U;
+static void ws_dma_prepare_stream(void);
 static void ws_dma_callback(void *p, uint32_t flags);
 
 static void ws_dma_init(void) {
