@@ -236,10 +236,18 @@
 - **Intégrité FAT/données** : atomicité pattern, refus si pleine, montages RO en cas d’erreurs ; vérifié via tests fsck et validation CRC/génération.
 
 ## Implémentation – retour terrain (2025-05-24)
-- Couche HAL : `SDCD1` initialisée statiquement en 4 bits @50 MHz, déconnexion/reconnexion systématique par requête. Présence carte lue via `sdcIsCardInserted`.
+- Couche HAL : `SDCD1` initialisée statiquement en 4 bits @50 MHz, connexion maintenue entre `mount` et `unmount`. Présence carte lue via `sdcIsCardInserted`.
 - Mémoire/DMA : buffers FatFS (work area) et transferts SD placés en `.ram_d2` aligné 32 octets (`SD_DMA_BUFFER_ATTR`). Tampon échantillons 64 KiB segmenté pour garantir D-Cache cohérent sans opérations dynamiques.
 - Thread SD : unique thread `sdThread` (priorité `NORMALPRIO-2`, pile 2048) alimenté par mailbox statique (profondeur 8). Pool statique de requêtes, rejet immédiat en cas de saturation (BUSY ++ instrumentation).
 - Machine d’état : `initializing → unmounted` après init, `mounted-rw/ro` après mount, état `busy` transitoire par requête. CRC/IO/FS entraînent bascule `degraded` (ou `unmounted` si NO_CARD), perte critique → `fault`. Écritures refusées en `mounted-ro` ou `degraded`.
 - Atomicité : sauvegardes pattern via fichier `.tmp` + `f_sync` puis `rename`, en-tête structuré (magic/version/taille/génération/CRC). Chargements vérifient header + CRC.
 - Intégration FatFS : montage/démontage encapsulés, répertoires `/projects/<name>/patterns` et `/samples` utilisés ; listing limité aux dossiers sous `/projects`.
 - Protection temps réel : toutes API publiques rejettent immédiatement les appels en ISR ou depuis le thread audio (`audioProcess`). Aucune allocation dynamique, aucune attente active hors thread SD (attente uniquement sur sémaphore utilisateur si demande bloquante).
+
+## Correctifs d’implémentation – 2025-05-25
+- Montage RO strict : le mode passé à `drv_sd_fs_mount` force le blocage de tout accès en écriture (open/write/mkdir/rename/delete/sync) et la création/sanction du répertoire `/samples` est respectivement assurée en RW et refusée en RO.
+- Connexion SDMMC : `sdcConnect`/`sdcDisconnect` ne sont plus appelés par bloc ; la connexion est établie au `mount` et libérée à l’`unmount`, les I/O supposent une liaison active.
+- Gestion WRITE_PROTECT : tout `FR_WRITE_PROTECTED` fait passer l’état en `SD_STATE_MOUNTED_RO` et purge immédiatement la FIFO des écritures en attente pour éviter toute tentative supplémentaire.
+- Attente bornée : les appels bloquants côté API utilisent désormais un timeout borné, renvoyant `SD_ERR_FAULT` en cas de dépassement tout en libérant correctement la requête.
+- CRC côté buffer non cacheable : les CRC patterns/samples sont calculés sur les buffers DMA non cacheables ou immédiatement après invalider la copie (via transfert temporaire), garantissant la cohérence D-Cache.
+- État BUSY affiné : l’état `SD_STATE_BUSY` n’est plus forcé pour l’init, la lecture/clear des statistiques ; il est réservé aux opérations I/O réelles.

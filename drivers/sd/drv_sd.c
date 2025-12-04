@@ -60,7 +60,12 @@ static sd_error_t sd_submit_request(sd_request_t *req) {
         sd_record_rejection(SD_ERR_BUSY);
         return SD_ERR_BUSY;
     }
-    chBSemWait(&req->done);
+    msg_t wait = chBSemWaitTimeout(&req->done, TIME_MS2I(2000));
+    if (wait == MSG_TIMEOUT) {
+        req->auto_release = true;
+        g_sd_last_error = SD_ERR_FAULT;
+        return SD_ERR_FAULT;
+    }
     sd_error_t res = req->result;
     drv_sd_thread_release(req);
     return res;

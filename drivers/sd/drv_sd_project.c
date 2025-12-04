@@ -121,7 +121,9 @@ sd_error_t drv_sd_project_save_pattern(const char *project_name,
     header.version = SD_PATTERN_VERSION;
     header.size_bytes = (uint32_t)data_size;
     header.generation = generation;
-    header.crc32 = crc32_update(0U, data, data_size);
+
+    memcpy(sd_io_buffer, data, data_size);
+    header.crc32 = crc32_update(0U, sd_io_buffer, data_size);
 
     UINT bw = 0;
     memcpy(sd_io_buffer, &header, sizeof(header));
@@ -131,7 +133,6 @@ sd_error_t drv_sd_project_save_pattern(const char *project_name,
         drv_sd_fs_delete(path_tmp);
         return SD_ERR_IO;
     }
-    memcpy(sd_io_buffer, data, data_size);
     bw = 0;
     err = drv_sd_fs_write(&file, sd_io_buffer, (UINT)data_size, &bw);
     if (err != SD_OK || bw != data_size) {
@@ -185,6 +186,7 @@ sd_error_t drv_sd_project_load_sample(const char *sample_name,
     }
     uint32_t remaining = header.size_bytes;
     uint32_t offset = 0U;
+    uint32_t crc = 0U;
     while (remaining > 0U) {
         UINT chunk = (remaining > SD_MAX_SAMPLE_CHUNK) ? SD_MAX_SAMPLE_CHUNK : remaining;
         UINT read = 0;
@@ -193,12 +195,12 @@ sd_error_t drv_sd_project_load_sample(const char *sample_name,
             drv_sd_fs_close(&file);
             return SD_ERR_IO;
         }
+        crc = crc32_update(crc, sd_io_buffer, chunk);
         memcpy(&buffer[offset], sd_io_buffer, chunk);
         offset += chunk;
         remaining -= chunk;
     }
     drv_sd_fs_close(&file);
-    uint32_t crc = crc32_update(0U, buffer, header.size_bytes);
     if (crc != header.crc32) {
         return SD_ERR_CRC;
     }

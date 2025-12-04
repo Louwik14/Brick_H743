@@ -9,6 +9,8 @@
 
 static FATFS sd_fs;
 static bool fs_mounted = false;
+static bool fs_read_only = false;
+static bool fs_write_protected_event = false;
 
 static sd_error_t drv_sd_fs_map_result(FRESULT res) {
     switch (res) {
@@ -27,6 +29,8 @@ static sd_error_t drv_sd_fs_map_result(FRESULT res) {
     case FR_EXIST:
         return SD_ERR_PARAM;
     case FR_WRITE_PROTECTED:
+        fs_write_protected_event = true;
+        fs_read_only = true;
         return SD_ERR_FS;
     default:
         return SD_ERR_FS;
@@ -34,25 +38,50 @@ static sd_error_t drv_sd_fs_map_result(FRESULT res) {
 }
 
 sd_error_t drv_sd_fs_mount(sd_fs_mode_t mode) {
-    (void)mode;
     if (!drv_sd_hal_is_card_present()) {
         fs_mounted = false;
         return SD_ERR_NO_CARD;
     }
+    sd_hal_status_t hal_status = drv_sd_hal_connect();
+    if (hal_status != SD_HAL_OK) {
+        fs_mounted = false;
+        return hal_status == SD_HAL_NO_CARD ? SD_ERR_NO_CARD : SD_ERR_IO;
+    }
     FRESULT res = f_mount(&sd_fs, "", 1);
     if (res != FR_OK) {
         fs_mounted = false;
+        drv_sd_hal_disconnect();
         return drv_sd_fs_map_result(res);
     }
     fs_mounted = true;
+    fs_read_only = (mode == SD_FS_RO);
+    if (!fs_read_only) {
+        FILINFO info;
+        if (f_stat("/samples", &info) != FR_OK) {
+            sd_error_t mkdir_res = drv_sd_fs_map_result(f_mkdir("/samples"));
+            if (mkdir_res != SD_OK) {
+                drv_sd_fs_unmount();
+                return mkdir_res;
+            }
+        }
+    } else {
+        FILINFO info;
+        if (f_stat("/samples", &info) != FR_OK) {
+            drv_sd_fs_unmount();
+            return SD_ERR_FS;
+        }
+    }
     return SD_OK;
 }
 
 void drv_sd_fs_unmount(void) {
     if (fs_mounted) {
         f_unmount("");
+        drv_sd_hal_disconnect();
     }
     fs_mounted = false;
+    fs_read_only = false;
+    fs_write_protected_event = false;
 }
 
 bool drv_sd_fs_is_mounted(void) {
@@ -62,6 +91,9 @@ bool drv_sd_fs_is_mounted(void) {
 sd_error_t drv_sd_fs_open(sd_fs_file_t *handle, const char *path, BYTE mode) {
     if (!fs_mounted || handle == NULL || path == NULL) {
         return SD_ERR_PARAM;
+    }
+    if (fs_read_only && (mode & (FA_WRITE | FA_CREATE_ALWAYS | FA_CREATE_NEW | FA_OPEN_ALWAYS | FA_OPEN_APPEND))) {
+        return SD_ERR_FS;
     }
     FRESULT res = f_open(&handle->file, path, mode);
     handle->open = (res == FR_OK);
@@ -84,7 +116,7 @@ sd_error_t drv_sd_fs_read(sd_fs_file_t *handle, void *buffer, UINT btr, UINT *br
 }
 
 sd_error_t drv_sd_fs_write(sd_fs_file_t *handle, const void *buffer, UINT btw, UINT *bw) {
-    if (!handle || !handle->open) {
+    if (!handle || !handle->open || fs_read_only) {
         return SD_ERR_PARAM;
     }
     FRESULT res = f_write(&handle->file, buffer, btw, bw);
@@ -92,7 +124,7 @@ sd_error_t drv_sd_fs_write(sd_fs_file_t *handle, const void *buffer, UINT btw, U
 }
 
 sd_error_t drv_sd_fs_sync(sd_fs_file_t *handle) {
-    if (!handle || !handle->open) {
+    if (!handle || !handle->open || fs_read_only) {
         return SD_ERR_PARAM;
     }
     return drv_sd_fs_map_result(f_sync(&handle->file));
@@ -106,21 +138,21 @@ sd_error_t drv_sd_fs_stat(const char *path, FILINFO *info) {
 }
 
 sd_error_t drv_sd_fs_rename(const char *oldp, const char *newp) {
-    if (!fs_mounted || oldp == NULL || newp == NULL) {
+    if (!fs_mounted || oldp == NULL || newp == NULL || fs_read_only) {
         return SD_ERR_PARAM;
     }
     return drv_sd_fs_map_result(f_rename(oldp, newp));
 }
 
 sd_error_t drv_sd_fs_delete(const char *path) {
-    if (!fs_mounted || path == NULL) {
+    if (!fs_mounted || path == NULL || fs_read_only) {
         return SD_ERR_PARAM;
     }
     return drv_sd_fs_map_result(f_unlink(path));
 }
 
 sd_error_t drv_sd_fs_mkdir(const char *path) {
-    if (!fs_mounted || path == NULL) {
+    if (!fs_mounted || path == NULL || fs_read_only) {
         return SD_ERR_PARAM;
     }
     return drv_sd_fs_map_result(f_mkdir(path));
@@ -148,4 +180,16 @@ sd_error_t drv_sd_fs_list_dir(const char *path, FRESULT (*cb)(FILINFO *info, voi
     }
     f_closedir(&dir);
     return drv_sd_fs_map_result(res);
+}
+
+bool drv_sd_fs_consume_write_protect_event(void) {
+    if (!fs_write_protected_event) {
+        return false;
+    }
+    fs_write_protected_event = false;
+    return true;
+}
+
+bool drv_sd_fs_is_read_only(void) {
+    return fs_read_only;
 }
