@@ -88,3 +88,50 @@
   - Coupure d’alimentation simulée pendant écriture : vérification classification semi-critique/fatale et absence d’impact audio.
   - Saturation du thread SD : queue pleine, vérification des retours “BUSY”, absence de blocage UI/audio.
   - Erreurs HAL (timeouts) : validation de passage en état “fault” et nécessité de reboot.
+
+## 7. Contrats d’intégrité SD – 2025-02-09
+
+### 7.1 Atomicité des écritures patterns/métadonnées
+- **Stratégie unique** : écriture intégrale vers un fichier temporaire dans le même répertoire (`<nom>.tmp`) suivie d’un `rename` vers le nom final. Aucun append, aucune mise à jour partielle : toujours réécriture complète du fichier.
+- **Format de fichier** : en-tête statique (magic, version, taille utile, compteur de génération monotone stocké dans l’en-tête, CRC-32 sur les données) pour détecter les écritures incomplètes ou corrompues. Le compteur de génération est incrémenté à chaque sauvegarde réussie et persiste dans le fichier final ; il n’est pas global au système.
+- **Atomicité observée** :
+  - Avant `rename` : l’ancien fichier reste intact et l’application voit uniquement l’ancienne version. Le `.tmp` peut exister mais n’est jamais consommé.
+  - `rename` intra-répertoire : considéré atomique au niveau de l’entrée de répertoire (FatFS) ; aucune fenêtre où un fichier partiel est visible sous le nom final. Le `.tmp` est supprimé ou écrasé par l’opération.
+  - Après `rename` : seule la nouvelle version est visible ; l’en-tête + CRC garantissent que la version visible est complète.
+- **Détection d’états invalides** : présence d’un `.tmp` au boot déclenche suppression + signalement “sauvegarde incomplète”; un fichier final dont la CRC ou la taille déclarée ne correspondent pas est marqué “corrompu” et ignoré par l’application, qui conserve l’ancien état en RAM jusqu’à action explicite.
+
+### 7.2 Tolérance aux coupures d’alimentation
+- **Pendant écriture (avant `rename`)** : l’ancien fichier reste valide ; le `.tmp` est ignoré au reboot. Résultat garanti : fichier final intact (ancien état) ou perdu uniquement si jamais existant (cas création initiale non terminée), mais jamais partiellement lisible.
+- **Pendant `rename`** : l’opération est traitée comme atomique ; au reboot, soit l’ancien fichier subsiste, soit le nouveau est complet (CRC valide). Cas non garanti : si la FAT elle-même est corrompue par coupure en pleine mise à jour du répertoire, un fsck externe peut être requis.
+- **Pendant update/append** : interdit par conception. Toute modification passe par réécriture complète + `rename` ; aucune fenêtre d’append partiel.
+- **Garanties post-reboot** :
+  - **FAT intégrité** : supposée saine tant que la coupure intervient hors mise à jour de répertoire ; en cas de corruption détectée par FatFS, montage refusé ou basculé en lecture seule.
+  - **Patterns/projets** : dernière sauvegarde validée (CRC + génération cohérente) est disponible ; une sauvegarde interrompue est rejetée et ne remplace jamais la dernière version valide.
+  - **Ce qui n’est pas garanti** : aucune garantie de persistance d’une sauvegarde dont le `f_sync` n’a pas été réalisé avant coupure ; nécessité d’un fsck externe si la FAT est incohérente.
+
+### 7.3 Cohérence FAT & anti-corruption
+- **Fréquence d’écriture** : limitée aux actions explicites de l’utilisateur (save pattern/projet). Pas d’écriture périodique ni de journalisation continue. Pas de mise à jour partielle ; chaque save réécrit l’intégralité du fichier cible.
+- **Politique flush/sync** : `f_sync` systématique après écriture complète du `.tmp` et avant `rename`. Aucune écriture laissée en cache après notification de succès à l’application. Le thread SD force un flush FatFS global avant tout démontage ou passage en mode dégradé.
+- **Démontage propre** : lors d’un shutdown logiciel ou d’un passage en “degraded/fault”, le thread SD vide la FIFO, rejette les nouvelles requêtes, `f_sync` le volume, puis démonte (si possible) pour minimiser les risques de FAT sale.
+- **fsck requis** : uniquement quand FatFS signale un volume non montable ou une incohérence de répertoire après coupure. L’application signale à l’utilisateur la nécessité d’un check PC ; aucune tentative automatique de réparation embarquée.
+- **Montage lecture seule** : si des erreurs récurrentes (CRC multiples, incohérences répertoire) sont détectées sans possibilité de démontage propre, le thread SD force un remontage en lecture seule ou refuse le montage pour éviter toute écriture supplémentaire.
+
+### 7.4 Stratégie de montage / boot / erreurs au démarrage
+- **Séquence boot** :
+  1. Init HAL SDMMC + DMA + buffers non cacheables.
+  2. Détection présence carte (GPIO/SDMMC). Si absente : état “no card”, pas de tentative de mount.
+  3. Si présente : montage FAT (FatFS) avec work area statique.
+  4. Validation répertoires `/patterns`, `/samples`, `/projects` (création interdite si montage RO ; en RW, création si absent échoue → état “fs error”).
+  5. Purge des `.tmp` éventuels laissés par un arrêt brutal et journalisation de l’événement.
+- **Comportements** :
+  - Carte absente : système fonctionne en mode dégradé sans accès SD ; UI indique “SD absente”; audio et séquenceur continuent avec ressources en RAM uniquement ; navigation projet limitée aux éléments déjà en RAM.
+  - FAT non montable : montage refusé, état “fs error”; UI propose de retirer la carte et d’effectuer un fsck sur PC ; aucun accès écriture, audio inaltéré.
+  - Répertoires manquants : en RW, tentative de création ; si échec ou montage RO, passage en mode “partial/degraded” avec accès lecture seule aux répertoires existants ; sauvegarde désactivée.
+  - Mode dégradé : thread SD reste actif pour détection/remontage manuel mais refuse toute écriture ; UI verrouille les actions save/export ; audio inchangé.
+
+### 7.5 Garanties d’intégrité des données utilisateur
+- **Pattern sauvegardé** : un pattern validé (CRC OK + génération incrémentée + `rename` réussi) ne peut pas redevenir illisible sans nouvelle opération d’écriture. Si un fichier final devient corrompu (CRC invalide), il est rejeté et l’état RAM n’est pas remplacé silencieusement.
+- **Pas de rollback silencieux** : grâce au compteur de génération stocké dans le fichier final, un fichier plus ancien (génération inférieure) est refusé comme source de vérité après un reboot ; l’application signale l’anomalie et conserve la dernière version cohérente en RAM si disponible.
+- **Projets non partiels** : aucun projet n’est visible si son fichier échoue la validation (CRC/taille/génération). Le listing ignore les entrées invalides ou .tmp. Aucune partie d’un projet n’est chargée si l’ensemble n’est pas validé.
+- **Chargement cohérent** : la fonction de load vérifie l’en-tête (magic/version), la taille déclarée (≤ buffer) et la CRC avant exposition à l’application. En cas d’échec, le pattern/projet est marqué “corrompu” et non utilisé, empêchant un état incohérent.
+- **Limites connues** : la protection dépend de l’intégrité de la FAT ; une coupure pendant la mise à jour du répertoire peut exiger un fsck externe. Le compteur de génération est local à chaque fichier : il ne protège pas contre une restauration manuelle d’un ancien fichier par l’utilisateur sur PC (considéré explicite).
