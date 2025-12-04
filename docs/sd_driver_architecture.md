@@ -259,3 +259,9 @@
 ## Build system – intégration SD (2025-05-31)
 - Méthode d’intégration : ajout explicite des sources SD via `$(wildcard drivers/sd/*.c)` dans `CSRC`, calqué sur la stratégie existante des autres sous-dossiers drivers.
 - Variables impactées : `CSRC` inclut désormais les fichiers `drivers/sd/*.c` et `UINCDIR` référence `drivers/sd` pour l’accessibilité des headers.
+
+## Build system – import FatFS interne (2025-05-31)
+- Source unique : FatFS importé depuis le miroir GitHub `https://raw.githubusercontent.com/pabigot/FatFs/ff/master/source` (version R0.13c du dépôt ChaN disponible sur ce miroir).
+- Fichiers ajoutés : `drivers/sd/ff.c`, `drivers/sd/ff.h`, `drivers/sd/diskio.c`, `drivers/sd/diskio.h`, `drivers/sd/ffconf.h` (aucune autre arborescence créée).
+- Configuration FatFS : `ffconf.h` paramétré pour STM32H743 + SDMMC avec DMA et mono-thread SD (`FF_FS_READONLY=0`, `FF_FS_MINIMIZE=0`, `FF_USE_LFN=2`, `FF_MAX_LFN=64`, `FF_STRF_ENCODE=3`, `FF_CODE_PAGE=437`, `FF_VOLUMES=1`, `FF_FS_RPATH=0`, pas de synchronisation POSIX ni d’allocation dynamique, `FF_FS_REENTRANT=0`).
+- Intégration build : le Makefile inclut déjà `drivers/sd/*.c` dans `CSRC` et `drivers/sd` dans `UINCDIR`; aucune modification supplémentaire n’a été nécessaire.
