@@ -696,11 +696,11 @@ __attribute__((weak))
 void __cpu_init(void) {
  80005a0:	b510      	push	{r4, lr}
  80005a2:	b084      	sub	sp, #16
-#if CORTEX_MODEL == 7
-  MPU_Region_InitTypeDef mpu;
-
-  HAL_MPU_Disable();
-
+   * Option A (MPU) : protège la section .ram_d2 (0x30040000, 32 KB) utilisée par les
+   * buffers DMA audio/SPI. La région est explicitement non-cacheable et non-bufferable
+   * pour garantir la cohérence D-Cache sans ajouter de clean/invalidate dans le pipeline
+   * audio temps réel.
+   */
   mpu.Enable           = MPU_REGION_ENABLE;
  80005a4:	2401      	movs	r4, #1
   HAL_MPU_Disable();
@@ -715,7 +715,7 @@ void __cpu_init(void) {
   mpu.TypeExtField     = MPU_TEX_LEVEL0;
   mpu.SubRegionDisable = 0x00;
   mpu.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
- 80005ae:	f04f 2301 	mov.w	r3, #16777472	; 0x1000100
+ 80005ae:	f44f 7380 	mov.w	r3, #256	; 0x100
 
   HAL_MPU_ConfigRegion(&mpu);
  80005b2:	4668      	mov	r0, sp
