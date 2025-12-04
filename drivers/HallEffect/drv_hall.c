@@ -175,7 +175,7 @@ static uint8_t compute_velocity(uint8_t index, uint16_t calibrated, uint16_t sta
     }
 
     if (calibrated <= end_th) {
-        uint32_t dt_us = ST2US(chVTTimeElapsedSinceX(velocity_start_time[index]));
+        uint32_t dt_us = TIME_I2US(chVTTimeElapsedSinceX(velocity_start_time[index]));
         if (dt_us < HALL_VELOCITY_MIN_US) {
             dt_us = HALL_VELOCITY_MIN_US;
         }
@@ -256,7 +256,7 @@ static void update_state(uint8_t index, uint16_t raw_sample, uint16_t filtered_s
 
     uint32_t new_last_time = st->last_time;
     if (new_pressed != prev_pressed) {
-        new_last_time = ST2US(now);
+        new_last_time = TIME_I2US(now);
     }
 
     st->raw = raw_sample;
@@ -285,7 +285,7 @@ void drv_hall_init(void) {
     palClearLine(HALL_LINE_MUX_S2);
 
     adcStart(&ADCD1, NULL);
-    adcStart(&ADCD2, NULL);
+    adcStart(&ADCD3, NULL);
 
     hall_state_init();
 }
@@ -296,7 +296,7 @@ void drv_hall_task(void) {
         chThdSleepMicroseconds(HALL_SETTLE_US);
 
         adcConvert(&ADCD1, &adcgrpcfg1, &adc_sample1, 1);
-        adcConvert(&ADCD2, &adcgrpcfg2, &adc_sample2, 1);
+        adcConvert(&ADCD3, &adcgrpcfg2, &adc_sample2, 1);
 
         uint16_t filtered1 = 0;
         uint16_t filtered2 = 0;

@@ -127,3 +127,9 @@ V13 – Entrées Hall (ADC+MUX) durcies
 - Filtre ASC initialisé de façon défensive (paramètres bornés, NULL protégés) et utilisé dès le premier échantillon pour éviter un silence pendant le warm-up.
 - `hall_state_t.filtered` correspond désormais à la valeur filtrée + calibrée (la valeur brute ADC restant dans `raw`). Écritures regroupées pour limiter les états intermédiaires en lecture multi-thread.
 - Calibration des Hall : gestion robuste des bornes (length/résolution bornés, clamp des entrées, min/max réconciliés) et pas de division par zéro lorsque l'amplitude reste nulle au boot.
+
+V14 – Corrections build Hall/Audio (H743 + ChibiOS)
+---------------------------------------------------
+- Conversion temps Hall basculée sur la macro ChibiOS `TIME_I2US` (µs) pour éliminer l'appel à `ST2US` non déclaré et conserver le calcul de vélocité en microsecondes.
+- Driver Hall ajusté sur les ADC réellement exposés par la cible (ADCD1 + ADCD3) avec configuration dual-MUX inchangée.
+- Driver audio : buffer de sortie renvoyé via un cast explicite vers `int32_t *` (suppression du warning sur le type de pointeur) et arrêt DMA en IRQ via `chSysHalt("AUDIO DMA ERROR")` à la place de `chSysHaltI`.

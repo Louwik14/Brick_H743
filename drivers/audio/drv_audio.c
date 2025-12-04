@@ -145,7 +145,7 @@ int32_t* drv_audio_get_output_buffer(uint8_t *index, size_t *frames) {
     if (frames != NULL) {
         *frames = AUDIO_FRAMES_PER_BUFFER;
     }
-    return audio_out_buffers[ready];
+    return (int32_t *)&audio_out_buffers[ready][0][0];
 }
 
 void drv_audio_release_buffers(uint8_t in_index, uint8_t out_index) {
@@ -476,7 +476,7 @@ static void audio_dma_stop(void) {
 static void audio_dma_rx_cb(void *p, uint32_t flags) {
     (void)p;
     if ((flags & (STM32_DMA_ISR_TEIF | STM32_DMA_ISR_DMEIF | STM32_DMA_ISR_FEIF)) != 0U) {
-        chSysHaltI();
+        chSysHalt("AUDIO DMA ERROR");
     }
     if ((flags & STM32_DMA_ISR_HTIF) != 0U) {
         audio_in_ready_index = 0U;
@@ -489,7 +489,7 @@ static void audio_dma_rx_cb(void *p, uint32_t flags) {
 static void audio_dma_tx_cb(void *p, uint32_t flags) {
     (void)p;
     if ((flags & (STM32_DMA_ISR_TEIF | STM32_DMA_ISR_DMEIF | STM32_DMA_ISR_FEIF)) != 0U) {
-        chSysHaltI();
+        chSysHalt("AUDIO DMA ERROR");
     }
     if ((flags & STM32_DMA_ISR_HTIF) != 0U) {
         audio_out_ready_index = 0U;
