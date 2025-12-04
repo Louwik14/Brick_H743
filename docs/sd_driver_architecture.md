@@ -234,3 +234,12 @@
 - **Testabilité** : instrumentation accessible (counters, latence, saturations), scénarios de test listés en 6.6 + nouveaux cas extrêmes ; scripts de stress sur plusieurs heures.
 - **Traçabilité** : chaque changement d’état/statut consigné dans la structure de stats consultable ; versions et décisions documentées (sections datées 6, 7, 8).
 - **Intégrité FAT/données** : atomicité pattern, refus si pleine, montages RO en cas d’erreurs ; vérifié via tests fsck et validation CRC/génération.
+
+## Implémentation – retour terrain (2025-05-24)
+- Couche HAL : `SDCD1` initialisée statiquement en 4 bits @50 MHz, déconnexion/reconnexion systématique par requête. Présence carte lue via `sdcIsCardInserted`.
+- Mémoire/DMA : buffers FatFS (work area) et transferts SD placés en `.ram_d2` aligné 32 octets (`SD_DMA_BUFFER_ATTR`). Tampon échantillons 64 KiB segmenté pour garantir D-Cache cohérent sans opérations dynamiques.
+- Thread SD : unique thread `sdThread` (priorité `NORMALPRIO-2`, pile 2048) alimenté par mailbox statique (profondeur 8). Pool statique de requêtes, rejet immédiat en cas de saturation (BUSY ++ instrumentation).
+- Machine d’état : `initializing → unmounted` après init, `mounted-rw/ro` après mount, état `busy` transitoire par requête. CRC/IO/FS entraînent bascule `degraded` (ou `unmounted` si NO_CARD), perte critique → `fault`. Écritures refusées en `mounted-ro` ou `degraded`.
+- Atomicité : sauvegardes pattern via fichier `.tmp` + `f_sync` puis `rename`, en-tête structuré (magic/version/taille/génération/CRC). Chargements vérifient header + CRC.
+- Intégration FatFS : montage/démontage encapsulés, répertoires `/projects/<name>/patterns` et `/samples` utilisés ; listing limité aux dossiers sous `/projects`.
+- Protection temps réel : toutes API publiques rejettent immédiatement les appels en ISR ou depuis le thread audio (`audioProcess`). Aucune allocation dynamique, aucune attente active hors thread SD (attente uniquement sur sémaphore utilisateur si demande bloquante).
