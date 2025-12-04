@@ -1,5 +1,5 @@
-build/obj/usb_host_fifo.o: usb_host/usb_host_fifo.c \
- usb_host/usb_host_fifo.h \
+build/obj/usb_host_fifo.o: drivers/usb/usb_host/usb_host_fifo.c \
+ drivers/usb/usb_host/usb_host_fifo.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdbool.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdint.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdint.h \
@@ -23,7 +23,7 @@ build/obj/usb_host_fifo.o: usb_host/usb_host_fifo.c \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_locale.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\strings.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\string.h
-usb_host/usb_host_fifo.h:
+drivers/usb/usb_host/usb_host_fifo.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdbool.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdint.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdint.h:

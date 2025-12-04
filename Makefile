@@ -80,17 +80,17 @@ ASMSRC  = $(ALLASMSRC)
 ASMXSRC = $(ALLXASMSRC)
 
 ##############################################################################
-# USB HOST MIDI - Code applicatif
+# USB HOST MIDI - Code applicatif (drivers/usb/usb_host)
 ##############################################################################
-USB_HOST_APP_DIR := ./usb_host
+USB_HOST_APP_DIR := ./drivers/usb/usb_host
 
 CSRC   += $(wildcard $(USB_HOST_APP_DIR)/*.c)
 INCDIR += $(USB_HOST_APP_DIR)
 
 ##############################################################################
-# STM32 MW USB HOST MIDDLEWARE (dans usb_host/)
+# STM32 MW USB HOST MIDDLEWARE (dans drivers/usb/usb_host/)
 ##############################################################################
-USB_HOST_MW_DIR := ./usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master
+USB_HOST_MW_DIR := ./drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master
 
 # Core USB Host
 USB_HOST_CORE_SRC := $(wildcard $(USB_HOST_MW_DIR)/Core/Src/*.c)
@@ -130,7 +130,7 @@ INCDIR += \
 # Includes
 ##############################################################################
 INCDIR += $(CONFDIR) $(ALLINC)
-UINCDIR = cfg drivers drivers/HallEffect drivers/audio ui usb_host
+UINCDIR = cfg drivers drivers/HallEffect drivers/audio drivers/usb drivers/usb/usb_host ui
 
 ##############################################################################
 # Defines

@@ -1,8 +1,9 @@
 build/obj/usbh_midi.o: \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Class/MIDI/Src/usbh_midi.c \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Class/MIDI/Inc/usbh_midi.h \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h \
- usb_host/usbh_conf.h drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal.h \
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Class/MIDI/Src/usbh_midi.c \
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Class/MIDI/Inc/usbh_midi.h \
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h \
+ drivers/usb/usb_host/usbh_conf.h \
+ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal.h \
  cfg/stm32h7xx_hal_conf.h \
  drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_def.h \
  docs/ChibiOS/os/common/ext/ST/STM32H7xx/stm32h7xx.h \
@@ -53,15 +54,15 @@ build/obj/usbh_midi.o: \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_locale.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\strings.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\string.h \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_def.h \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ioreq.h \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_pipes.h \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ctlreq.h \
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_def.h \
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ioreq.h \
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h \
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_pipes.h \
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ctlreq.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdbool.h
-usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Class/MIDI/Inc/usbh_midi.h:
-usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h:
-usb_host/usbh_conf.h:
+drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Class/MIDI/Inc/usbh_midi.h:
+drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h:
+drivers/usb/usb_host/usbh_conf.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal.h:
 cfg/stm32h7xx_hal_conf.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_def.h:
@@ -113,9 +114,9 @@ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\inclu
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_locale.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\strings.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\string.h:
-usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_def.h:
-usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ioreq.h:
-usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h:
-usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_pipes.h:
-usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ctlreq.h:
+drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_def.h:
+drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ioreq.h:
+drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h:
+drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_pipes.h:
+drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ctlreq.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdbool.h:

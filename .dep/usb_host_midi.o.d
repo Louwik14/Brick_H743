@@ -1,4 +1,4 @@
-build/obj/usb_host_midi.o: usb_host/usb_host_midi.c \
+build/obj/usb_host_midi.o: drivers/usb/usb_host/usb_host_midi.c \
  docs/ChibiOS/os/rt/include/ch.h docs/ChibiOS/os/license/chlicense.h \
  docs/ChibiOS/os/license/chversion.h docs/ChibiOS/os/license/chcustomer.h \
  cfg/chconf.h docs/ChibiOS/os/rt/include/chchecks.h \
@@ -71,7 +71,7 @@ build/obj/usb_host_midi.o: usb_host/usb_host_midi.c \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_locale.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\strings.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\string.h \
- usb_host/usb_host_midi.h usb_host/usbh_conf.h \
+ drivers/usb/usb_host/usb_host_midi.h drivers/usb/usb_host/usbh_conf.h \
  drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal.h \
  cfg/stm32h7xx_hal_conf.h \
  drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_def.h \
@@ -92,15 +92,16 @@ build/obj/usb_host_midi.o: usb_host/usb_host_midi.c \
  drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_cortex.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdio.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\stdio.h \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h \
- usb_host/usbh_conf.h \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_def.h \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ioreq.h \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_pipes.h \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ctlreq.h \
- usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Class/MIDI/Inc/usbh_midi.h \
- usb_host/usbh_platform_chibios_h7.h usb_host/usb_host_fifo.h
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h \
+ drivers/usb/usb_host/usbh_conf.h \
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_def.h \
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ioreq.h \
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h \
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_pipes.h \
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ctlreq.h \
+ drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Class/MIDI/Inc/usbh_midi.h \
+ drivers/usb/usb_host/usbh_platform_chibios_h7.h \
+ drivers/usb/usb_host/usb_host_fifo.h
 docs/ChibiOS/os/rt/include/ch.h:
 docs/ChibiOS/os/license/chlicense.h:
 docs/ChibiOS/os/license/chversion.h:
@@ -184,8 +185,8 @@ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\inclu
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_locale.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\strings.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\string.h:
-usb_host/usb_host_midi.h:
-usb_host/usbh_conf.h:
+drivers/usb/usb_host/usb_host_midi.h:
+drivers/usb/usb_host/usbh_conf.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal.h:
 cfg/stm32h7xx_hal_conf.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_def.h:
@@ -206,13 +207,13 @@ drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_pwr_ex.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_cortex.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdio.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\stdio.h:
-usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h:
-usb_host/usbh_conf.h:
-usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_def.h:
-usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ioreq.h:
-usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h:
-usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_pipes.h:
-usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ctlreq.h:
-usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Class/MIDI/Inc/usbh_midi.h:
-usb_host/usbh_platform_chibios_h7.h:
-usb_host/usb_host_fifo.h:
+drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h:
+drivers/usb/usb_host/usbh_conf.h:
+drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_def.h:
+drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ioreq.h:
+drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_core.h:
+drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_pipes.h:
+drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Core/Inc/usbh_ctlreq.h:
+drivers/usb/usb_host/stm32-mw-usb-host-master/stm32-mw-usb-host-master/Class/MIDI/Inc/usbh_midi.h:
+drivers/usb/usb_host/usbh_platform_chibios_h7.h:
+drivers/usb/usb_host/usb_host_fifo.h:

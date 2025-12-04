@@ -1,4 +1,4 @@
-build/obj/usb_host_memory.o: usb_host/usb_host_memory.c \
+build/obj/usb_host_memory.o: drivers/usb/usb_host/usb_host_memory.c \
  docs/ChibiOS/os/rt/include/ch.h docs/ChibiOS/os/license/chlicense.h \
  docs/ChibiOS/os/license/chversion.h docs/ChibiOS/os/license/chcustomer.h \
  cfg/chconf.h docs/ChibiOS/os/rt/include/chchecks.h \
@@ -56,7 +56,7 @@ build/obj/usb_host_memory.o: usb_host/usb_host_memory.c \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdarg.h \
  docs/ChibiOS/os/oslib/include/chjobs.h \
  docs/ChibiOS/os/oslib/include/chfactory.h \
- docs/ChibiOS/os/rt/include/chdynamic.h usb_host/usbh_conf.h \
+ docs/ChibiOS/os/rt/include/chdynamic.h drivers/usb/usb_host/usbh_conf.h \
  drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal.h \
  cfg/stm32h7xx_hal_conf.h \
  drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_def.h \
@@ -160,7 +160,7 @@ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-ea
 docs/ChibiOS/os/oslib/include/chjobs.h:
 docs/ChibiOS/os/oslib/include/chfactory.h:
 docs/ChibiOS/os/rt/include/chdynamic.h:
-usb_host/usbh_conf.h:
+drivers/usb/usb_host/usbh_conf.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal.h:
 cfg/stm32h7xx_hal_conf.h:
 drivers/stm32h7xx-hal-driver/Inc/stm32h7xx_hal_def.h:
