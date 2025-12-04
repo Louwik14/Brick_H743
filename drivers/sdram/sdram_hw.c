@@ -1,6 +1,10 @@
 #include "ch.h"
 #include "hal.h"
 
+#include "stm32h7xx_hal.h"
+#include "stm32h7xx_hal_cortex.h"
+#include "stm32h7xx_hal_sdram.h"
+
 #include "sdram_driver_priv.h"
 #include "sdram_layout.h"
 
@@ -33,7 +37,7 @@ bool sdram_hw_init_sequence(void) {
   hsdram.Init.ReadBurst = FMC_SDRAM_RBURST_ENABLE;
   hsdram.Init.ReadPipeDelay = FMC_SDRAM_RPIPE_DELAY_0;
 
-  FMC_SDRAM_TimingTypeDef timing;
+  FMC_SDRAM_TimingTypeDef timing = {0};
   timing.LoadToActiveDelay = 2u;    /* tMRD */
   timing.ExitSelfRefreshDelay = 8u; /* tXSR */
   timing.SelfRefreshTime = 6u;      /* tRAS */
