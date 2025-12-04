@@ -6,7 +6,6 @@
 #include "drv_sd_project.h"
 #include "drv_sd_fs.h"
 #include <string.h>
-#include <stdio.h>
 
 #define SD_PATH_MAX 160U
 
@@ -30,11 +29,78 @@ static uint32_t crc32_update(uint32_t crc, const uint8_t *data, size_t len) {
     return ~crc;
 }
 
+static bool build_project_path(char *dst, const char *project_name, const char *suffix) {
+    const char prefix[] = "/projects/";
+    size_t prefix_len = sizeof(prefix) - 1U;
+    size_t name_len = strlen(project_name);
+    size_t suffix_len = (suffix != NULL) ? strlen(suffix) : 0U;
+    size_t total = prefix_len + name_len + suffix_len;
+    if (name_len == 0U || total >= SD_PATH_MAX) {
+        return false;
+    }
+    memcpy(dst, prefix, prefix_len);
+    memcpy(dst + prefix_len, project_name, name_len);
+    if (suffix_len > 0U) {
+        memcpy(dst + prefix_len + name_len, suffix, suffix_len);
+    }
+    dst[total] = '\0';
+    return true;
+}
+
+static bool build_pattern_path(char *dst, const char *project_name, const char *pattern_name) {
+    const char pattern_dir[] = "/patterns/";
+    const char ext[] = ".pat";
+    if (!build_project_path(dst, project_name, pattern_dir)) {
+        return false;
+    }
+    size_t base_len = strlen(dst);
+    size_t pattern_len = strlen(pattern_name);
+    size_t total = base_len + pattern_len + (sizeof(ext) - 1U);
+    if (pattern_len == 0U || total >= SD_PATH_MAX) {
+        return false;
+    }
+    memcpy(dst + base_len, pattern_name, pattern_len);
+    memcpy(dst + base_len + pattern_len, ext, sizeof(ext) - 1U);
+    dst[total] = '\0';
+    return true;
+}
+
+static bool build_sample_path(char *dst, const char *sample_name) {
+    const char prefix[] = "/samples/";
+    size_t prefix_len = sizeof(prefix) - 1U;
+    size_t name_len = strlen(sample_name);
+    size_t total = prefix_len + name_len;
+    if (name_len == 0U || total >= SD_PATH_MAX) {
+        return false;
+    }
+    memcpy(dst, prefix, prefix_len);
+    memcpy(dst + prefix_len, sample_name, name_len);
+    dst[total] = '\0';
+    return true;
+}
+
+static bool append_tmp_suffix(char *dst, const char *src) {
+    const char tmp_suffix[] = ".tmp";
+    size_t src_len = strlen(src);
+    size_t total = src_len + (sizeof(tmp_suffix) - 1U);
+    if (total >= SD_PATH_MAX) {
+        return false;
+    }
+    memcpy(dst, src, src_len);
+    memcpy(dst + src_len, tmp_suffix, sizeof(tmp_suffix) - 1U);
+    dst[total] = '\0';
+    return true;
+}
+
 static sd_error_t ensure_project_dirs(const char *project_name) {
     char path[SD_PATH_MAX];
-    snprintf(path, sizeof(path), "/projects/%s", project_name);
+    if (!build_project_path(path, project_name, "")) {
+        return SD_ERR_PARAM;
+    }
     (void)drv_sd_fs_mkdir(path);
-    snprintf(path, sizeof(path), "/projects/%s/patterns", project_name);
+    if (!build_project_path(path, project_name, "/patterns")) {
+        return SD_ERR_PARAM;
+    }
     (void)drv_sd_fs_mkdir(path);
     return SD_OK;
 }
@@ -52,7 +118,9 @@ sd_error_t drv_sd_project_load_pattern(const char *project_name,
         return SD_ERR_NOT_MOUNTED;
     }
     char path[SD_PATH_MAX];
-    snprintf(path, sizeof(path), "/projects/%s/patterns/%s.pat", project_name, pattern_name);
+    if (!build_pattern_path(path, project_name, pattern_name)) {
+        return SD_ERR_PARAM;
+    }
     sd_fs_file_t file;
     sd_error_t err = drv_sd_fs_open(&file, path, FA_READ);
     if (err != SD_OK) {
@@ -104,12 +172,19 @@ sd_error_t drv_sd_project_save_pattern(const char *project_name,
     if (!drv_sd_fs_is_mounted()) {
         return SD_ERR_NOT_MOUNTED;
     }
-    (void)ensure_project_dirs(project_name);
+    sd_error_t dir_res = ensure_project_dirs(project_name);
+    if (dir_res != SD_OK) {
+        return dir_res;
+    }
 
     char path_final[SD_PATH_MAX];
     char path_tmp[SD_PATH_MAX];
-    snprintf(path_final, sizeof(path_final), "/projects/%s/patterns/%s.pat", project_name, pattern_name);
-    snprintf(path_tmp, sizeof(path_tmp), "%s.tmp", path_final);
+    if (!build_pattern_path(path_final, project_name, pattern_name)) {
+        return SD_ERR_PARAM;
+    }
+    if (!append_tmp_suffix(path_tmp, path_final)) {
+        return SD_ERR_PARAM;
+    }
 
     sd_fs_file_t file;
     sd_error_t err = drv_sd_fs_open(&file, path_tmp, FA_WRITE | FA_CREATE_ALWAYS);
@@ -165,7 +240,9 @@ sd_error_t drv_sd_project_load_sample(const char *sample_name,
         return SD_ERR_NOT_MOUNTED;
     }
     char path[SD_PATH_MAX];
-    snprintf(path, sizeof(path), "/samples/%s", sample_name);
+    if (!build_sample_path(path, sample_name)) {
+        return SD_ERR_PARAM;
+    }
 
     sd_fs_file_t file;
     sd_error_t err = drv_sd_fs_open(&file, path, FA_READ);

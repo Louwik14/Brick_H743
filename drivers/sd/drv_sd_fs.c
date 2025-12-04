@@ -76,6 +76,7 @@ sd_error_t drv_sd_fs_mount(sd_fs_mode_t mode) {
 
 void drv_sd_fs_unmount(void) {
     if (fs_mounted) {
+        drv_sd_hal_sync();
         f_unmount("");
         drv_sd_hal_disconnect();
     }
@@ -127,7 +128,9 @@ sd_error_t drv_sd_fs_sync(sd_fs_file_t *handle) {
     if (!handle || !handle->open || fs_read_only) {
         return SD_ERR_PARAM;
     }
-    return drv_sd_fs_map_result(f_sync(&handle->file));
+    FRESULT res = f_sync(&handle->file);
+    drv_sd_hal_sync();
+    return drv_sd_fs_map_result(res);
 }
 
 sd_error_t drv_sd_fs_stat(const char *path, FILINFO *info) {

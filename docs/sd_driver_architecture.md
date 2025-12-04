@@ -251,3 +251,7 @@
 - Attente bornée : les appels bloquants côté API utilisent désormais un timeout borné, renvoyant `SD_ERR_FAULT` en cas de dépassement tout en libérant correctement la requête.
 - CRC côté buffer non cacheable : les CRC patterns/samples sont calculés sur les buffers DMA non cacheables ou immédiatement après invalider la copie (via transfert temporaire), garantissant la cohérence D-Cache.
 - État BUSY affiné : l’état `SD_STATE_BUSY` n’est plus forcé pour l’init, la lecture/clear des statistiques ; il est réservé aux opérations I/O réelles.
+
+## Correctifs finaux – 2025-05-29
+- Flush physique systématique : `drv_sd_hal_sync()` est appelé après chaque `f_sync`, avant `f_unmount` et juste avant l’arrêt HAL pour garantir la vidange des buffers SDMMC.
+- Chemins déterministes sans `snprintf` : construction des chemins `/projects/...` et `/samples/...` par concaténation bornée (`SD_PATH_MAX`) afin d’éliminer tout formatage non déterministe dans le thread SD.
