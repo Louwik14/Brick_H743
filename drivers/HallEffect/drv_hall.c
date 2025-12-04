@@ -73,6 +73,13 @@ static struct brick_asc asc_state[BRICK_NUM_HALL_SENSORS];
 static struct brick_cal_pot cal_state;
 static systime_t velocity_start_time[BRICK_NUM_HALL_SENSORS];
 static bool velocity_armed[BRICK_NUM_HALL_SENSORS];
+/*
+ * Concurrency model: drv_hall_task() runs in a single dedicated input thread and
+ * is the only writer for the hall_state/velocity arrays. The drv_hall_get_*
+ * accessors are read-only and may be invoked from other threads (UI, sequencer,
+ * etc.). We accept that readers might observe slightly torn updates between
+ * fields, but per-field updates remain atomic on this platform.
+ */
 
 static inline void mux_select(uint8_t index) {
     palWriteLine(HALL_LINE_MUX_S0, (index >> 0) & 1U);
@@ -184,62 +191,84 @@ static uint8_t compute_velocity(uint8_t index, uint16_t calibrated, uint16_t sta
     return hall_state[index].velocity;
 }
 
-static void update_state(uint8_t index, uint16_t raw_value) {
+static void update_state(uint8_t index, uint16_t raw_sample, uint16_t filtered_sample) {
     if (index >= BRICK_NUM_HALL_SENSORS) {
         return;
     }
 
     hall_state_t* st = &hall_state[index];
     uint16_t calibrated = 0;
-    brick_cal_pot_next(&cal_state, index, raw_value, &calibrated);
 
-    st->raw = calibrated;
-    st->filtered = calibrated;
-
-    if (cal_state.min[index] < st->min) {
-        st->min = cal_state.min[index];
-    }
-    if (cal_state.max[index] > st->max) {
-        st->max = cal_state.max[index];
+    if (brick_cal_pot_next(&cal_state, index, filtered_sample, &calibrated) != 0) {
+        return;
     }
 
-    uint16_t range = (uint16_t)(st->max - st->min);
+    uint16_t new_min = st->min;
+    uint16_t new_max = st->max;
+
+    if (cal_state.min[index] < new_min) {
+        new_min = cal_state.min[index];
+    }
+    if (cal_state.max[index] > new_max) {
+        new_max = cal_state.max[index];
+    }
+    if (new_max < new_min) {
+        new_max = new_min;
+    }
+
+    uint16_t range = (uint16_t)(new_max - new_min);
     if (range == 0) {
         range = 1;
     }
 
-    uint16_t press_th = (uint16_t)(st->min + (uint32_t)range * HALL_PRESS_NUM / HALL_PRESS_DEN);
-    uint16_t release_th = (uint16_t)(st->min + (uint32_t)range * HALL_RELEASE_NUM / HALL_RELEASE_DEN);
+    uint16_t press_th = (uint16_t)(new_min + (uint32_t)range * HALL_PRESS_NUM / HALL_PRESS_DEN);
+    uint16_t release_th = (uint16_t)(new_min + (uint32_t)range * HALL_RELEASE_NUM / HALL_RELEASE_DEN);
     if (release_th <= press_th) {
         release_th = (uint16_t)(press_th + 1U);
     }
+    if (release_th > new_max) {
+        release_th = new_max;
+    }
+    if (release_th < press_th) {
+        release_th = press_th;
+    }
 
     uint16_t detent_width = compute_detent_width(range);
-    uint16_t center = (uint16_t)(st->min + range / 2U);
-    uint16_t detent_low = (center > detent_width / 2U) ? (uint16_t)(center - detent_width / 2U) : st->min;
+    uint16_t center = (uint16_t)(new_min + range / 2U);
+    uint16_t detent_low = (center > detent_width / 2U) ? (uint16_t)(center - detent_width / 2U) : new_min;
     uint16_t detent_high = center + detent_width / 2U;
-    if (detent_high > st->max) {
-        detent_high = st->max;
+    if (detent_high > new_max) {
+        detent_high = new_max;
     }
 
-    st->value = normalize_with_deadzone(calibrated, st->min, st->max, detent_low, detent_high);
+    uint8_t new_value = normalize_with_deadzone(calibrated, new_min, new_max, detent_low, detent_high);
 
     systime_t now = chVTGetSystemTimeX();
-    st->velocity = compute_velocity(index, calibrated, release_th, press_th, now);
+    uint8_t new_velocity = compute_velocity(index, calibrated, release_th, press_th, now);
 
     bool prev_pressed = st->pressed;
+    bool new_pressed = prev_pressed;
     if (calibrated <= press_th) {
-        st->pressed = true;
+        new_pressed = true;
     } else if (calibrated >= release_th) {
-        st->pressed = false;
+        new_pressed = false;
     }
 
-    if (st->pressed != prev_pressed) {
-        st->last_time = ST2US(now);
+    uint32_t new_last_time = st->last_time;
+    if (new_pressed != prev_pressed) {
+        new_last_time = ST2US(now);
     }
 
+    st->raw = raw_sample;
+    st->filtered = calibrated;
+    st->min = new_min;
+    st->max = new_max;
     st->threshold = press_th;
     st->hysteresis = release_th;
+    st->value = new_value;
+    st->velocity = new_velocity;
+    st->pressed = new_pressed;
+    st->last_time = new_last_time;
     st->last_raw = calibrated;
 }
 
@@ -272,13 +301,11 @@ void drv_hall_task(void) {
         uint16_t filtered1 = 0;
         uint16_t filtered2 = 0;
 
-        if (brick_asc_process(&asc_state[mux], adc_sample1, &filtered1)) {
-            update_state(mux, filtered1);
-        }
+        (void)brick_asc_process(&asc_state[mux], adc_sample1, &filtered1);
+        update_state(mux, adc_sample1, filtered1);
 
-        if (brick_asc_process(&asc_state[mux + BRICK_HALL_MUX_CHANNELS], adc_sample2, &filtered2)) {
-            update_state((uint8_t)(mux + BRICK_HALL_MUX_CHANNELS), filtered2);
-        }
+        (void)brick_asc_process(&asc_state[mux + BRICK_HALL_MUX_CHANNELS], adc_sample2, &filtered2);
+        update_state((uint8_t)(mux + BRICK_HALL_MUX_CHANNELS), adc_sample2, filtered2);
     }
 }
 

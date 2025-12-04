@@ -1,5 +1,6 @@
 #include "brick_cal.h"
 
+#include <limits.h>
 #include <string.h>
 
 #define BRICK_CAL_DEFAULT_DEADZONE_DEN 20U
@@ -11,9 +12,17 @@ static bool channel_valid(struct brick_cal_pot* cal, uint8_t channel) {
 }
 
 int brick_cal_pot_init(struct brick_cal_pot* cal, uint8_t resolution, uint8_t length) {
+  if (cal == NULL) {
+    return 1;
+  }
+
+  if (resolution > 16U) {
+    resolution = 16U;
+  }
+
   cal->resolution = resolution;
-  cal->length = length;
-  cal->maximum = (uint16_t)(1U << resolution);
+  cal->length = (length > BRICK_NUM_HALL_SENSORS) ? BRICK_NUM_HALL_SENSORS : length;
+  cal->maximum = (uint16_t)((resolution >= 16U) ? UINT16_MAX : (1U << resolution));
 
   for (uint8_t i = 0; i < BRICK_NUM_HALL_SENSORS; ++i) {
     cal->min[i] = cal->maximum;
@@ -27,6 +36,10 @@ int brick_cal_pot_init(struct brick_cal_pot* cal, uint8_t resolution, uint8_t le
 }
 
 int brick_cal_pot_enable_range(struct brick_cal_pot* cal, uint8_t start, uint8_t length) {
+  if (cal == NULL || cal->length == 0U) {
+    return 1;
+  }
+
   if (start >= cal->length) {
     return 1;
   }
@@ -107,10 +120,22 @@ static void update_detent(struct brick_cal_pot* cal, uint8_t channel, uint16_t r
   cal->detenthi[channel] = hi;
 }
 
+static uint16_t clamp_to_maximum(struct brick_cal_pot* cal, uint16_t value) {
+  if (cal == NULL) {
+    return value;
+  }
+  if (value > cal->maximum) {
+    return cal->maximum;
+  }
+  return value;
+}
+
 int brick_cal_pot_next(struct brick_cal_pot* cal, uint8_t channel, uint16_t in, uint16_t* out) {
   if (!channel_valid(cal, channel)) {
     return 1;
   }
+
+  in = clamp_to_maximum(cal, in);
 
   if (!cal->enable[channel]) {
     *out = in;
@@ -122,6 +147,10 @@ int brick_cal_pot_next(struct brick_cal_pot* cal, uint8_t channel, uint16_t in, 
   }
   if (in > cal->max[channel]) {
     cal->max[channel] = in;
+  }
+
+  if (cal->max[channel] < cal->min[channel]) {
+    cal->max[channel] = cal->min[channel];
   }
 
   uint16_t range = (uint16_t)(cal->max[channel] - cal->min[channel]);

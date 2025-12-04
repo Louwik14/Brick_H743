@@ -1,7 +1,6 @@
 #ifndef BRICK_ASC_H
 #define BRICK_ASC_H
 
-#include <assert.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
