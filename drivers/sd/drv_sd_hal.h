@@ -32,6 +32,7 @@ void            drv_sd_hal_disconnect(void);
 sd_hal_status_t drv_sd_hal_read_blocks(uint8_t *buffer, uint32_t sector, uint32_t count);
 sd_hal_status_t drv_sd_hal_write_blocks(const uint8_t *buffer, uint32_t sector, uint32_t count);
 void            drv_sd_hal_sync(void);
+sd_hal_status_t drv_sd_hal_get_info(BlockDeviceInfo *info);
 
 #ifdef __cplusplus
 }

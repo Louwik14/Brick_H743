@@ -29,7 +29,7 @@ static bool sd_context_forbidden(void) {
     if (__get_IPSR() != 0U) {
         return true;
     }
-    const char *name = chRegGetThreadNameX();
+    const char *name = chRegGetThreadNameX(chThdGetSelfX());
     if (name != NULL && strcmp(name, "audioProcess") == 0) {
         return true;
     }
