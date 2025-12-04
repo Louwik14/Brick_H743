@@ -71,6 +71,8 @@ include $(CHIBIOS)/tools/mk/autobuild.mk
 CSRC = $(ALLCSRC) \
        main.c \
        $(wildcard drivers/*.c) \
+       $(wildcard drivers/HallEffect/*.c) \
+       $(wildcard drivers/audio/*.c) \
        $(wildcard ui/*.c)
 
 CPPSRC  = $(ALLCPPSRC)
@@ -128,7 +130,7 @@ INCDIR += \
 # Includes
 ##############################################################################
 INCDIR += $(CONFDIR) $(ALLINC)
-UINCDIR = cfg drivers ui usb_host
+UINCDIR = cfg drivers drivers/HallEffect drivers/audio ui usb_host
 
 ##############################################################################
 # Defines
