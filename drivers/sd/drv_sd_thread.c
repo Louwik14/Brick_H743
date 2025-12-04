@@ -36,7 +36,7 @@ static void sd_purge_write_requests(void) {
     sd_request_t *pending[SD_FIFO_DEPTH];
     size_t pending_count = 0U;
     msg_t msg;
-    while (chMBFetch(&sd_mb, &msg, TIME_IMMEDIATE) == MSG_OK) {
+    while (chMBFetchTimeout(&sd_mb, &msg, TIME_IMMEDIATE) == MSG_OK) {
         sd_request_t *req = (sd_request_t *)msg;
         if (sd_request_is_write(req)) {
             req->result = SD_ERR_FS;
@@ -48,7 +48,7 @@ static void sd_purge_write_requests(void) {
         }
     }
     for (size_t i = 0; i < pending_count; ++i) {
-        (void)chMBPost(&sd_mb, (msg_t)pending[i], TIME_IMMEDIATE);
+        (void)chMBPostTimeout(&sd_mb, (msg_t)pending[i], TIME_IMMEDIATE);
     }
 }
 
@@ -207,7 +207,7 @@ static THD_FUNCTION(sdThread, arg) {
     chRegSetThreadName("sdThread");
     for (;;) {
         msg_t msg;
-        if (chMBFetch(&sd_mb, &msg, TIME_INFINITE) != MSG_OK) {
+        if (chMBFetchTimeout(&sd_mb, &msg, TIME_INFINITE) != MSG_OK) {
             continue;
         }
         sd_request_t *req = (sd_request_t *)msg;
@@ -262,7 +262,7 @@ static THD_FUNCTION(sdThread, arg) {
         g_sd_last_error = res;
         sd_apply_error_state(res);
         sd_handle_write_protect_flag();
-        uint32_t latency_us = (uint32_t)ST2US(chVTTimeElapsedSinceX(start));
+        uint32_t latency_us = (uint32_t)TIME_I2US(chVTTimeElapsedSinceX(start));
         sd_stats_record(res, latency_us);
         chBSemSignal(&req->done);
         if (req->auto_release) {
@@ -313,7 +313,7 @@ bool drv_sd_thread_post(sd_request_t *req) {
         return false;
     }
     msg_t msg = (msg_t)req;
-    msg_t status = chMBPost(&sd_mb, msg, TIME_IMMEDIATE);
+    msg_t status = chMBPostTimeout(&sd_mb, msg, TIME_IMMEDIATE);
     if (status != MSG_OK) {
         g_sd_stats.busy_rejections++;
         return false;

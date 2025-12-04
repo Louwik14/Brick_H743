@@ -268,3 +268,10 @@
 - Les sources FatFS R0.16 sont désormais stockées localement dans `drivers/sd/ff16/` et fournissent les symboles attendus par le Makefile.
 - Fichiers présents : `ff.c`, `ff.h`, `ffconf.h`, `diskio.c`, `diskio.h`, `ffsystem.c`, `ffunicode.c`.
 - Le répertoire `drivers/sd/` ne contient plus de doublons FatFS : seuls les fichiers `drv_sd*.c/.h` restent à la racine, toutes les implémentations FatFS vivent sous `drivers/sd/ff16/`.
+
+## Correctifs de portage ChibiOS – 2025-07-03
+- `diskio.c` n’inclut plus de headers « platform.h » génériques : la couche FatFS s’appuie directement sur `ch.h`/`hal.h` et les API `drv_sd_hal_*` pour les lectures/écritures et les ioctl.
+- `SDCConfig` est aligné sur la structure ChibiOS STM32H7 réelle (bus 4 bits + `slowdown`), suppression du champ inexistant `sdclk_freq_max_hz`.
+- Les erreurs SDMMC utilisent désormais les flags `SDC_CMD_CRC_ERROR`, `SDC_DATA_TIMEOUT`, `SDC_RX_OVERRUN`, etc., renvoyés par `sdcGetAndClearErrors()` ; les anciens symboles `SDC_EVENT_*` absents du HAL ont été retirés.
+- Les primitives mailbox bloquantes/immédiates sont remplacées par `chMBFetchTimeout`/`chMBPostTimeout` et la conversion temps s’appuie sur `TIME_I2US` (macro `ST2US` absente sur cette version).
+- L’API registre RT est utilisée correctement (`chRegGetThreadNameX(chThdGetSelfX())`) pour identifier le thread courant sans dépendre d’une signature obsolète.

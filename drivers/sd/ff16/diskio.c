@@ -1,233 +1,154 @@
 /*-----------------------------------------------------------------------*/
-/* Low level disk I/O module SKELETON for FatFs     (C)ChaN, 2025        */
+/* Low level disk I/O module for FatFs (C)ChaN, 2025                     */
 /*-----------------------------------------------------------------------*/
-/* If a working storage control module is available, it should be        */
-/* attached to the FatFs via a glue function rather than modifying it.   */
-/* This is an example of glue functions to attach various exsisting      */
-/* storage control modules to the FatFs module with a defined API.       */
+/* Glue functions to attach the SDMMC driver to FatFS using ChibiOS HAL. */
 /*-----------------------------------------------------------------------*/
 
-#include "ff.h"			/* Basic definitions of FatFs */
-#include "diskio.h"		/* Declarations FatFs MAI */
+#include "ff.h"                 /* Basic definitions of FatFs */
+#include "diskio.h"             /* Declarations FatFs API */
+#include "ch.h"
+#include "hal.h"
+#include "drv_sd_hal.h"
 
-/* Example: Declarations of the platform and disk functions in the project */
-#include "platform.h"
-#include "storage.h"
+#define DEV_MMC 0U
 
-/* Example: Mapping of physical drive number for each drive */
-#define DEV_FLASH	0	/* Map FTL to physical drive 0 */
-#define DEV_MMC		1	/* Map MMC/SD card to physical drive 1 */
-#define DEV_USB		2	/* Map USB MSD to physical drive 2 */
+static DSTATUS sd_status = STA_NOINIT;
 
+static DRESULT sd_map_status(sd_hal_status_t status) {
+    switch (status) {
+    case SD_HAL_OK:
+        return RES_OK;
+    case SD_HAL_NO_CARD:
+        return RES_NOTRDY;
+    case SD_HAL_CRC:
+    case SD_HAL_TIMEOUT:
+    case SD_HAL_ERROR:
+    default:
+        return RES_ERROR;
+    }
+}
 
 /*-----------------------------------------------------------------------*/
 /* Get Drive Status                                                      */
 /*-----------------------------------------------------------------------*/
 
-DSTATUS disk_status (
-	BYTE pdrv		/* Physical drive nmuber to identify the drive */
-)
-{
-	DSTATUS stat;
-	int result;
+DSTATUS disk_status(BYTE pdrv) {
+    if (pdrv != DEV_MMC) {
+        return STA_NOINIT;
+    }
 
-	switch (pdrv) {
-	case DEV_RAM :
-		result = RAM_disk_status();
+    if (!drv_sd_hal_is_card_present()) {
+        sd_status = STA_NOINIT | STA_NODISK;
+    }
 
-		// translate the reslut code here
-
-		return stat;
-
-	case DEV_MMC :
-		result = MMC_disk_status();
-
-		// translate the reslut code here
-
-		return stat;
-
-	case DEV_USB :
-		result = USB_disk_status();
-
-		// translate the reslut code here
-
-		return stat;
-	}
-	return STA_NOINIT;
+    return sd_status;
 }
-
-
 
 /*-----------------------------------------------------------------------*/
 /* Inidialize a Drive                                                    */
 /*-----------------------------------------------------------------------*/
 
-DSTATUS disk_initialize (
-	BYTE pdrv				/* Physical drive nmuber to identify the drive */
-)
-{
-	DSTATUS stat;
-	int result;
+DSTATUS disk_initialize(BYTE pdrv) {
+    if (pdrv != DEV_MMC) {
+        return STA_NOINIT;
+    }
 
-	switch (pdrv) {
-	case DEV_RAM :
-		result = RAM_disk_initialize();
+    drv_sd_hal_init();
 
-		// translate the reslut code here
+    if (!drv_sd_hal_is_card_present()) {
+        sd_status = STA_NOINIT | STA_NODISK;
+        return sd_status;
+    }
 
-		return stat;
+    sd_hal_status_t status = drv_sd_hal_connect();
+    if (status != SD_HAL_OK) {
+        sd_status = STA_NOINIT;
+        return sd_status;
+    }
 
-	case DEV_MMC :
-		result = MMC_disk_initialize();
-
-		// translate the reslut code here
-
-		return stat;
-
-	case DEV_USB :
-		result = USB_disk_initialize();
-
-		// translate the reslut code here
-
-		return stat;
-	}
-	return STA_NOINIT;
+    sd_status = 0U;
+    return sd_status;
 }
-
-
 
 /*-----------------------------------------------------------------------*/
 /* Read Sector(s)                                                        */
 /*-----------------------------------------------------------------------*/
 
-DRESULT disk_read (
-	BYTE pdrv,		/* Physical drive nmuber to identify the drive */
-	BYTE *buff,		/* Data buffer to store read data */
-	LBA_t sector,	/* Start sector in LBA */
-	UINT count		/* Number of sectors to read */
-)
-{
-	DRESULT res;
-	int result;
+DRESULT disk_read(BYTE pdrv, BYTE *buff, LBA_t sector, UINT count) {
+    if (pdrv != DEV_MMC || buff == NULL || count == 0U) {
+        return RES_PARERR;
+    }
 
-	switch (pdrv) {
-	case DEV_RAM :
-		// translate the arguments here
+    if (!drv_sd_hal_is_card_present()) {
+        sd_status = STA_NOINIT | STA_NODISK;
+        return RES_NOTRDY;
+    }
 
-		result = RAM_disk_read(buff, sector, count);
+    (void)drv_sd_hal_connect();
 
-		// translate the reslut code here
-
-		return res;
-
-	case DEV_MMC :
-		// translate the arguments here
-
-		result = MMC_disk_read(buff, sector, count);
-
-		// translate the reslut code here
-
-		return res;
-
-	case DEV_USB :
-		// translate the arguments here
-
-		result = USB_disk_read(buff, sector, count);
-
-		// translate the reslut code here
-
-		return res;
-	}
-
-	return RES_PARERR;
+    sd_hal_status_t status = drv_sd_hal_read_blocks(buff, (uint32_t)sector, (uint32_t)count);
+    return sd_map_status(status);
 }
-
-
 
 /*-----------------------------------------------------------------------*/
 /* Write Sector(s)                                                       */
 /*-----------------------------------------------------------------------*/
 
 #if FF_FS_READONLY == 0
+DRESULT disk_write(BYTE pdrv, const BYTE *buff, LBA_t sector, UINT count) {
+    if (pdrv != DEV_MMC || buff == NULL || count == 0U) {
+        return RES_PARERR;
+    }
 
-DRESULT disk_write (
-	BYTE pdrv,			/* Physical drive nmuber to identify the drive */
-	const BYTE *buff,	/* Data to be written */
-	LBA_t sector,		/* Start sector in LBA */
-	UINT count			/* Number of sectors to write */
-)
-{
-	DRESULT res;
-	int result;
+    if (!drv_sd_hal_is_card_present()) {
+        sd_status = STA_NOINIT | STA_NODISK;
+        return RES_NOTRDY;
+    }
 
-	switch (pdrv) {
-	case DEV_RAM :
-		// translate the arguments here
+    (void)drv_sd_hal_connect();
 
-		result = RAM_disk_write(buff, sector, count);
-
-		// translate the reslut code here
-
-		return res;
-
-	case DEV_MMC :
-		// translate the arguments here
-
-		result = MMC_disk_write(buff, sector, count);
-
-		// translate the reslut code here
-
-		return res;
-
-	case DEV_USB :
-		// translate the arguments here
-
-		result = USB_disk_write(buff, sector, count);
-
-		// translate the reslut code here
-
-		return res;
-	}
-
-	return RES_PARERR;
+    sd_hal_status_t status = drv_sd_hal_write_blocks(buff, (uint32_t)sector, (uint32_t)count);
+    return sd_map_status(status);
 }
-
 #endif
-
 
 /*-----------------------------------------------------------------------*/
 /* Miscellaneous Functions                                               */
 /*-----------------------------------------------------------------------*/
 
-DRESULT disk_ioctl (
-	BYTE pdrv,		/* Physical drive nmuber (0..) */
-	BYTE cmd,		/* Control code */
-	void *buff		/* Buffer to send/receive control data */
-)
-{
-	DRESULT res;
-	int result;
+DRESULT disk_ioctl(BYTE pdrv, BYTE cmd, void *buff) {
+    if (pdrv != DEV_MMC) {
+        return RES_PARERR;
+    }
 
-	switch (pdrv) {
-	case DEV_RAM :
+    if (!drv_sd_hal_is_card_present()) {
+        return RES_NOTRDY;
+    }
 
-		// Process of the command for the RAM drive
+    if ((buff == NULL) && (cmd != CTRL_SYNC)) {
+        return RES_PARERR;
+    }
 
-		return res;
-
-	case DEV_MMC :
-
-		// Process of the command for the MMC/SD card
-
-		return res;
-
-	case DEV_USB :
-
-		// Process of the command the USB drive
-
-		return res;
-	}
-
-	return RES_PARERR;
+    switch (cmd) {
+    case CTRL_SYNC:
+        drv_sd_hal_sync();
+        return RES_OK;
+    case GET_SECTOR_COUNT: {
+        BlockDeviceInfo info;
+        if (drv_sd_hal_get_info(&info) != SD_HAL_OK) {
+            return RES_ERROR;
+        }
+        *((LBA_t *)buff) = (LBA_t)info.blk_num;
+        return RES_OK;
+    }
+    case GET_SECTOR_SIZE:
+        *((WORD *)buff) = (WORD)MMCSD_BLOCK_SIZE;
+        return RES_OK;
+    case GET_BLOCK_SIZE:
+        *((DWORD *)buff) = 1U;
+        return RES_OK;
+    default:
+        return RES_PARERR;
+    }
 }
 
