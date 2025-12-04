@@ -14,16 +14,24 @@ c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none
                               ./build/obj/usb_host_memory.o (putchar)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-snprintf.o)
                               ./build/obj/drv_display.o (snprintf)
+c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+                              ./build/obj/ff.o (memcmp)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memset.o)
                               ./build/obj/crt1.o (memset)
+c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
+                              ./build/obj/ff.o (strchr)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncmp.o)
                               ./build/obj/chfactory.o (strncmp)
+c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
+                              ./build/obj/drv_sd_project.o (strncpy)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-impure.o)
                               c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-printf.o) (_impure_ptr)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strcmp.o)
                               ./build/obj/chregistry.o (strcmp)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcpy.o)
                               ./build/obj/hal_buffers.o (memcpy)
+c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
+                              ./build/obj/drv_sd.o (strlen)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-svfprintf.o)
                               c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-snprintf.o) (_svfprintf_r)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-vfprintf.o)
@@ -50,8 +58,6 @@ c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none
                               c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-vfiprintf.o) (_fputwc_r)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memmove.o)
                               c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-fvwrite.o) (memmove)
-c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
-                              c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-svfprintf.o) (strncpy)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o)
                               c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-svfprintf.o) (__locale_mb_cur_max)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-localeconv.o)
@@ -72,8 +78,6 @@ c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none
                               c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o) (strcpy)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memchr.o)
                               c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-svfprintf.o) (memchr)
-c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
-                              c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-svfprintf.o) (strlen)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libm_a-s_frexp.o)
                               c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-svfprintf.o) (frexp)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-dtoa.o)
@@ -112,8 +116,6 @@ c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none
                               c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o) (strcasecmp)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strcat.o)
                               c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o) (strcat)
-c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
-                              c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o) (strchr)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlcpy.o)
                               c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o) (strlcpy)
 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncasecmp.o)
@@ -1736,6 +1738,375 @@ Discarded input sections
  .comment       0x00000000       0x34 ./build/obj/font5x8_elektron.o
  .ARM.attributes
                 0x00000000       0x32 ./build/obj/font5x8_elektron.o
+ .text          0x00000000        0x0 ./build/obj/drv_sd.o
+ .data          0x00000000        0x0 ./build/obj/drv_sd.o
+ .bss           0x00000000        0x0 ./build/obj/drv_sd.o
+ .text.sd_submit_request
+                0x00000000       0x64 ./build/obj/drv_sd.o
+ .rodata.drv_sd_init.str1.4
+                0x00000000        0xd ./build/obj/drv_sd.o
+ .text.drv_sd_init
+                0x00000000       0x7c ./build/obj/drv_sd.o
+ .text.drv_sd_mount
+                0x00000000       0x80 ./build/obj/drv_sd.o
+ .text.drv_sd_unmount
+                0x00000000       0x7c ./build/obj/drv_sd.o
+ .text.drv_sd_is_present
+                0x00000000        0x4 ./build/obj/drv_sd.o
+ .text.drv_sd_get_state
+                0x00000000        0xc ./build/obj/drv_sd.o
+ .text.drv_sd_get_last_error
+                0x00000000        0xc ./build/obj/drv_sd.o
+ .text.drv_sd_load_pattern
+                0x00000000       0xd4 ./build/obj/drv_sd.o
+ .text.drv_sd_save_pattern
+                0x00000000       0xd4 ./build/obj/drv_sd.o
+ .text.drv_sd_load_sample
+                0x00000000       0xbc ./build/obj/drv_sd.o
+ .text.drv_sd_list_projects
+                0x00000000       0xac ./build/obj/drv_sd.o
+ .text.drv_sd_get_stats
+                0x00000000       0x94 ./build/obj/drv_sd.o
+ .text.drv_sd_clear_stats
+                0x00000000       0x90 ./build/obj/drv_sd.o
+ .bss.g_sd_last_error
+                0x00000000        0x1 ./build/obj/drv_sd.o
+ .bss.g_sd_state
+                0x00000000        0x1 ./build/obj/drv_sd.o
+ .bss.g_sd_stats
+                0x00000000       0x44 ./build/obj/drv_sd.o
+ .bss.sd_initialized
+                0x00000000        0x1 ./build/obj/drv_sd.o
+ .debug_info    0x00000000     0x205d ./build/obj/drv_sd.o
+ .debug_abbrev  0x00000000      0x46b ./build/obj/drv_sd.o
+ .debug_loclists
+                0x00000000      0x70d ./build/obj/drv_sd.o
+ .debug_aranges
+                0x00000000       0x80 ./build/obj/drv_sd.o
+ .debug_rnglists
+                0x00000000      0x2ed ./build/obj/drv_sd.o
+ .debug_line    0x00000000     0x12e8 ./build/obj/drv_sd.o
+ .debug_str     0x00000000      0xc8b ./build/obj/drv_sd.o
+ .comment       0x00000000       0x34 ./build/obj/drv_sd.o
+ .debug_frame   0x00000000      0x1b8 ./build/obj/drv_sd.o
+ .ARM.attributes
+                0x00000000       0x32 ./build/obj/drv_sd.o
+ .text          0x00000000        0x0 ./build/obj/drv_sd_fs.o
+ .data          0x00000000        0x0 ./build/obj/drv_sd_fs.o
+ .bss           0x00000000        0x0 ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_map_result
+                0x00000000       0x40 ./build/obj/drv_sd_fs.o
+ .rodata.drv_sd_fs_mount.str1.4
+                0x00000000        0xd ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_mount
+                0x00000000       0xfc ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_unmount
+                0x00000000       0x3c ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_is_mounted
+                0x00000000        0xc ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_open
+                0x00000000       0x48 ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_close
+                0x00000000       0x1c ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_read
+                0x00000000       0x20 ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_write
+                0x00000000       0x28 ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_sync
+                0x00000000       0x30 ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_stat
+                0x00000000       0x20 ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_rename
+                0x00000000       0x2c ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_delete
+                0x00000000       0x2c ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_mkdir
+                0x00000000       0x2c ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_list_dir
+                0x00000000       0x5c ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_consume_write_protect_event
+                0x00000000       0x10 ./build/obj/drv_sd_fs.o
+ .text.drv_sd_fs_is_read_only
+                0x00000000        0xc ./build/obj/drv_sd_fs.o
+ .bss.fs_mounted
+                0x00000000        0x1 ./build/obj/drv_sd_fs.o
+ .bss.fs_read_only
+                0x00000000        0x1 ./build/obj/drv_sd_fs.o
+ .bss.fs_write_protected_event
+                0x00000000        0x1 ./build/obj/drv_sd_fs.o
+ .bss.sd_fs     0x00000000      0x230 ./build/obj/drv_sd_fs.o
+ .debug_info    0x00000000      0xe89 ./build/obj/drv_sd_fs.o
+ .debug_abbrev  0x00000000      0x31a ./build/obj/drv_sd_fs.o
+ .debug_loclists
+                0x00000000      0x47f ./build/obj/drv_sd_fs.o
+ .debug_aranges
+                0x00000000       0x98 ./build/obj/drv_sd_fs.o
+ .debug_rnglists
+                0x00000000       0xbc ./build/obj/drv_sd_fs.o
+ .debug_line    0x00000000      0x745 ./build/obj/drv_sd_fs.o
+ .debug_str     0x00000000      0x78d ./build/obj/drv_sd_fs.o
+ .comment       0x00000000       0x34 ./build/obj/drv_sd_fs.o
+ .debug_frame   0x00000000      0x20c ./build/obj/drv_sd_fs.o
+ .ARM.attributes
+                0x00000000       0x32 ./build/obj/drv_sd_fs.o
+ .text          0x00000000        0x0 ./build/obj/drv_sd_hal.o
+ .data          0x00000000        0x0 ./build/obj/drv_sd_hal.o
+ .bss           0x00000000        0x0 ./build/obj/drv_sd_hal.o
+ .text.drv_sd_hal_init
+                0x00000000       0x2c ./build/obj/drv_sd_hal.o
+ .text.drv_sd_hal_deinit
+                0x00000000       0x18 ./build/obj/drv_sd_hal.o
+ .text.drv_sd_hal_is_card_present
+                0x00000000        0xc ./build/obj/drv_sd_hal.o
+ .text.drv_sd_hal_connect
+                0x00000000       0x34 ./build/obj/drv_sd_hal.o
+ .text.drv_sd_hal_disconnect
+                0x00000000       0x20 ./build/obj/drv_sd_hal.o
+ .text.drv_sd_hal_read_blocks
+                0x00000000       0x4c ./build/obj/drv_sd_hal.o
+ .text.drv_sd_hal_write_blocks
+                0x00000000       0x4c ./build/obj/drv_sd_hal.o
+ .text.drv_sd_hal_sync
+                0x00000000        0xc ./build/obj/drv_sd_hal.o
+ .text.drv_sd_hal_get_info
+                0x00000000       0x34 ./build/obj/drv_sd_hal.o
+ .bss.sd_connected
+                0x00000000        0x1 ./build/obj/drv_sd_hal.o
+ .bss.sd_hal_initialized
+                0x00000000        0x1 ./build/obj/drv_sd_hal.o
+ .rodata.sd_cfg
+                0x00000000        0x8 ./build/obj/drv_sd_hal.o
+ .debug_info    0x00000000     0x13e1 ./build/obj/drv_sd_hal.o
+ .debug_abbrev  0x00000000      0x3af ./build/obj/drv_sd_hal.o
+ .debug_loclists
+                0x00000000      0x15d ./build/obj/drv_sd_hal.o
+ .debug_aranges
+                0x00000000       0x60 ./build/obj/drv_sd_hal.o
+ .debug_rnglists
+                0x00000000       0xa9 ./build/obj/drv_sd_hal.o
+ .debug_line    0x00000000      0x5ef ./build/obj/drv_sd_hal.o
+ .debug_str     0x00000000      0xa3d ./build/obj/drv_sd_hal.o
+ .comment       0x00000000       0x34 ./build/obj/drv_sd_hal.o
+ .debug_frame   0x00000000       0xe8 ./build/obj/drv_sd_hal.o
+ .ARM.attributes
+                0x00000000       0x32 ./build/obj/drv_sd_hal.o
+ .text          0x00000000        0x0 ./build/obj/drv_sd_project.o
+ .data          0x00000000        0x0 ./build/obj/drv_sd_project.o
+ .bss           0x00000000        0x0 ./build/obj/drv_sd_project.o
+ .rodata.build_project_path.str1.4
+                0x00000000        0xb ./build/obj/drv_sd_project.o
+ .text.build_project_path
+                0x00000000       0x80 ./build/obj/drv_sd_project.o
+ .rodata.build_pattern_path.str1.4
+                0x00000000        0xb ./build/obj/drv_sd_project.o
+ .text.build_pattern_path
+                0x00000000       0x88 ./build/obj/drv_sd_project.o
+ .text.list_projects_cb
+                0x00000000       0x54 ./build/obj/drv_sd_project.o
+ .text.drv_sd_project_load_pattern
+                0x00000000      0x134 ./build/obj/drv_sd_project.o
+ .rodata.drv_sd_project_save_pattern.str1.4
+                0x00000000        0xe ./build/obj/drv_sd_project.o
+ .text.drv_sd_project_save_pattern
+                0x00000000      0x174 ./build/obj/drv_sd_project.o
+ .rodata.drv_sd_project_load_sample.str1.4
+                0x00000000        0xa ./build/obj/drv_sd_project.o
+ .text.drv_sd_project_load_sample
+                0x00000000      0x1c0 ./build/obj/drv_sd_project.o
+ .rodata.drv_sd_project_list_projects.str1.4
+                0x00000000        0xa ./build/obj/drv_sd_project.o
+ .text.drv_sd_project_list_projects
+                0x00000000       0x60 ./build/obj/drv_sd_project.o
+ .ram_d2        0x00000000    0x10000 ./build/obj/drv_sd_project.o
+ .debug_info    0x00000000     0x166d ./build/obj/drv_sd_project.o
+ .debug_abbrev  0x00000000      0x45d ./build/obj/drv_sd_project.o
+ .debug_loclists
+                0x00000000      0xcab ./build/obj/drv_sd_project.o
+ .debug_aranges
+                0x00000000       0x50 ./build/obj/drv_sd_project.o
+ .debug_rnglists
+                0x00000000      0x13e ./build/obj/drv_sd_project.o
+ .debug_line    0x00000000      0x9a0 ./build/obj/drv_sd_project.o
+ .debug_str     0x00000000      0x83d ./build/obj/drv_sd_project.o
+ .comment       0x00000000       0x34 ./build/obj/drv_sd_project.o
+ .debug_frame   0x00000000      0x168 ./build/obj/drv_sd_project.o
+ .ARM.attributes
+                0x00000000       0x32 ./build/obj/drv_sd_project.o
+ .text          0x00000000        0x0 ./build/obj/drv_sd_thread.o
+ .data          0x00000000        0x0 ./build/obj/drv_sd_thread.o
+ .bss           0x00000000        0x0 ./build/obj/drv_sd_thread.o
+ .rodata.sdThread.str1.4
+                0x00000000        0x9 ./build/obj/drv_sd_thread.o
+ .text.sdThread
+                0x00000000      0x574 ./build/obj/drv_sd_thread.o
+ .text.drv_sd_thread_start
+                0x00000000       0x48 ./build/obj/drv_sd_thread.o
+ .text.drv_sd_thread_alloc
+                0x00000000       0x60 ./build/obj/drv_sd_thread.o
+ .text.drv_sd_thread_release
+                0x00000000       0x48 ./build/obj/drv_sd_thread.o
+ .text.drv_sd_thread_post
+                0x00000000       0x2c ./build/obj/drv_sd_thread.o
+ .bss.sdThreadWA
+                0x00000000      0x9e0 ./build/obj/drv_sd_thread.o
+ .bss.sd_alloc_mutex
+                0x00000000       0x10 ./build/obj/drv_sd_thread.o
+ .bss.sd_mailbox_buffer
+                0x00000000       0x20 ./build/obj/drv_sd_thread.o
+ .bss.sd_mb     0x00000000       0x28 ./build/obj/drv_sd_thread.o
+ .bss.sd_request_in_use
+                0x00000000        0x8 ./build/obj/drv_sd_thread.o
+ .bss.sd_requests
+                0x00000000      0x1a0 ./build/obj/drv_sd_thread.o
+ .debug_info    0x00000000     0x2353 ./build/obj/drv_sd_thread.o
+ .debug_abbrev  0x00000000      0x5f0 ./build/obj/drv_sd_thread.o
+ .debug_loclists
+                0x00000000      0x831 ./build/obj/drv_sd_thread.o
+ .debug_aranges
+                0x00000000       0x40 ./build/obj/drv_sd_thread.o
+ .debug_rnglists
+                0x00000000      0x305 ./build/obj/drv_sd_thread.o
+ .debug_line    0x00000000     0x106b ./build/obj/drv_sd_thread.o
+ .debug_str     0x00000000      0xfad ./build/obj/drv_sd_thread.o
+ .comment       0x00000000       0x34 ./build/obj/drv_sd_thread.o
+ .debug_frame   0x00000000       0xbc ./build/obj/drv_sd_thread.o
+ .ARM.attributes
+                0x00000000       0x32 ./build/obj/drv_sd_thread.o
+ .text          0x00000000        0x0 ./build/obj/diskio.o
+ .data          0x00000000        0x0 ./build/obj/diskio.o
+ .bss           0x00000000        0x0 ./build/obj/diskio.o
+ .text.disk_status
+                0x00000000       0x24 ./build/obj/diskio.o
+ .text.disk_initialize
+                0x00000000       0x38 ./build/obj/diskio.o
+ .text.disk_read
+                0x00000000       0x44 ./build/obj/diskio.o
+ .text.disk_write
+                0x00000000       0x44 ./build/obj/diskio.o
+ .text.disk_ioctl
+                0x00000000       0x5c ./build/obj/diskio.o
+ .data.sd_status
+                0x00000000        0x1 ./build/obj/diskio.o
+ .debug_info    0x00000000      0x525 ./build/obj/diskio.o
+ .debug_abbrev  0x00000000      0x1ba ./build/obj/diskio.o
+ .debug_loclists
+                0x00000000      0x266 ./build/obj/diskio.o
+ .debug_aranges
+                0x00000000       0x40 ./build/obj/diskio.o
+ .debug_rnglists
+                0x00000000       0x37 ./build/obj/diskio.o
+ .debug_line    0x00000000      0x423 ./build/obj/diskio.o
+ .debug_str     0x00000000      0x3a8 ./build/obj/diskio.o
+ .comment       0x00000000       0x34 ./build/obj/diskio.o
+ .debug_frame   0x00000000       0xd8 ./build/obj/diskio.o
+ .ARM.attributes
+                0x00000000       0x32 ./build/obj/diskio.o
+ .text          0x00000000        0x0 ./build/obj/ff.o
+ .data          0x00000000        0x0 ./build/obj/ff.o
+ .bss           0x00000000        0x0 ./build/obj/ff.o
+ .text.get_ldnumber
+                0x00000000       0x38 ./build/obj/ff.o
+ .text.validate
+                0x00000000       0x30 ./build/obj/ff.o
+ .text.sync_window.part.0
+                0x00000000       0x44 ./build/obj/ff.o
+ .text.dir_clear
+                0x00000000       0x6c ./build/obj/ff.o
+ .text.sync_fs  0x00000000       0xc8 ./build/obj/ff.o
+ .text.move_window
+                0x00000000       0x38 ./build/obj/ff.o
+ .text.get_fileinfo.part.0.constprop.0.isra.0
+                0x00000000       0x64 ./build/obj/ff.o
+ .text.get_fat.isra.0
+                0x00000000       0xac ./build/obj/ff.o
+ .text.dir_sdi.constprop.0
+                0x00000000       0x6c ./build/obj/ff.o
+ .rodata.check_fs.str1.4
+                0x00000000        0x9 ./build/obj/ff.o
+ .text.check_fs
+                0x00000000       0xe4 ./build/obj/ff.o
+ .text.mount_volume
+                0x00000000      0x250 ./build/obj/ff.o
+ .text.put_fat.part.0
+                0x00000000      0x144 ./build/obj/ff.o
+ .text.remove_chain
+                0x00000000       0x84 ./build/obj/ff.o
+ .text.create_chain
+                0x00000000      0x124 ./build/obj/ff.o
+ .text.dir_next
+                0x00000000       0xc4 ./build/obj/ff.o
+ .rodata.follow_path.str1.4
+                0x00000000        0xf ./build/obj/ff.o
+ .text.follow_path
+                0x00000000      0x1d4 ./build/obj/ff.o
+ .text.dir_read.constprop.0
+                0x00000000       0x5c ./build/obj/ff.o
+ .text.dir_register
+                0x00000000       0x78 ./build/obj/ff.o
+ .text.f_mount  0x00000000       0x54 ./build/obj/ff.o
+ .text.f_open   0x00000000      0x210 ./build/obj/ff.o
+ .text.f_read   0x00000000      0x188 ./build/obj/ff.o
+ .text.f_write  0x00000000      0x1c0 ./build/obj/ff.o
+ .text.f_sync   0x00000000       0xbc ./build/obj/ff.o
+ .text.f_close  0x00000000       0x24 ./build/obj/ff.o
+ .text.f_lseek  0x00000000      0x170 ./build/obj/ff.o
+ .text.f_opendir
+                0x00000000       0x74 ./build/obj/ff.o
+ .text.f_closedir
+                0x00000000       0x30 ./build/obj/ff.o
+ .text.f_readdir
+                0x00000000       0x70 ./build/obj/ff.o
+ .text.f_stat   0x00000000       0x54 ./build/obj/ff.o
+ .text.f_getfree
+                0x00000000       0xc8 ./build/obj/ff.o
+ .text.f_truncate
+                0x00000000       0xe0 ./build/obj/ff.o
+ .text.f_unlink
+                0x00000000       0xa4 ./build/obj/ff.o
+ .text.f_mkdir  0x00000000      0x1d8 ./build/obj/ff.o
+ .text.f_rename
+                0x00000000      0x17c ./build/obj/ff.o
+ .bss.FatFs     0x00000000        0x4 ./build/obj/ff.o
+ .bss.Fsid      0x00000000        0x2 ./build/obj/ff.o
+ .rodata.ExCvt  0x00000000       0x80 ./build/obj/ff.o
+ .debug_info    0x00000000     0x3d33 ./build/obj/ff.o
+ .debug_abbrev  0x00000000      0x393 ./build/obj/ff.o
+ .debug_loclists
+                0x00000000     0x3b81 ./build/obj/ff.o
+ .debug_aranges
+                0x00000000      0x128 ./build/obj/ff.o
+ .debug_rnglists
+                0x00000000      0x4b5 ./build/obj/ff.o
+ .debug_line    0x00000000     0x3992 ./build/obj/ff.o
+ .debug_str     0x00000000      0x760 ./build/obj/ff.o
+ .comment       0x00000000       0x34 ./build/obj/ff.o
+ .debug_frame   0x00000000      0x540 ./build/obj/ff.o
+ .ARM.attributes
+                0x00000000       0x32 ./build/obj/ff.o
+ .text          0x00000000        0x0 ./build/obj/ffsystem.o
+ .data          0x00000000        0x0 ./build/obj/ffsystem.o
+ .bss           0x00000000        0x0 ./build/obj/ffsystem.o
+ .debug_info    0x00000000       0x6c ./build/obj/ffsystem.o
+ .debug_abbrev  0x00000000       0x26 ./build/obj/ffsystem.o
+ .debug_aranges
+                0x00000000       0x18 ./build/obj/ffsystem.o
+ .debug_line    0x00000000       0x1d ./build/obj/ffsystem.o
+ .debug_str     0x00000000      0x182 ./build/obj/ffsystem.o
+ .comment       0x00000000       0x34 ./build/obj/ffsystem.o
+ .ARM.attributes
+                0x00000000       0x32 ./build/obj/ffsystem.o
+ .text          0x00000000        0x0 ./build/obj/ffunicode.o
+ .data          0x00000000        0x0 ./build/obj/ffunicode.o
+ .bss           0x00000000        0x0 ./build/obj/ffunicode.o
+ .debug_info    0x00000000       0x6c ./build/obj/ffunicode.o
+ .debug_abbrev  0x00000000       0x26 ./build/obj/ffunicode.o
+ .debug_aranges
+                0x00000000       0x18 ./build/obj/ffunicode.o
+ .debug_line    0x00000000       0x1d ./build/obj/ffunicode.o
+ .debug_str     0x00000000      0x183 ./build/obj/ffunicode.o
+ .comment       0x00000000       0x34 ./build/obj/ffunicode.o
+ .ARM.attributes
+                0x00000000       0x32 ./build/obj/ffunicode.o
  .text          0x00000000        0x0 ./build/obj/usb_host_fifo.o
  .data          0x00000000        0x0 ./build/obj/usb_host_fifo.o
  .bss           0x00000000        0x0 ./build/obj/usb_host_fifo.o
@@ -2782,9 +3153,45 @@ Discarded input sections
  .debug_frame   0x00000000       0x94 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-snprintf.o)
  .ARM.attributes
                 0x00000000       0x32 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-snprintf.o)
+ .text          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+ .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+ .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+ .text.memcmp   0x00000000       0x60 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+ .debug_info    0x00000000      0x12b c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+ .debug_abbrev  0x00000000       0x90 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+ .debug_loclists
+                0x00000000      0x129 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+ .debug_aranges
+                0x00000000       0x20 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+ .debug_rnglists
+                0x00000000       0x13 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+ .debug_line    0x00000000      0x1e7 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+ .debug_str     0x00000000      0x20a c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+ .comment       0x00000000       0x34 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+ .debug_frame   0x00000000       0x2c c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+ .ARM.attributes
+                0x00000000       0x32 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
  .text          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memset.o)
  .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memset.o)
  .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memset.o)
+ .text          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
+ .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
+ .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
+ .text.strchr   0x00000000       0xcc c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
+ .debug_info    0x00000000      0x130 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
+ .debug_abbrev  0x00000000       0x97 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
+ .debug_loclists
+                0x00000000      0x146 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
+ .debug_aranges
+                0x00000000       0x20 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
+ .debug_rnglists
+                0x00000000       0x14 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
+ .debug_line    0x00000000      0x1f0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
+ .debug_str     0x00000000      0x215 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
+ .comment       0x00000000       0x34 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
+ .debug_frame   0x00000000       0x34 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
+ .ARM.attributes
+                0x00000000       0x32 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
  .text          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncmp.o)
  .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncmp.o)
  .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncmp.o)
@@ -2803,6 +3210,24 @@ Discarded input sections
  .debug_frame   0x00000000       0x38 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncmp.o)
  .ARM.attributes
                 0x00000000       0x32 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncmp.o)
+ .text          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
+ .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
+ .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
+ .text.strncpy  0x00000000       0x64 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
+ .debug_info    0x00000000      0x14a c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
+ .debug_abbrev  0x00000000       0xbe c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
+ .debug_loclists
+                0x00000000      0x107 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
+ .debug_aranges
+                0x00000000       0x20 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
+ .debug_rnglists
+                0x00000000       0x13 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
+ .debug_line    0x00000000      0x1fc c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
+ .debug_str     0x00000000      0x234 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
+ .comment       0x00000000       0x34 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
+ .debug_frame   0x00000000       0x2c c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
+ .ARM.attributes
+                0x00000000       0x32 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
  .text          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-impure.o)
  .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-impure.o)
  .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-impure.o)
@@ -2835,6 +3260,19 @@ Discarded input sections
                 0x00000000       0x1c c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strcmp.o)
  .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcpy.o)
  .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcpy.o)
+ .text          0x00000000       0xdc c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
+ .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
+ .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
+ .debug_line    0x00000000       0x87 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
+ .debug_line_str
+                0x00000000       0xf1 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
+ .debug_info    0x00000000       0x25 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
+ .debug_abbrev  0x00000000       0x14 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
+ .debug_aranges
+                0x00000000       0x20 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
+ .debug_str     0x00000000       0xee c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
+ .ARM.attributes
+                0x00000000       0x1c c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
  .text          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-svfprintf.o)
  .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-svfprintf.o)
  .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-svfprintf.o)
@@ -3146,24 +3584,6 @@ Discarded input sections
  .debug_frame   0x00000000       0x40 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memmove.o)
  .ARM.attributes
                 0x00000000       0x32 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memmove.o)
- .text          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
- .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
- .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
- .text.strncpy  0x00000000       0x64 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
- .debug_info    0x00000000      0x14a c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
- .debug_abbrev  0x00000000       0xbe c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
- .debug_loclists
-                0x00000000      0x107 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
- .debug_aranges
-                0x00000000       0x20 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
- .debug_rnglists
-                0x00000000       0x13 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
- .debug_line    0x00000000      0x1fc c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
- .debug_str     0x00000000      0x234 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
- .comment       0x00000000       0x34 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
- .debug_frame   0x00000000       0x2c c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
- .ARM.attributes
-                0x00000000       0x32 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncpy.o)
  .text          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o)
  .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o)
  .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o)
@@ -3421,19 +3841,6 @@ Discarded input sections
  .debug_str     0x00000000       0xe8 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memchr.o)
  .ARM.attributes
                 0x00000000       0x1c c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memchr.o)
- .text          0x00000000       0xdc c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
- .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
- .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
- .debug_line    0x00000000       0x87 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
- .debug_line_str
-                0x00000000       0xf1 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
- .debug_info    0x00000000       0x25 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
- .debug_abbrev  0x00000000       0x14 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
- .debug_aranges
-                0x00000000       0x20 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
- .debug_str     0x00000000       0xee c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
- .ARM.attributes
-                0x00000000       0x1c c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlen.o)
  .text          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libm_a-s_frexp.o)
  .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libm_a-s_frexp.o)
  .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libm_a-s_frexp.o)
@@ -3894,24 +4301,6 @@ Discarded input sections
  .debug_frame   0x00000000       0x28 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strcat.o)
  .ARM.attributes
                 0x00000000       0x32 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strcat.o)
- .text          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
- .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
- .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
- .text.strchr   0x00000000       0xcc c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
- .debug_info    0x00000000      0x130 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
- .debug_abbrev  0x00000000       0x97 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
- .debug_loclists
-                0x00000000      0x146 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
- .debug_aranges
-                0x00000000       0x20 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
- .debug_rnglists
-                0x00000000       0x14 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
- .debug_line    0x00000000      0x1f0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
- .debug_str     0x00000000      0x215 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
- .comment       0x00000000       0x34 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
- .debug_frame   0x00000000       0x34 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
- .ARM.attributes
-                0x00000000       0x32 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
  .text          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlcpy.o)
  .data          0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlcpy.o)
  .bss           0x00000000        0x0 c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strlcpy.o)
@@ -4319,6 +4708,15 @@ LOAD ./build/obj/font.o
 LOAD ./build/obj/font4x6.o
 LOAD ./build/obj/font5x7.o
 LOAD ./build/obj/font5x8_elektron.o
+LOAD ./build/obj/drv_sd.o
+LOAD ./build/obj/drv_sd_fs.o
+LOAD ./build/obj/drv_sd_hal.o
+LOAD ./build/obj/drv_sd_project.o
+LOAD ./build/obj/drv_sd_thread.o
+LOAD ./build/obj/diskio.o
+LOAD ./build/obj/ff.o
+LOAD ./build/obj/ffsystem.o
+LOAD ./build/obj/ffunicode.o
 LOAD ./build/obj/usb_host_fifo.o
 LOAD ./build/obj/usb_host_memory.o
 LOAD ./build/obj/usb_host_midi.o
@@ -7093,6 +7491,7 @@ Reset_Handler                                     ./build/obj/vectors.o
 SD3                                               ./build/obj/hal_serial_lld.o
                                                   ./build/obj/stm32_isr.o
 SDCD1                                             ./build/obj/hal_sdc_lld.o
+                                                  ./build/obj/drv_sd_hal.o
                                                   ./build/obj/stm32_isr.o
 SPID1                                             ./build/obj/hal_spi_v2_lld.o
 SPID2                                             ./build/obj/hal_spi_v2_lld.o
@@ -7483,11 +7882,13 @@ __aeabi_ldiv0                                     c:/chibistudio/tools/gnu tools
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libgcc.a(_aeabi_ldivmod.o)
 __aeabi_ldivmod                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libgcc.a(_aeabi_ldivmod.o)
                                                   ./build/obj/usbh_platform_chibios_h7.o
+                                                  ./build/obj/drv_sd_thread.o
                                                   ./build/obj/drv_hall.o
                                                   ./build/obj/drv_leds_addr.o
                                                   ./build/obj/hal_flash.o
 __aeabi_uldivmod                                  c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libgcc.a(_aeabi_uldivmod.o)
                                                   ./build/obj/usbh_platform_chibios_h7.o
+                                                  ./build/obj/drv_sd_thread.o
                                                   ./build/obj/drv_hall.o
                                                   ./build/obj/drv_leds_addr.o
                                                   ./build/obj/hal_flash.o
@@ -8077,6 +8478,8 @@ bsIncomingDataI                                   ./build/obj/hal_buffered_seria
 bsRequestDataI                                    ./build/obj/hal_buffered_serial.o
 ch0                                               ./build/obj/chsys.o
                                                   ./build/obj/usb_host_midi.o
+                                                  ./build/obj/drv_sd_thread.o
+                                                  ./build/obj/drv_sd.o
                                                   ./build/obj/drv_audio.o
                                                   ./build/obj/drv_display.o
                                                   ./build/obj/drv_buttons.o
@@ -8186,15 +8589,18 @@ chInstanceObjectInit                              ./build/obj/chinstances.o
                                                   ./build/obj/chsys.o
 chMBFetchI                                        ./build/obj/chmboxes.o
 chMBFetchTimeout                                  ./build/obj/chmboxes.o
+                                                  ./build/obj/drv_sd_thread.o
 chMBFetchTimeoutS                                 ./build/obj/chmboxes.o
 chMBObjectDispose                                 ./build/obj/chmboxes.o
 chMBObjectInit                                    ./build/obj/chmboxes.o
+                                                  ./build/obj/drv_sd_thread.o
                                                   ./build/obj/chfactory.o
 chMBPostAheadI                                    ./build/obj/chmboxes.o
 chMBPostAheadTimeout                              ./build/obj/chmboxes.o
 chMBPostAheadTimeoutS                             ./build/obj/chmboxes.o
 chMBPostI                                         ./build/obj/chmboxes.o
 chMBPostTimeout                                   ./build/obj/chmboxes.o
+                                                  ./build/obj/drv_sd_thread.o
 chMBPostTimeoutS                                  ./build/obj/chmboxes.o
 chMBReset                                         ./build/obj/chmboxes.o
 chMBResetI                                        ./build/obj/chmboxes.o
@@ -8215,6 +8621,7 @@ chMsgWaitS                                        ./build/obj/chmsg.o
 chMsgWaitTimeoutS                                 ./build/obj/chmsg.o
                                                   ./build/obj/chdelegates.o
 chMtxLock                                         ./build/obj/chmtx.o
+                                                  ./build/obj/drv_sd_thread.o
                                                   ./build/obj/drv_leds_addr.o
                                                   ./build/obj/drv_display.o
                                                   ./build/obj/drv_buttons.o
@@ -8228,6 +8635,7 @@ chMtxLockS                                        ./build/obj/chmtx.o
                                                   ./build/obj/chcond.o
 chMtxObjectDispose                                ./build/obj/chmtx.o
 chMtxObjectInit                                   ./build/obj/chmtx.o
+                                                  ./build/obj/drv_sd_thread.o
                                                   ./build/obj/drv_leds_addr.o
                                                   ./build/obj/drivers.o
                                                   ./build/obj/chfactory.o
@@ -8239,6 +8647,7 @@ chMtxObjectInit                                   ./build/obj/chmtx.o
 chMtxTryLock                                      ./build/obj/chmtx.o
 chMtxTryLockS                                     ./build/obj/chmtx.o
 chMtxUnlock                                       ./build/obj/chmtx.o
+                                                  ./build/obj/drv_sd_thread.o
                                                   ./build/obj/drv_leds_addr.o
                                                   ./build/obj/drv_display.o
                                                   ./build/obj/drv_buttons.o
@@ -8306,6 +8715,7 @@ chSchReadyI                                       ./build/obj/chschd.o
                                                   ./build/obj/chsem.o
                                                   ./build/obj/chthreads.o
 chSchRescheduleS                                  ./build/obj/chschd.o
+                                                  ./build/obj/drv_sd_thread.o
                                                   ./build/obj/chpipes.o
                                                   ./build/obj/chmempools.o
                                                   ./build/obj/chmboxes.o
@@ -8330,6 +8740,7 @@ chSemAddCounterI                                  ./build/obj/chsem.o
 chSemObjectDispose                                ./build/obj/chsem.o
                                                   ./build/obj/chmempools.o
 chSemObjectInit                                   ./build/obj/chsem.o
+                                                  ./build/obj/drv_sd_thread.o
                                                   ./build/obj/drv_audio.o
                                                   ./build/obj/chfactory.o
                                                   ./build/obj/chobjcaches.o
@@ -8338,6 +8749,7 @@ chSemResetWithMessage                             ./build/obj/chsem.o
 chSemResetWithMessageI                            ./build/obj/chsem.o
 chSemSignal                                       ./build/obj/chsem.o
 chSemSignalI                                      ./build/obj/chsem.o
+                                                  ./build/obj/drv_sd_thread.o
                                                   ./build/obj/drv_audio.o
                                                   ./build/obj/chobjcaches.o
                                                   ./build/obj/chmempools.o
@@ -8347,6 +8759,7 @@ chSemWait                                         ./build/obj/chsem.o
 chSemWaitS                                        ./build/obj/chsem.o
                                                   ./build/obj/chobjcaches.o
 chSemWaitTimeout                                  ./build/obj/chsem.o
+                                                  ./build/obj/drv_sd.o
 chSemWaitTimeoutS                                 ./build/obj/chsem.o
                                                   ./build/obj/chmempools.o
 chSftIntegrityCheckI                              ./build/obj/chsafety.o
@@ -8383,6 +8796,7 @@ chThdCreateFromMemoryPool                         ./build/obj/chdynamic.o
 chThdCreateI                                      ./build/obj/chthreads.o
 chThdCreateStatic                                 ./build/obj/chthreads.o
                                                   ./build/obj/usb_host_midi.o
+                                                  ./build/obj/drv_sd_thread.o
                                                   ./build/obj/drv_audio.o
                                                   ./build/obj/drv_pots.o
                                                   ./build/obj/drv_display.o
@@ -8486,6 +8900,16 @@ ch_memcore                                        ./build/obj/chmemcore.o
 ch_system                                         ./build/obj/chsys.o
                                                   ./build/obj/chtm.o
                                                   ./build/obj/chinstances.o
+disk_initialize                                   ./build/obj/diskio.o
+                                                  ./build/obj/ff.o
+disk_ioctl                                        ./build/obj/diskio.o
+                                                  ./build/obj/ff.o
+disk_read                                         ./build/obj/diskio.o
+                                                  ./build/obj/ff.o
+disk_status                                       ./build/obj/diskio.o
+                                                  ./build/obj/ff.o
+disk_write                                        ./build/obj/diskio.o
+                                                  ./build/obj/ff.o
 dmaInit                                           ./build/obj/stm32_dma.o
                                                   ./build/obj/hal_lld.o
 dmaSetRequestSource                               ./build/obj/stm32_dma.o
@@ -8574,6 +8998,87 @@ drv_pots_get_raw                                  ./build/obj/drv_pots.o
 drv_pots_init                                     ./build/obj/drv_pots.o
 drv_pots_start                                    ./build/obj/drv_pots.o
                                                   ./build/obj/drivers.o
+drv_sd_clear_stats                                ./build/obj/drv_sd.o
+drv_sd_fs_close                                   ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd_project.o
+drv_sd_fs_consume_write_protect_event             ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd_thread.o
+drv_sd_fs_delete                                  ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd_project.o
+drv_sd_fs_is_mounted                              ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd_thread.o
+                                                  ./build/obj/drv_sd_project.o
+drv_sd_fs_is_read_only                            ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd_thread.o
+drv_sd_fs_list_dir                                ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd_project.o
+drv_sd_fs_mkdir                                   ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd_project.o
+drv_sd_fs_mount                                   ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd_thread.o
+drv_sd_fs_open                                    ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd_project.o
+drv_sd_fs_read                                    ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd_project.o
+drv_sd_fs_rename                                  ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd_project.o
+drv_sd_fs_stat                                    ./build/obj/drv_sd_fs.o
+drv_sd_fs_sync                                    ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd_project.o
+drv_sd_fs_unmount                                 ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd_thread.o
+drv_sd_fs_write                                   ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd_project.o
+drv_sd_get_last_error                             ./build/obj/drv_sd.o
+drv_sd_get_state                                  ./build/obj/drv_sd.o
+drv_sd_get_stats                                  ./build/obj/drv_sd.o
+drv_sd_hal_connect                                ./build/obj/drv_sd_hal.o
+                                                  ./build/obj/diskio.o
+                                                  ./build/obj/drv_sd_fs.o
+drv_sd_hal_deinit                                 ./build/obj/drv_sd_hal.o
+drv_sd_hal_disconnect                             ./build/obj/drv_sd_hal.o
+                                                  ./build/obj/drv_sd_fs.o
+drv_sd_hal_get_info                               ./build/obj/drv_sd_hal.o
+                                                  ./build/obj/diskio.o
+drv_sd_hal_init                                   ./build/obj/drv_sd_hal.o
+                                                  ./build/obj/diskio.o
+                                                  ./build/obj/drv_sd_thread.o
+drv_sd_hal_is_card_present                        ./build/obj/drv_sd_hal.o
+                                                  ./build/obj/diskio.o
+                                                  ./build/obj/drv_sd_thread.o
+                                                  ./build/obj/drv_sd_fs.o
+                                                  ./build/obj/drv_sd.o
+drv_sd_hal_read_blocks                            ./build/obj/drv_sd_hal.o
+                                                  ./build/obj/diskio.o
+drv_sd_hal_sync                                   ./build/obj/drv_sd_hal.o
+                                                  ./build/obj/diskio.o
+                                                  ./build/obj/drv_sd_fs.o
+drv_sd_hal_write_blocks                           ./build/obj/drv_sd_hal.o
+                                                  ./build/obj/diskio.o
+drv_sd_init                                       ./build/obj/drv_sd.o
+drv_sd_is_present                                 ./build/obj/drv_sd.o
+drv_sd_list_projects                              ./build/obj/drv_sd.o
+drv_sd_load_pattern                               ./build/obj/drv_sd.o
+drv_sd_load_sample                                ./build/obj/drv_sd.o
+drv_sd_mount                                      ./build/obj/drv_sd.o
+drv_sd_project_list_projects                      ./build/obj/drv_sd_project.o
+                                                  ./build/obj/drv_sd_thread.o
+drv_sd_project_load_pattern                       ./build/obj/drv_sd_project.o
+                                                  ./build/obj/drv_sd_thread.o
+drv_sd_project_load_sample                        ./build/obj/drv_sd_project.o
+                                                  ./build/obj/drv_sd_thread.o
+drv_sd_project_save_pattern                       ./build/obj/drv_sd_project.o
+                                                  ./build/obj/drv_sd_thread.o
+drv_sd_save_pattern                               ./build/obj/drv_sd.o
+drv_sd_thread_alloc                               ./build/obj/drv_sd_thread.o
+                                                  ./build/obj/drv_sd.o
+drv_sd_thread_post                                ./build/obj/drv_sd_thread.o
+                                                  ./build/obj/drv_sd.o
+drv_sd_thread_release                             ./build/obj/drv_sd_thread.o
+                                                  ./build/obj/drv_sd.o
+drv_sd_thread_start                               ./build/obj/drv_sd_thread.o
+                                                  ./build/obj/drv_sd.o
+drv_sd_unmount                                    ./build/obj/drv_sd.o
 environ                                           c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-environ.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-getenv_r.o)
 errno                                             c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-reent.o)
@@ -8585,6 +9090,35 @@ errno                                             c:/chibistudio/tools/gnu tools
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-readr.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-lseekr.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-closer.o)
+f_close                                           ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_fs.o
+f_closedir                                        ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_fs.o
+f_getfree                                         ./build/obj/ff.o
+f_lseek                                           ./build/obj/ff.o
+f_mkdir                                           ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_fs.o
+f_mount                                           ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_fs.o
+f_open                                            ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_fs.o
+f_opendir                                         ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_fs.o
+f_read                                            ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_fs.o
+f_readdir                                         ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_fs.o
+f_rename                                          ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_fs.o
+f_stat                                            ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_fs.o
+f_sync                                            ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_fs.o
+f_truncate                                        ./build/obj/ff.o
+f_unlink                                          ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_fs.o
+f_write                                           ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_fs.o
 fclose                                            c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-fclose.o)
 fflush                                            c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-fflush.o)
 fiprintf                                          c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-fiprintf.o)
@@ -8607,6 +9141,12 @@ fputwc                                            c:/chibistudio/tools/gnu tools
 frexp                                             c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libm_a-s_frexp.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-vfprintf.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-svfprintf.o)
+g_sd_last_error                                   ./build/obj/drv_sd.o
+                                                  ./build/obj/drv_sd_thread.o
+g_sd_state                                        ./build/obj/drv_sd.o
+                                                  ./build/obj/drv_sd_thread.o
+g_sd_stats                                        ./build/obj/drv_sd.o
+                                                  ./build/obj/drv_sd_thread.o
 halInit                                           ./build/obj/hal.o
                                                   ./build/obj/main.o
 halRegWaitAllClear16X                             ./build/obj/hal_safety.o
@@ -8691,11 +9231,16 @@ memchr                                            c:/chibistudio/tools/gnu tools
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-vfiprintf.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-vfprintf.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-svfprintf.o)
+memcmp                                            c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcmp.o)
+                                                  ./build/obj/ff.o
 memcpy                                            c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-memcpy.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-svfiprintf.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-mprec.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-dtoa.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-fvwrite.o)
+                                                  ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_thread.o
+                                                  ./build/obj/drv_sd_project.o
                                                   ./build/obj/chpipes.o
                                                   ./build/obj/hal_sdc_lld.o
                                                   ./build/obj/hal_queues.o
@@ -8714,6 +9259,8 @@ memset                                            c:/chibistudio/tools/gnu tools
                                                   ./build/obj/usbh_midi.o
                                                   ./build/obj/usbh_core.o
                                                   ./build/obj/usb_host_midi.o
+                                                  ./build/obj/ff.o
+                                                  ./build/obj/drv_sd_thread.o
                                                   ./build/obj/drv_audio.o
                                                   ./build/obj/drv_hall.o
                                                   ./build/obj/brick_cal.o
@@ -8849,22 +9396,33 @@ sd_lld_start                                      ./build/obj/hal_serial_lld.o
 sd_lld_stop                                       ./build/obj/hal_serial_lld.o
                                                   ./build/obj/hal_serial.o
 sdcConnect                                        ./build/obj/hal_sdc.o
+                                                  ./build/obj/drv_sd_hal.o
 sdcDisconnect                                     ./build/obj/hal_sdc.o
+                                                  ./build/obj/drv_sd_hal.o
 sdcErase                                          ./build/obj/hal_sdc.o
 sdcGetAndClearErrors                              ./build/obj/hal_sdc.o
+                                                  ./build/obj/drv_sd_hal.o
 sdcGetInfo                                        ./build/obj/hal_sdc.o
+                                                  ./build/obj/drv_sd_hal.o
 sdcInit                                           ./build/obj/hal_sdc.o
                                                   ./build/obj/hal.o
 sdcObjectInit                                     ./build/obj/hal_sdc.o
+                                                  ./build/obj/drv_sd_hal.o
                                                   ./build/obj/hal_sdc_lld.o
 sdcRead                                           ./build/obj/hal_sdc.o
+                                                  ./build/obj/drv_sd_hal.o
 sdcStart                                          ./build/obj/hal_sdc.o
+                                                  ./build/obj/drv_sd_hal.o
 sdcStop                                           ./build/obj/hal_sdc.o
+                                                  ./build/obj/drv_sd_hal.o
 sdcSync                                           ./build/obj/hal_sdc.o
+                                                  ./build/obj/drv_sd_hal.o
 sdcWrite                                          ./build/obj/hal_sdc.o
+                                                  ./build/obj/drv_sd_hal.o
 sdc_lld_init                                      ./build/obj/hal_sdc_lld.o
                                                   ./build/obj/hal_sdc.o
 sdc_lld_is_card_inserted                          ./build/obj/board.o
+                                                  ./build/obj/drv_sd_hal.o
                                                   ./build/obj/hal_sdc.o
 sdc_lld_is_write_protected                        ./build/obj/board.o
                                                   ./build/obj/hal_sdc.o
@@ -8971,6 +9529,7 @@ spi_lld_stop_transfer                             ./build/obj/hal_spi_v2_lld.o
 stGetAlarm                                        ./build/obj/hal_st.o
 stGetCounter                                      ./build/obj/hal_st.o
                                                   ./build/obj/usb_host_midi.o
+                                                  ./build/obj/drv_sd_thread.o
                                                   ./build/obj/audio_codec_ada1979.o
                                                   ./build/obj/drv_hall.o
                                                   ./build/obj/drv_leds_addr.o
@@ -9000,8 +9559,10 @@ strcat                                            c:/chibistudio/tools/gnu tools
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o)
 strchr                                            c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strchr.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o)
+                                                  ./build/obj/ff.o
 strcmp                                            c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strcmp.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o)
+                                                  ./build/obj/drv_sd.o
                                                   ./build/obj/chregistry.o
 strcpy                                            c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strcpy.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strcat.o)
@@ -9014,6 +9575,8 @@ strlen                                            c:/chibistudio/tools/gnu tools
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-vfiprintf.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-vfprintf.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-svfprintf.o)
+                                                  ./build/obj/drv_sd_project.o
+                                                  ./build/obj/drv_sd.o
 strncasecmp                                       c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncasecmp.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o)
 strncmp                                           c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strncmp.o)
@@ -9025,6 +9588,7 @@ strncpy                                           c:/chibistudio/tools/gnu tools
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-vfiprintf.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-vfprintf.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-svfprintf.o)
+                                                  ./build/obj/drv_sd_project.o
 strtol                                            c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strtol.o)
                                                   c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-locale.o)
 strtol_l                                          c:/chibistudio/tools/gnu tools arm embedded/11.3 2022.08/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+dp/hard\libg.a(libc_a-strtol.o)
