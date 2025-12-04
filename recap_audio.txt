@@ -121,3 +121,9 @@ V12 – WS2812 conforme DMA générique
 - Driver LEDs basculé sur l'API DMA générique `dmaStream*` (allocation + callbacks) sans aucun symbole/IRQ BDMA personnalisé.
 - Callback unique pour gérer fin de transfert et erreurs (TEIF/DMEIF/FEIF) avec restart sécurisé du flux TIM8 et comptage d'erreurs thread-safe.
 - DMAMUX configuré sur TIM8_CH2, aucune définition de vecteur ou d'IRQ manuel possible (suppression du risque de doublon VectorXXX).
+
+V13 – Entrées Hall (ADC+MUX) durcies
+------------------------------------
+- Filtre ASC initialisé de façon défensive (paramètres bornés, NULL protégés) et utilisé dès le premier échantillon pour éviter un silence pendant le warm-up.
+- `hall_state_t.filtered` correspond désormais à la valeur filtrée + calibrée (la valeur brute ADC restant dans `raw`). Écritures regroupées pour limiter les états intermédiaires en lecture multi-thread.
+- Calibration des Hall : gestion robuste des bornes (length/résolution bornés, clamp des entrées, min/max réconciliés) et pas de division par zéro lorsque l'amplitude reste nulle au boot.
