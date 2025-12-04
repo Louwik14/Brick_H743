@@ -1,109 +1,110 @@
 #include "ch.h"
 #include "hal.h"
-
-#include "stm32h7xx_hal.h"
-#include "stm32h7xx_hal_cortex.h"
-#include "stm32h7xx_hal_sdram.h"
-
+#include "stm32h7xx.h"
+#include "core_cm7.h"
 #include "sdram_driver_priv.h"
 #include "sdram_layout.h"
 
-#define SDRAM_REFRESH_COUNT   (761u) /* (64ms / 8192 rows) * 100MHz - margin */
-#define SDRAM_TIMEOUT         (0x1000u)
+#define SDRAM_REFRESH_COUNT       (761u)
+#define SDRAM_TIMEOUT_CYCLES      (0xFFFFu)
+#define SDRAM_MODE_REGISTER_VALUE (0x0032u)
+#define SDRAM_SDSR_BUSY           (1u << 5)
 
-static SDRAM_HandleTypeDef hsdram;
+#define SDRAM_CMD_NORMAL         (0u)
+#define SDRAM_CMD_CLK_ENABLE     (1u)
+#define SDRAM_CMD_PALL           (2u)
+#define SDRAM_CMD_AUTOREFRESH    (3u)
+#define SDRAM_CMD_LOAD_MODE      (4u)
 
-static bool sdram_send_command(uint32_t mode, uint32_t target, uint32_t auto_refresh, uint32_t mode_reg) {
-  FMC_SDRAM_CommandTypeDef cmd = {0};
-  cmd.CommandMode = mode;
-  cmd.CommandTarget = target;
-  cmd.AutoRefreshNumber = auto_refresh;
-  cmd.ModeRegisterDefinition = mode_reg;
-
-  return HAL_SDRAM_SendCommand(&hsdram, &cmd, SDRAM_TIMEOUT) == HAL_OK;
-}
-
-bool sdram_hw_init_sequence(void) {
-  /* SDRAM device configuration */
-  hsdram.Instance = FMC_SDRAM_DEVICE;
-  hsdram.Init.SDBank = FMC_SDRAM_BANK1;
-  hsdram.Init.ColumnBitsNumber = FMC_SDRAM_COLUMN_BITS_NUM_9;
-  hsdram.Init.RowBitsNumber = FMC_SDRAM_ROW_BITS_NUM_13;
-  hsdram.Init.MemoryDataWidth = FMC_SDRAM_MEM_BUS_WIDTH_16;
-  hsdram.Init.InternalBankNumber = FMC_SDRAM_INTERN_BANKS_NUM_4;
-  hsdram.Init.CASLatency = FMC_SDRAM_CAS_LATENCY_3;
-  hsdram.Init.WriteProtection = FMC_SDRAM_WRITE_PROTECTION_DISABLE;
-  hsdram.Init.SDClockPeriod = FMC_SDRAM_CLOCK_PERIOD_2;
-  hsdram.Init.ReadBurst = FMC_SDRAM_RBURST_ENABLE;
-  hsdram.Init.ReadPipeDelay = FMC_SDRAM_RPIPE_DELAY_0;
-
-  FMC_SDRAM_TimingTypeDef timing = {0};
-  timing.LoadToActiveDelay = 2u;    /* tMRD */
-  timing.ExitSelfRefreshDelay = 8u; /* tXSR */
-  timing.SelfRefreshTime = 6u;      /* tRAS */
-  timing.RowCycleDelay = 6u;        /* tRC */
-  timing.WriteRecoveryTime = 3u;    /* tWR */
-  timing.RPDelay = 3u;              /* tRP */
-  timing.RCDDelay = 3u;             /* tRCD */
-
-  if (HAL_SDRAM_Init(&hsdram, &timing) != HAL_OK) {
-    return false;
+static bool fmc_wait_while_busy(uint32_t timeout)
+{
+  while ((FMC_Bank5_6->SDSR & SDRAM_SDSR_BUSY) != 0u) {
+    if (timeout-- == 0u) {
+      return false;
+    }
   }
 
-  /* JEDEC power-up sequence */
+  return true;
+}
+
+static bool fmc_issue_command(uint32_t mode, uint32_t auto_refresh, uint32_t mode_reg)
+{
+  const uint32_t command = ((mode << FMC_SDCMR_MODE_Pos) & FMC_SDCMR_MODE_Msk) |
+                           FMC_SDCMR_CTB1 |
+                           ((((auto_refresh > 0u) ? (auto_refresh - 1u) : 0u) << FMC_SDCMR_NRFS_Pos) &
+                            FMC_SDCMR_NRFS_Msk) |
+                           ((mode_reg << FMC_SDCMR_MRD_Pos) & FMC_SDCMR_MRD_Msk);
+
+  FMC_Bank5_6->SDCMR = command;
+  return fmc_wait_while_busy(SDRAM_TIMEOUT_CYCLES);
+}
+
+bool sdram_hw_init_sequence(void)
+{
+  if ((RCC->AHB3ENR & RCC_AHB3ENR_FMCEN) == 0u) {
+    RCC->AHB3ENR |= RCC_AHB3ENR_FMCEN;
+    (void)RCC->AHB3ENR;
+  }
+
+  const uint32_t sdcr = FMC_SDCRx_NC_0 | /* 9 columns */
+                        FMC_SDCRx_NR_1 | /* 13 rows    */
+                        FMC_SDCRx_MWID_0 | /* 16-bit bus */
+                        FMC_SDCRx_NB | /* 4 internal banks */
+                        FMC_SDCRx_CAS | /* CAS latency = 3 */
+                        FMC_SDCRx_SDCLK_1 | /* 2 HCLK period */
+                        FMC_SDCRx_RBURST; /* enable read burst */
+
+  const uint32_t sdtr = ((2u - 1u) << FMC_SDTRx_TMRD_Pos) |  /* tMRD */
+                        ((8u - 1u) << FMC_SDTRx_TXSR_Pos) |  /* tXSR */
+                        ((6u - 1u) << FMC_SDTRx_TRAS_Pos) |  /* tRAS */
+                        ((6u - 1u) << FMC_SDTRx_TRC_Pos) |   /* tRC  */
+                        ((3u - 1u) << FMC_SDTRx_TWR_Pos) |   /* tWR  */
+                        ((3u - 1u) << FMC_SDTRx_TRP_Pos) |   /* tRP  */
+                        ((3u - 1u) << FMC_SDTRx_TRCD_Pos);   /* tRCD */
+
+  FMC_Bank5_6->SDCR[0] = sdcr;
+  FMC_Bank5_6->SDTR[0] = sdtr;
+
   chThdSleepMicroseconds(200u);
 
-  if (!sdram_send_command(FMC_SDRAM_CMD_CLK_ENABLE, FMC_SDRAM_CMD_TARGET_BANK1, 1u, 0u)) {
+  if (!fmc_issue_command(SDRAM_CMD_CLK_ENABLE, 1u, 0u)) {
     return false;
   }
 
   chThdSleepMilliseconds(1);
 
-  if (!sdram_send_command(FMC_SDRAM_CMD_PALL, FMC_SDRAM_CMD_TARGET_BANK1, 1u, 0u)) {
+  if (!fmc_issue_command(SDRAM_CMD_PALL, 1u, 0u)) {
     return false;
   }
 
-  if (!sdram_send_command(FMC_SDRAM_CMD_AUTOREFRESH_MODE, FMC_SDRAM_CMD_TARGET_BANK1, 8u, 0u)) {
+  if (!fmc_issue_command(SDRAM_CMD_AUTOREFRESH, 8u, 0u)) {
     return false;
   }
 
-  /* Mode register: BL=4, burst type sequential, CAS=3, write burst enabled */
-  const uint32_t mode_reg = 0x0032u;
-  if (!sdram_send_command(FMC_SDRAM_CMD_LOAD_MODE, FMC_SDRAM_CMD_TARGET_BANK1, 1u, mode_reg)) {
+  if (!fmc_issue_command(SDRAM_CMD_LOAD_MODE, 1u, SDRAM_MODE_REGISTER_VALUE)) {
     return false;
   }
 
-  if (HAL_SDRAM_ProgramRefreshRate(&hsdram, SDRAM_REFRESH_COUNT) != HAL_OK) {
+  FMC_Bank5_6->SDRTR = (SDRAM_REFRESH_COUNT << FMC_SDRTR_COUNT_Pos);
+
+  if (!fmc_wait_while_busy(SDRAM_TIMEOUT_CYCLES)) {
     return false;
   }
 
-  if (HAL_SDRAM_GetModeStatus(&hsdram) != FMC_SDRAM_NORMAL_MODE) {
+  const uint32_t status = FMC_Bank5_6->SDSR;
+  if ((status & FMC_SDSR_RE) != 0u) {
+    return false;
+  }
+
+  if ((status & FMC_SDSR_MODES1_Msk) != 0u) {
     return false;
   }
 
   return true;
 }
 
-static void sdram_configure_region(uint32_t number, uintptr_t base, uint32_t size_enum, bool cacheable, bool bufferable, bool shareable) {
-  MPU_Region_InitTypeDef mpu_cfg;
-
-  mpu_cfg.Enable = MPU_REGION_ENABLE;
-  mpu_cfg.Number = number;
-  mpu_cfg.BaseAddress = base;
-  mpu_cfg.Size = size_enum;
-  mpu_cfg.SubRegionDisable = 0x00u;
-  mpu_cfg.TypeExtField = cacheable ? MPU_TEX_LEVEL1 : MPU_TEX_LEVEL0;
-  mpu_cfg.AccessPermission = MPU_REGION_FULL_ACCESS;
-  mpu_cfg.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;
-  mpu_cfg.IsCacheable = cacheable ? MPU_ACCESS_CACHEABLE : MPU_ACCESS_NOT_CACHEABLE;
-  mpu_cfg.IsBufferable = bufferable ? MPU_ACCESS_BUFFERABLE : MPU_ACCESS_NOT_BUFFERABLE;
-  mpu_cfg.IsShareable = shareable ? MPU_ACCESS_SHAREABLE : MPU_ACCESS_NOT_SHAREABLE;
-
-  HAL_MPU_ConfigRegion(&mpu_cfg);
-}
-
-bool sdram_configure_mpu_regions(void) {
-  /* Region 0 is already used by SRAM non-cacheable buffers; append new regions. */
+bool sdram_configure_mpu_regions(void)
+{
   const uintptr_t sdram_end = SDRAM_BASE_ADDRESS + SDRAM_TOTAL_SIZE_BYTES;
 
 #if (SDRAM_ENABLE_CACHE_RESIDUAL == 1)
@@ -115,26 +116,33 @@ bool sdram_configure_mpu_regions(void) {
   }
 #endif
 
-  HAL_MPU_Disable();
+  ARM_MPU_Disable();
 
-  const uint32_t sdram_region_number = MPU_REGION_NUMBER1;
-  sdram_configure_region(sdram_region_number,
-                         SDRAM_BASE_ADDRESS,
-                         MPU_REGION_SIZE_32MB,
-                         false,
-                         false,
-                         true);
+  ARM_MPU_SetRegion(ARM_MPU_RBAR(1u, SDRAM_BASE_ADDRESS),
+                    ARM_MPU_RASR(0u,
+                                 ARM_MPU_AP_FULL,
+                                 0u,
+                                 1u,
+                                 0u,
+                                 0u,
+                                 0u,
+                                 ARM_MPU_REGION_SIZE_32MB));
 
 #if (SDRAM_ENABLE_CACHE_RESIDUAL == 1)
-  sdram_configure_region(MPU_REGION_NUMBER2,
-                         residual_base,
-                         MPU_REGION_SIZE_1MB,
-                         true,
-                         false,
-                         false);
+  ARM_MPU_SetRegion(ARM_MPU_RBAR(2u, residual_base),
+                    ARM_MPU_RASR(0u,
+                                 ARM_MPU_AP_FULL,
+                                 0u,
+                                 0u,
+                                 1u,
+                                 0u,
+                                 0u,
+                                 ARM_MPU_REGION_SIZE_1MB));
 #endif
 
-  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
+  SCB_InvalidateDCache();
+  ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk);
+
   return true;
 }
 
