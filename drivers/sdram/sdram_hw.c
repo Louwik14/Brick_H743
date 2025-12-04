@@ -4,13 +4,13 @@
 #include "sdram_driver_priv.h"
 #include "sdram_layout.h"
 
-#define SDRAM_REFRESH_COUNT   (781u)
+#define SDRAM_REFRESH_COUNT   (761u) /* (64ms / 8192 rows) * 100MHz - margin */
 #define SDRAM_TIMEOUT         (0x1000u)
 
 static SDRAM_HandleTypeDef hsdram;
 
 static bool sdram_send_command(uint32_t mode, uint32_t target, uint32_t auto_refresh, uint32_t mode_reg) {
-  FMC_SDRAM_CommandTypeDef cmd;
+  FMC_SDRAM_CommandTypeDef cmd = {0};
   cmd.CommandMode = mode;
   cmd.CommandTarget = target;
   cmd.AutoRefreshNumber = auto_refresh;
@@ -88,7 +88,7 @@ static void sdram_configure_region(uint32_t number, uintptr_t base, uint32_t siz
   mpu_cfg.BaseAddress = base;
   mpu_cfg.Size = size_enum;
   mpu_cfg.SubRegionDisable = 0x00u;
-  mpu_cfg.TypeExtField = MPU_TEX_LEVEL0;
+  mpu_cfg.TypeExtField = cacheable ? MPU_TEX_LEVEL1 : MPU_TEX_LEVEL0;
   mpu_cfg.AccessPermission = MPU_REGION_FULL_ACCESS;
   mpu_cfg.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;
   mpu_cfg.IsCacheable = cacheable ? MPU_ACCESS_CACHEABLE : MPU_ACCESS_NOT_CACHEABLE;
@@ -100,6 +100,19 @@ static void sdram_configure_region(uint32_t number, uintptr_t base, uint32_t siz
 
 bool sdram_configure_mpu_regions(void) {
   /* Region 0 is already used by SRAM non-cacheable buffers; append new regions. */
+  const uintptr_t sdram_end = SDRAM_BASE_ADDRESS + SDRAM_TOTAL_SIZE_BYTES;
+
+#if (SDRAM_ENABLE_CACHE_RESIDUAL == 1)
+  const uintptr_t residual_base = SDRAM_BASE_ADDRESS + (31u * 1024u * 1024u);
+  const uintptr_t residual_end = residual_base + (1u * 1024u * 1024u);
+
+  if ((residual_base < SDRAM_BASE_ADDRESS) || (residual_end > sdram_end)) {
+    return false;
+  }
+#endif
+
+  HAL_MPU_Disable();
+
   const uint32_t sdram_region_number = MPU_REGION_NUMBER1;
   sdram_configure_region(sdram_region_number,
                          SDRAM_BASE_ADDRESS,
@@ -109,7 +122,6 @@ bool sdram_configure_mpu_regions(void) {
                          true);
 
 #if (SDRAM_ENABLE_CACHE_RESIDUAL == 1)
-  const uintptr_t residual_base = SDRAM_BASE_ADDRESS + (31u * 1024u * 1024u);
   sdram_configure_region(MPU_REGION_NUMBER2,
                          residual_base,
                          MPU_REGION_SIZE_1MB,

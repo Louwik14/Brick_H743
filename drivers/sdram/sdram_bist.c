@@ -4,7 +4,7 @@
 #include "sdram_driver_priv.h"
 #include "sdram_layout.h"
 
-#define SDRAM_FULL_BYTES   (32u * 1024u * 1024u)
+#define SDRAM_FULL_BYTES   SDRAM_TOTAL_SIZE_BYTES
 #define SDRAM_QUICK_BYTES  (1u * 1024u * 1024u)
 #define STRESS_BLOCK_BYTES (256u * 1024u)
 
@@ -113,10 +113,16 @@ bool sdram_bist_start(sdram_bist_context_t *ctx) {
     return false;
   }
 
+  if ((ctx->mode != SDRAM_BIST_MODE_QUICK) && (ctx->mode != SDRAM_BIST_MODE_FULL)) {
+    return false;
+  }
+
   bist_init_result(&ctx->result);
+  ctx->patterns_executed = 0u;
 
   const uint32_t coverage_bytes = (ctx->mode == SDRAM_BIST_MODE_FULL) ? SDRAM_FULL_BYTES : SDRAM_QUICK_BYTES;
   const uint32_t coverage_words = coverage_bytes / sizeof(uint16_t);
+  ctx->words_target = coverage_words;
   volatile uint16_t *const base = (volatile uint16_t *)SDRAM_BASE_ADDRESS;
 
   /* Static patterns */

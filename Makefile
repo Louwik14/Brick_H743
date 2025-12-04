@@ -73,6 +73,7 @@ CSRC = $(ALLCSRC) \
        $(wildcard drivers/*.c) \
        $(wildcard drivers/HallEffect/*.c) \
        $(wildcard drivers/audio/*.c) \
+       $(wildcard drivers/sdram/*.c) \
        $(wildcard ui/*.c)
 
 # FatFS / SD drivers
@@ -138,6 +139,7 @@ INCDIR += $(CONFDIR) $(ALLINC)
 INCDIR += drivers
 INCDIR += drivers/HallEffect
 INCDIR += drivers/audio
+INCDIR += drivers/sdram
 INCDIR += drivers/usb
 INCDIR += drivers/usb/usb_host
 INCDIR += drivers/sd

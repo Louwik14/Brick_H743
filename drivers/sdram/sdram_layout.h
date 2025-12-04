@@ -17,7 +17,7 @@ extern "C" {
  * @brief Base physical address and size of the SDRAM device.
  */
 #define SDRAM_BASE_ADDRESS      (0xC0000000U)
-#define SDRAM_TOTAL_SIZE_BYTES  (8u * 1024u * 1024u)
+#define SDRAM_TOTAL_SIZE_BYTES  (32u * 1024u * 1024u)
 
 /**
  * @brief Minimum alignment guaranteed for audio buffers placed in SDRAM.
