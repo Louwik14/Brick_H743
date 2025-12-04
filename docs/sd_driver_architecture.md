@@ -135,3 +135,102 @@
 - **Projets non partiels** : aucun projet n’est visible si son fichier échoue la validation (CRC/taille/génération). Le listing ignore les entrées invalides ou .tmp. Aucune partie d’un projet n’est chargée si l’ensemble n’est pas validé.
 - **Chargement cohérent** : la fonction de load vérifie l’en-tête (magic/version), la taille déclarée (≤ buffer) et la CRC avant exposition à l’application. En cas d’échec, le pattern/projet est marqué “corrompu” et non utilisé, empêchant un état incohérent.
 - **Limites connues** : la protection dépend de l’intégrité de la FAT ; une coupure pendant la mise à jour du répertoire peut exiger un fsck externe. Le compteur de génération est local à chaque fichier : il ne protège pas contre une restauration manuelle d’un ancien fichier par l’utilisateur sur PC (considéré explicite).
+
+## 8. Sûreté extrême & conformité finale – 2025-02-22
+
+### 8.1 Scénarios extrêmes & défaillances combinées
+- **Carte SD extrêmement lente (débit faible / latences élevées)** :
+  - Thread SD : découpe systématique en blocs ≤64 KiB, reste en état **normal** tant que les opérations aboutissent ; si les latences saturent la FIFO → retour BUSY et refus des requêtes supplémentaires.
+  - UI : reçoit des statuts « en cours » puis « BUSY » si la file se remplit ; doit échelonner les demandes ou indiquer un sablier. Pas de blocage ; la réponse peut être tardive.
+  - Audio : impact strictement nul (priorités plus hautes, aucune ressource partagée).
+  - Driver : reste **normal** ; en cas de file pleine répétée, instrumentation incrémente le compteur de saturation.
+  - Garanti : aucune préemption audio, sérialisation des requêtes, refus explicite quand la file est pleine.
+  - Non garanti : temps de service maximum ; réactivité UI si la carte est très lente.
+- **Carte SD instable (CRC fréquents)** :
+  - Thread SD : jusqu’à 3 tentatives par bloc, sinon passage en état **degraded** (lectures/écritures refusées ou basculées en RO).
+  - UI : reçoit erreur explicite (CRC) puis notification d’état dégradé ; doit bloquer les actions d’écriture et proposer remount.
+  - Audio : aucun impact.
+  - Driver : passe **degraded** ou **read-only** selon la capacité à monter le volume ; purge de la requête fautive et poursuite des suivantes si monté en RO.
+  - Garanti : aucune écriture après bascule RO, préservation des données existantes.
+  - Non garanti : réussite de l’opération en cours ; temps de recovery automatique (besoin d’action UI pour remount).
+- **Carte SD pleine à 100 %** :
+  - Thread SD : l’écriture échoue immédiatement (SD_ERR_IO) et l’état reste **normal** (volume monté) ; aucune tentative de tronquer.
+  - UI : signale « espace insuffisant », n’envoie pas de nouvelles saves tant que l’utilisateur n’a pas libéré de l’espace.
+  - Audio : aucun impact.
+  - Driver : reste **normal** ; instrumentation enregistre l’échec.
+  - Garanti : absence de fichiers partiels (stratégie .tmp + rename), intégrité des données précédentes.
+  - Non garanti : finalisation de la sauvegarde courante.
+- **Carte SD absente après boot (perte mécanique)** :
+  - Thread SD : si présence se désactive → passe en état **unmounted** + drapeau **fault** si une opération était en cours ; refuse toute nouvelle requête jusqu’à remount manuel.
+  - UI : affiche « carte retirée », purge sa file locale ; toute nouvelle commande reçoit NO_CARD.
+  - Audio : aucun impact.
+  - Driver : état **fault** si perte pendant I/O, sinon **unmounted** ; nécessite remount explicite après réinsertion.
+  - Garanti : arrêt immédiat des écritures, pas de crash audio.
+  - Non garanti : sauvegarde en cours (peut être perdue), cohérence FAT (fsck PC peut être requis).
+- **Saturation permanente de la FIFO SD** :
+  - Thread SD : refuse toute requête dès que la file atteint la capacité max ; reste en état **busy** mais **normal**.
+  - UI : reçoit BUSY et doit temporiser ou annuler les demandes massives ; pas de blocage du thread UI.
+  - Audio : aucun impact.
+  - Driver : instrumentation saturations++ ; aucune perte de données sauf requêtes refusées.
+  - Garanti : isolation audio, absence de deadlock.
+  - Non garanti : ordre de service au-delà du FIFO (les requêtes refusées doivent être reproposées par l’UI).
+- **Enchaînement rapide de sauvegardes utilisateur** :
+  - Thread SD : traite en FIFO stricte ; si le cumul excède la capacité → BUSY et rejet immédiat des nouvelles saves.
+  - UI : doit dédupliquer/retarder les saves successives ; fournit un statut « sauvegarde en cours » unique.
+  - Audio : aucun impact.
+  - Driver : état **normal** ; atomicité préservée par .tmp + rename pour chaque save.
+  - Garanti : aucune sauvegarde partielle visible ; dernier succès reste valide.
+  - Non garanti : latence totale pour vider la queue si la carte est lente.
+- **UI spam de requêtes sur bus SD lent** :
+  - Thread SD : FIFO se remplit → BUSY sur les requêtes supplémentaires ; traite les requêtes existantes sans priorité spéciale.
+  - UI : reçoit BUSY, doit appliquer backoff et informer l’utilisateur ; pas de blocage.
+  - Audio : aucun impact.
+  - Driver : reste **normal** ; instrumentation trace la surcharge.
+  - Garanti : pas de starvation audio, pas d’inversion de priorité.
+  - Non garanti : délai UI pour recevoir les résultats.
+
+### 8.2 Bornes de capacité & comportements au dépassement
+- **Taille maximale d’un pattern** : 8 KiB (borne logicielle liée au buffer statique pattern). Dépassement → refus immédiat (SD_ERR_PARAM), aucune écriture ; état **normal** conservé.
+- **Nombre maximal de patterns par projet** : 128 (borne logicielle pour tables statiques et parcours déterministe). Dépassement au listing → ignore les entrées supplémentaires et retourne un statut « limité » ; au save → refus avec erreur « quota patterns ».
+- **Taille maximale d’un sample** : 64 MiB (borne mémoire + temps réel pour transfert segmenté). Dépassement → refus de chargement/sauvegarde, état inchangé.
+- **Nombre maximal de samples chargeables simultanément** : 16 (borne mémoire et gestion de buffers applicatifs). Si limite atteinte → refus de chargement supplémentaire, le driver ne libère pas automatiquement.
+- **Longueur maximale des chemins/noms** : 64 caractères (borne FatFS + tables statiques). Dépassement → refus avant toute I/O, erreur paramètre.
+- **Occupation maximale de la FIFO SD** : 8 requêtes (borne logicielle pour mailbox statique). Au-delà → BUSY et rejet immédiat, pas de mise en attente supplémentaire.
+- **Nombre maximal de requêtes SD en vol** : 1 en traitement + 7 en file (sérialisation stricte). Les requêtes suivantes sont refusées (BUSY).
+- **Nature des bornes** : pattern/sample/chemins = bornes logicielles ; FIFO/requêtes = bornes temps réel/déterminisme ; aucune borne matérielle exposée (hors taille carte). Aucun mode dégradé automatique, uniquement refus explicite.
+
+### 8.3 Contrat d’interaction SD ↔ UI / reste du firmware
+- **Ce que le driver reçoit** : requêtes asynchrones (load/save/list/delete) avec buffers fournis, informations de taille/chemin, handle de synchronisation optionnel. Jamais de données audio ni d’horloge.
+- **Ce que le driver renvoie** : statuts finis (OK/BUSY/NO_CARD/FS_ERROR/RO/DEGRADED/FAULT), erreurs catégorisées (paramètre, CRC, IO, quota, plein), événements d’état (monté, démonté, RO, degraded, fault) via messages/flags consultables par l’UI.
+- **Ce qu’il est interdit qu’il connaisse** : état du séquenceur, tempo, règles musicales, compteur audio, positions de lecture, horloges audio ou SPI. Aucun champ de message ne transporte ces informations.
+- **Couplage temporel** : inexistant ; aucune attente sur horloge audio, aucune IRQ audio sollicitée. Les requêtes SD ne modifient pas les priorités ou sémaphores audio.
+- **Types d’événements** : changement d’état (mount/unmount/ro/degraded/fault), complétion de requête (succès/erreur), saturation FIFO (BUSY).
+- **Types de statuts** : états internes listés en 8.4, codes d’erreurs, métriques de latence (lecture seule, consultables en debug).
+- **Types d’erreurs** : paramètre invalide, fichier absent, CRC, IO (plein ou secteur défectueux), contexte interdit (appel ISR/audio), busy.
+
+### 8.4 États internes et transitions
+- **États possibles** : `unmounted`, `mounted-rw` (normal), `mounted-ro`, `degraded`, `fault`, `busy` (transitoire pendant traitement), `initializing`.
+- **Transitions et causes** :
+  - `initializing` → `mounted-rw` : init + mount FAT réussis.
+  - `initializing` → `unmounted` : carte absente ou mount refusé.
+  - `mounted-rw` → `busy` : requête en cours ; retour à `mounted-rw` après fin.
+  - `mounted-rw` → `mounted-ro` : erreurs répétées en écriture ou demande explicite d’ouverture RO ; actions : flush, remount RO, purge FIFO d’écritures.
+  - `mounted-rw` → `degraded` : CRC persistants ou incohérence FAT détectée ; actions : démonter proprement, refuser nouvelles requêtes d’écriture, autoriser lecture si remount possible.
+  - `mounted-rw` → `fault` : timeout HAL critique, perte carte en cours d’I/O, contrôleur bloqué ; actions : purge FIFO, verrouillage complet des I/O jusqu’au reboot.
+  - `mounted-ro` → `mounted-rw` : remount manuel réussi après action utilisateur (extraction/replace) ; audio continue pendant toute la séquence.
+  - `mounted-ro`/`degraded` → `fault` : nouvelle erreur matérielle bloquante ; actions : blocage total, notification UI.
+  - `unmounted` → `mounted-rw` : insertion carte + mount demandé par UI ; audio continue.
+- **Actions automatiques** : flush/sync avant changement d’état quand possible, purge de la FIFO en cas de fault, refus immédiat des écritures en RO/degraded, maintien des compteurs d’erreurs.
+- **Actions attendues de l’application/UI** : afficher l’état, proposer remount, empêcher l’écriture en RO/degraded, déclencher un reboot si `fault`.
+- **Audio** : continue sans condition pour toutes transitions ; aucune intervention requise.
+- **Intervention utilisateur** : nécessaire pour remount après retrait, libérer espace, remplacer carte défectueuse ou redémarrer en cas de fault.
+
+### 8.5 Check-list de conformité industrielle finale
+- **Temps réel respecté** : priorité SD < audio/SPI, aucune section critique partagée, transferts segmentés ≤64 KiB ; vérifié par mesures de latence et absence de préemption audio.
+- **Absence de dépendance audio** : aucune API SD accessible depuis audio/ISR ; contrôlé par audit de code et tests d’appel forcé (doit retourner erreur contexte).
+- **Robustesse power-fail** : stratégie `.tmp` + `rename`, flush + démontage propre ; tests coupure pendant écriture montrent absence de fichier partiel et état attendu (ancienne version intacte ou RO/degraded).
+- **Gestion d’erreurs complète** : classification récupérable/semi-critique/fatale, états `degraded`/`fault`, transitions définies ; tests injectés (CRC, timeouts, carte retirée) vérifient les bascules.
+- **Aucune allocation dynamique** : buffers/file statiques ; vérifié par audit de binaire (aucun appel malloc) et inspection des sections de l’ELF.
+- **Testabilité** : instrumentation accessible (counters, latence, saturations), scénarios de test listés en 6.6 + nouveaux cas extrêmes ; scripts de stress sur plusieurs heures.
+- **Traçabilité** : chaque changement d’état/statut consigné dans la structure de stats consultable ; versions et décisions documentées (sections datées 6, 7, 8).
+- **Intégrité FAT/données** : atomicité pattern, refus si pleine, montages RO en cas d’erreurs ; vérifié via tests fsck et validation CRC/génération.
