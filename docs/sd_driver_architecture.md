@@ -275,3 +275,10 @@
 - Les erreurs SDMMC utilisent désormais les flags `SDC_CMD_CRC_ERROR`, `SDC_DATA_TIMEOUT`, `SDC_RX_OVERRUN`, etc., renvoyés par `sdcGetAndClearErrors()` ; les anciens symboles `SDC_EVENT_*` absents du HAL ont été retirés.
 - Les primitives mailbox bloquantes/immédiates sont remplacées par `chMBFetchTimeout`/`chMBPostTimeout` et la conversion temps s’appuie sur `TIME_I2US` (macro `ST2US` absente sur cette version).
 - L’API registre RT est utilisée correctement (`chRegGetThreadNameX(chThdGetSelfX())`) pour identifier le thread courant sans dépendre d’une signature obsolète.
+
+## FatFS – désactivation timestamps RTC (2025-06-06)
+
+- FatFS est configuré avec `FF_FS_NORTC = 1` et des constantes fixes (`FF_NORTC_YEAR = 2025`, `FF_NORTC_MON = 1`, `FF_NORTC_MDAY = 1`) pour forcer un horodatage déterministe (01/01/2025) et éliminer toute dépendance à `get_fattime()` ou à un RTC matériel.
+- La groovebox ne consomme aucun timestamp FAT pour l’UI, le séquenceur ou la gestion de projets : l’ordre logique et l’intégrité sont assurés par les compteurs de génération + CRC, le flux `.tmp` + `rename`, et les états RO/degraded/fault.
+- La page de code FatFS passe de 932 (Shift-JIS) à 437, plus cohérente avec l’usage occidental et des noms de fichiers ASCII attendus.
+- Aucun ajout de fonction `get_fattime()` n’est nécessaire ; le binaire reste mono-thread SD, sans allocation dynamique ni dépendance temporelle externe.
