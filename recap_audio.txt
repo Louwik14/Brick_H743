@@ -133,3 +133,9 @@ V14 – Corrections build Hall/Audio (H743 + ChibiOS)
 - Conversion temps Hall basculée sur la macro ChibiOS `TIME_I2US` (µs) pour éliminer l'appel à `ST2US` non déclaré et conserver le calcul de vélocité en microsecondes.
 - Driver Hall ajusté sur les ADC réellement exposés par la cible (ADCD1 + ADCD3) avec configuration dual-MUX inchangée.
 - Driver audio : buffer de sortie renvoyé via un cast explicite vers `int32_t *` (suppression du warning sur le type de pointeur) et arrêt DMA en IRQ via `chSysHalt("AUDIO DMA ERROR")` à la place de `chSysHaltI`.
+
+V15 – Documentation SD architecture
+------------------------------------
+- Ajout d'un document d'architecture pour le driver SD (thread dédié, contraintes D-Cache, API planifiée).
+- Aucun changement dans le pipeline audio ou la configuration SAI/DMA.
+
