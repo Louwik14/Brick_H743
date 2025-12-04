@@ -259,3 +259,7 @@
 ## Build system – intégration SD (2025-05-31)
 - Méthode d’intégration : ajout explicite des sources SD via `$(wildcard drivers/sd/*.c)` dans `CSRC`, calqué sur la stratégie existante des autres sous-dossiers drivers.
 - Variables impactées : `CSRC` inclut désormais les fichiers `drivers/sd/*.c` et `UINCDIR` référence `drivers/sd` pour l’accessibilité des headers.
+
+## Build/FatFS – correction 2025-06-02
+- Rappel de build : compilation forcée de tous les fichiers FatFS/SD via `CSRC += $(wildcard drivers/sd/*.c)` et `$(wildcard drivers/sd/ff16/*.c)` dans le Makefile.
+- Chemins d’include : `UINCDIR` ajoute explicitement `drivers/sd` et `drivers/sd/ff16` pour que `ff.h`, `diskio.h` et les headers `drv_sd*.h` soient résolus lors de la compilation.
