@@ -73,8 +73,11 @@ CSRC = $(ALLCSRC) \
        $(wildcard drivers/*.c) \
        $(wildcard drivers/HallEffect/*.c) \
        $(wildcard drivers/audio/*.c) \
-       $(wildcard drivers/sd/*.c) \
        $(wildcard ui/*.c)
+
+# FatFS / SD drivers
+CSRC += $(wildcard drivers/sd/*.c)
+CSRC += $(wildcard drivers/sd/ff16/*.c)
 
 CPPSRC  = $(ALLCPPSRC)
 ASMSRC  = $(ALLASMSRC)
@@ -131,7 +134,9 @@ INCDIR += \
 # Includes
 ##############################################################################
 INCDIR += $(CONFDIR) $(ALLINC)
-UINCDIR = cfg drivers drivers/HallEffect drivers/audio drivers/sd drivers/usb drivers/usb/usb_host ui
+UINCDIR = cfg drivers drivers/HallEffect drivers/audio drivers/usb drivers/usb/usb_host ui
+UINCDIR += drivers/sd
+UINCDIR += drivers/sd/ff16
 
 ##############################################################################
 # Defines
