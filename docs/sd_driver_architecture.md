@@ -44,3 +44,47 @@
 - Charge système : vérifier que le thread SD à faible priorité n’allonge pas trop les temps de réponse de l’UI ; ajuster la priorité UI/SD après mesures.
 - Cache/MPU : hypothèse que la section non cacheable pour DMA est correctement configurée par le linker/MPU ; à valider sur cible réelle avec tests D-Cache (clean/invalidate).
 - Tests à planifier : tests de charge prolongés (lecture/écriture répétée), tests de corruption (carte retirée/FS altéré), benchmarks de latence par blocs (4–64 KiB), validation des erreurs FatFS → erreurs internes, et vérification qu’aucune fonction SD n’est appelée depuis l’audio ou une ISR.
+
+## 6. Complément d’architecture SD – 2025-02-05
+
+### 6.1 Contrat temps réel formel du thread SD
+- **Modèle de requêtes** : toute interaction SD passe par une file de messages (mailbox/queue statique) alimentée uniquement par des threads non critiques. Chaque message inclut la demande (lecture/écriture/listing), le buffer fourni par l’appelant et un handle de synchronisation optionnel (sémaphore/statut partagé) pour signaler la fin. Les appels exposés à l’application sont non bloquants par défaut (post de requête) avec possibilité d’attendre hors threads critiques via synchronisation explicite.
+- **Blocage et synchronisme** : aucune API ne peut bloquer le thread audio ou un ISR car ces contextes n’ont pas le droit de poster. Les threads UI ou de gestion peuvent choisir d’attendre la fin via une synchronisation dédiée, mais cette attente se fait en dehors des threads audio/SPI. Pas d’appel direct synchrone vers FatFS ou HAL depuis l’UI : tout passe par le thread SD.
+- **Garantie de non-perturbation audio** : priorité du thread SD strictement inférieure à Audio et SPI/Clock ; la durée théorique maximale d’une opération SD traitée est bornée par un quantum de traitement de 64 KiB (lecture/écriture segmentée) équivalent à quelques millisecondes sur carte lente. Si plusieurs requêtes sont en attente, le thread SD vide la file en séquence sans préemption par type ; l’audio n’est jamais bloqué car aucune ressource partagée temps réel n’est prise. Une requête longue pendant une interaction UI retarde uniquement la réponse UI ; l’audio reste isolé.
+- **Interdiction d’accès SD** : seuls les threads UI et de gestion non critiques peuvent poster des requêtes. Interdiction stricte depuis ISR, thread audio, et threads SPI/Clock. Cette interdiction est rendue effective par conception : les fonctions publiques de l’API SD sont des wrappers qui postent dans la file SD et vérifient le contexte courant (assert/return immédiat) pour refuser ISR/audio ; le thread SD est le seul détenteur des primitives FatFS/HAL et aucune fonction FatFS/HAL n’est exportée ailleurs.
+- **Garanties vs non-garanties** : garanti par conception : sérialisation des accès, absence d’appel SD dans l’audio/ISR, priorités audio > SPI > UI ≥ SD, pas de malloc. Non garanti : temps de service exact dépendant de la carte (latence variable), absence d’étoilement UI si la file se remplit fortement, performance sur cartes très lentes non bornée au-delà du quantum de découpage.
+
+### 6.2 Politique de sérialisation des accès
+- **File d’attente** : plusieurs requêtes peuvent coexister dans la queue statique (taille bornée). Pas d’annulation une fois postée (si la queue est pleine : refus immédiat). Pas de priorité par type : politique FIFO stricte pour préserver la prédictibilité et éviter d’affamer une opération en cours.
+- **Conflits lecture/écriture** : si une écriture est en cours et qu’une lecture arrive, la lecture attend sa place dans la FIFO. Idem si une lecture de gros sample est en cours et qu’une sauvegarde de pattern arrive : la sauvegarde attend la fin du bloc courant, le découpage par tranches de 64 KiB limite la latence accumulée. Aucune préemption interne n’est autorisée.
+- **Erreurs en cours d’opération** : sur erreur FatFS/HAL durant un transfert, l’opération courante est abortée, un code d’erreur est renvoyé au requérant, le thread SD consomme l’élément suivant de la FIFO. La file continue d’être drainée ; pas de purge globale sauf erreur fatale (voir 6.5).
+- **Politique de refus** : si la queue est pleine, le posteur reçoit immédiatement un code “BUSY” et doit réessayer. Aucun blocage d’insertion.
+
+### 6.3 Politique cache / MPU — verrouillage formel
+- **Choix unique** : buffers SD exclusivement en zone MPU non-cacheable (section dédiée en D2 SRAM). Justification : STM32H743 avec D-Cache actif → éviter toute maintenance cache coûteuse et le risque d’incohérence DMA. Les copies vers/depuis RAM cacheable sont faites par le thread SD ou l’application après transfert.
+- **Alignement minimal** : 32 octets minimum pour tous les buffers DMA SD ; alignement sectoriel de 512 octets pour les transferts de blocs FatFS.
+- **Tailles maximales garanties** :
+  - Patterns : buffer statique unique ≤ 8 KiB en RAM non-cacheable pour transfert, puis copie en RAM cacheable si nécessaire.
+  - Buffer de transfert sample : taille fixe ≤ 64 KiB en RAM non-cacheable, utilisé en ping/pong interne au thread SD pour charger par segments.
+- **Interdictions explicites** : interdiction d’utiliser un buffer cacheable directement en DMA SDMMC sans nettoyage/invalidation (scénario exclu par le choix non-cacheable). Interdiction d’emprunter des buffers audio (non partagés) pour le SD. Aucune allocation dynamique de buffers SD.
+
+### 6.4 Politique “une seule ressource en RAM”
+- **Propriété des buffers** : le thread SD possède le buffer de transfert non-cacheable pendant toute la durée d’une opération. Pour les patterns, un unique buffer statique est rempli puis la propriété passe à l’application seulement après notification de fin (synchro). Pour les samples, le thread SD remplit un buffer de transfert puis copie vers un buffer applicatif cacheable fourni ; la propriété du buffer applicatif revient à l’appelant uniquement après completion signalée.
+- **Prévention d’écrasement** : le thread SD ne réutilise jamais le buffer applicatif tant que l’appelant n’a pas accusé réception via la synchronisation de fin. Les buffers audio sont distincts et jamais partagés avec le SD. L’application doit demander explicitement le chargement suivant (pas de streaming automatique), garantissant qu’un seul pattern est en RAM et qu’aucun sample n’est écrasé pendant usage audio.
+- **Synchronisation de disponibilité** : fin de chargement signalée par sémaphore/statut dans le message de requête. Le moteur audio ne consomme un pattern ou sample que lorsque ce statut indique “done”. Aucune lecture audio tant que la notification n’est pas reçue, éliminant les courses entre threads.
+
+### 6.5 Classification des erreurs et comportements
+- **Récupérables** : fichier absent, limite hors bornes, I/O ponctuelle, CRC isolé. Comportement driver : retourne un code d’erreur sans modifier l’état monté ; continue à traiter la FIFO. Comportement application : informer l’utilisateur ou réessayer. Audio : garanti non impacté. Redémarrage non requis.
+- **Semi-critiques** : FAT corrompu partiellement, CRC répétés sur plusieurs blocs, erreurs de lecture persistantes d’un secteur. Driver : démonte le volume, marque l’état “degraded”, refuse nouvelles opérations jusqu’à remount explicite. Application : signaler état dégradé, proposer sauvegarde ailleurs ou remount. Audio : continue (isolation). Redémarrage logiciel facultatif après remount.
+- **Fatales** : contrôleur SDMMC bloqué ou timeout matériel systématique, échec d’initialisation HAL, perte d’alimentation pendant écriture laissant le contrôleur en fault. Driver : place l’état “fault”, purge la FIFO, refuse toute requête future jusqu’au reboot ; pas de tentative de récupération automatique. Application : notifier l’utilisateur, inhiber les fonctions SD. Audio : reste actif (pas de dépendance). Redémarrage logiciel requis pour rétablir le service SD.
+
+### 6.6 Testabilité & traçabilité industrielles
+- **Instrumentation interne** : compteurs statiques pour erreurs (par catégorie), opérations réussies, aborts ; histogramme ou min/avg/max de latence par opération (mesurée entre post et complétion) ; compteur de saturation de queue (BUSY). Toutes les stats sont tenues dans une structure statique consultable via une API de debug thread-safe (lecture seule, non bloquante).
+- **Consultation sans perturber le temps réel** : accès en lecture aux statistiques via le thread UI ou un shell bas priorité ; aucune collecte dans le thread audio. Pas de logs en IRQ. Export possible par snapshot périodique non critique.
+- **Scénarios de test minimum** :
+  - Stress lecture/écriture prolongé avec patterns et samples (séquences de 4–64 KiB) sur plusieurs heures.
+  - Tests sur cartes lentes/défectueuses (classes faibles, cartes usées) pour mesurer latence et erreurs CRC.
+  - FS corrompu (FAT altérée) : vérification passage en état “degraded” et réactions applicatives.
+  - Coupure d’alimentation simulée pendant écriture : vérification classification semi-critique/fatale et absence d’impact audio.
+  - Saturation du thread SD : queue pleine, vérification des retours “BUSY”, absence de blocage UI/audio.
+  - Erreurs HAL (timeouts) : validation de passage en état “fault” et nécessité de reboot.
