@@ -146,11 +146,17 @@ void __cpu_init(void) {
 
   HAL_MPU_Disable();
 
+  /*
+   * Option A (MPU) : protège la section .ram_d2 (0x30040000, 32 KB) utilisée par les
+   * buffers DMA audio/SPI. La région est explicitement non-cacheable et non-bufferable
+   * pour garantir la cohérence D-Cache sans ajouter de clean/invalidate dans le pipeline
+   * audio temps réel.
+   */
   mpu.Enable           = MPU_REGION_ENABLE;
   mpu.BaseAddress      = 0x30040000;
   mpu.Size             = MPU_REGION_SIZE_32KB;
   mpu.AccessPermission = MPU_REGION_FULL_ACCESS;
-  mpu.IsBufferable     = MPU_ACCESS_BUFFERABLE;
+  mpu.IsBufferable     = MPU_ACCESS_NOT_BUFFERABLE;
   mpu.IsCacheable      = MPU_ACCESS_NOT_CACHEABLE;
   mpu.IsShareable      = MPU_ACCESS_SHAREABLE;
   mpu.Number           = MPU_REGION_NUMBER0;

@@ -26,6 +26,12 @@ static volatile spilink_audio_block_t AUDIO_DMA_BUFFER_ATTR spi_out_buffers;
 static volatile uint8_t audio_in_ready_index = 0xFFU;
 static volatile uint8_t audio_out_ready_index = 0xFFU;
 
+/* Synchronisation stricte RX/TX : les deux DMA doivent signaler le même demi-buffer. */
+#define AUDIO_SYNC_FLAG_RX    0x01U
+#define AUDIO_SYNC_FLAG_TX    0x02U
+static volatile uint8_t audio_sync_mask = 0U;
+static volatile uint8_t audio_sync_half = 0xFFU;
+
 /* SPI-LINK callbacks. */
 static drv_spilink_pull_cb_t spilink_pull_cb = NULL;
 static drv_spilink_push_cb_t spilink_push_cb = NULL;
@@ -70,6 +76,7 @@ static void audio_dma_start(void);
 static void audio_dma_stop(void);
 static void audio_routes_reset_defaults(void);
 static float soft_clip(float x);
+static void audio_dma_sync_mark(uint8_t half, uint8_t flag);
 
 static void audio_dma_rx_cb(void *p, uint32_t flags);
 static void audio_dma_tx_cb(void *p, uint32_t flags);
@@ -87,6 +94,11 @@ void drv_audio_init(void) {
     /* Prépare le bus I2C et les codecs. */
     adau1979_init();
     audio_codec_pcm4104_init();
+
+    audio_in_ready_index = 0xFFU;
+    audio_out_ready_index = 0xFFU;
+    audio_sync_mask = 0U;
+    audio_sync_half = 0xFFU;
 
     memset((void *)audio_in_buffers, 0, sizeof(audio_in_buffers));
     memset((void *)audio_out_buffers, 0, sizeof(audio_out_buffers));
@@ -229,6 +241,28 @@ static float soft_clip(float x) {
         return -threshold + (excess / (1.0f + (excess * excess)));
     }
     return x;
+}
+
+static void audio_dma_sync_mark(uint8_t half, uint8_t flag) {
+    chSysLockFromISR();
+
+    if (audio_sync_half != half) {
+        audio_sync_half = half;
+        audio_sync_mask = 0U;
+    }
+
+    audio_sync_mask |= flag;
+
+    if ((audio_sync_mask & (AUDIO_SYNC_FLAG_RX | AUDIO_SYNC_FLAG_TX)) ==
+        (AUDIO_SYNC_FLAG_RX | AUDIO_SYNC_FLAG_TX)) {
+        audio_in_ready_index = half;
+        audio_out_ready_index = half;
+        audio_sync_mask = 0U;
+        audio_sync_half = 0xFFU;
+        chBSemSignalI(&audio_dma_sem);
+    }
+
+    chSysUnlockFromISR();
 }
 
 /* -------------------------------------------------------------------------- */
@@ -478,12 +512,10 @@ static void audio_dma_rx_cb(void *p, uint32_t flags) {
     if ((flags & (STM32_DMA_ISR_TEIF | STM32_DMA_ISR_DMEIF | STM32_DMA_ISR_FEIF)) != 0U) {
         chSysHalt("AUDIO DMA ERROR");
     }
-    if ((flags & STM32_DMA_ISR_HTIF) != 0U) {
-        audio_in_ready_index = 0U;
-    } else if ((flags & STM32_DMA_ISR_TCIF) != 0U) {
-        audio_in_ready_index = 1U;
+    if ((flags & (STM32_DMA_ISR_HTIF | STM32_DMA_ISR_TCIF)) != 0U) {
+        uint8_t half = ((flags & STM32_DMA_ISR_HTIF) != 0U) ? 0U : 1U;
+        audio_dma_sync_mark(half, AUDIO_SYNC_FLAG_RX);
     }
-    chBSemSignalI(&audio_dma_sem);
 }
 
 static void audio_dma_tx_cb(void *p, uint32_t flags) {
@@ -491,10 +523,8 @@ static void audio_dma_tx_cb(void *p, uint32_t flags) {
     if ((flags & (STM32_DMA_ISR_TEIF | STM32_DMA_ISR_DMEIF | STM32_DMA_ISR_FEIF)) != 0U) {
         chSysHalt("AUDIO DMA ERROR");
     }
-    if ((flags & STM32_DMA_ISR_HTIF) != 0U) {
-        audio_out_ready_index = 0U;
-    } else if ((flags & STM32_DMA_ISR_TCIF) != 0U) {
-        audio_out_ready_index = 1U;
+    if ((flags & (STM32_DMA_ISR_HTIF | STM32_DMA_ISR_TCIF)) != 0U) {
+        uint8_t half = ((flags & STM32_DMA_ISR_HTIF) != 0U) ? 0U : 1U;
+        audio_dma_sync_mark(half, AUDIO_SYNC_FLAG_TX);
     }
-    chBSemSignalI(&audio_dma_sem);
 }
