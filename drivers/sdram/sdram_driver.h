@@ -97,7 +97,7 @@ typedef enum {
  */
 typedef enum {
   SDRAM_BIST_MODE_QUICK = 0, /**< Minimal coverage (e.g., 1 MiB, boot-time). */
-  SDRAM_BIST_MODE_FULL       /**< Full coverage (8 MiB, maintenance). */
+  SDRAM_BIST_MODE_FULL       /**< Full coverage (32 MiB, maintenance). */
 } sdram_bist_mode_t;
 
 /**
