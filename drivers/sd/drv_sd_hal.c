@@ -19,6 +19,7 @@ void drv_sd_hal_init(void) {
 }
 
 void drv_sd_hal_deinit(void) {
+    drv_sd_hal_sync();
     sdcStop(sdcd);
 }
 
