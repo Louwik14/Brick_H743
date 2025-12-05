@@ -14,8 +14,9 @@
 /* ========================== MIDI ========================= */
 /* ========================================================= */
 
-/* Port série utilisé pour le DIN MIDI (configuré dans midi.c). */
-#define BRICK_MIDI_UART            &SD2
+/* Port série utilisé pour le DIN MIDI (configuré dans midi.c).
+ * Par défaut sur SD3 pour cette cible H743 (adapter selon le routage PCB). */
+#define BRICK_MIDI_UART            &SD3
 
 
 /* ========================================================= */
