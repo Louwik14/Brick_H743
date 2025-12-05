@@ -13,9 +13,11 @@
  * via sdram_init(). D-Cache est activé après la configuration MPU pour
  * garantir la cohérence des attributs mémoire.
  *
- * Rationale : fournir une API idempotente, simple et industrielle qui évite
- * tout oubli dans l'ordre critique (MPU → SDRAM → audio/USB/SD) et centralise
- * la gestion d'erreurs boot-time.
+ * Rationale : fournir une API idempotente (boot-only, sans lock), simple et
+ * industrielle qui évite tout oubli dans l'ordre critique (MPU → SDRAM →
+ * audio/USB/SD) et centralise la gestion d'erreurs boot-time. Les drivers
+ * audio/USB ne remontent pas d'échec code, les erreurs éventuelles ne sont donc
+ * pas observables ici.
  */
 
 #include "system_init.h"
@@ -115,17 +117,17 @@ sys_status_t system_init_late(void) {
   midi_init();
 
   const sd_error_t sd_init_res = drv_sd_init();
-  if (sd_init_res != SD_OK) {
+  if (sd_init_res == SD_OK) {
+    if (SYSTEM_AUTO_MOUNT_SD) {
+      const sd_error_t sd_mount_res = drv_sd_mount(false);
+      if (sd_mount_res != SD_OK && sd_mount_res != SD_ERR_NO_CARD) {
+        record_error(SYS_ERR_SD);
+        return last_error;
+      }
+    }
+  } else if (sd_init_res != SD_ERR_NO_CARD) {
     record_error(SYS_ERR_SD);
     return last_error;
-  }
-
-  if (SYSTEM_AUTO_MOUNT_SD) {
-    const sd_error_t sd_mount_res = drv_sd_mount(false);
-    if (sd_mount_res != SD_OK) {
-      record_error(SYS_ERR_SD);
-      return last_error;
-    }
   }
 
   if (!audio_initialized) {
