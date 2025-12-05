@@ -11,7 +11,8 @@
 
 /*
  * Attribut pour placer les buffers DMA audio en RAM non cacheable (.ram_d2).
- * Nécessite que mpu_config_init_once() ait configuré la région MPU dédiée.
+ * Section LD délimitée par __ram_d2_start__/__ram_d2_end__ et configurée en
+ * région MPU non-cacheable par mpu_config_init_once().
  */
 #define AUDIO_DMA_BUFFER_ATTR __attribute__((section(".ram_d2"), aligned(32)))
 
