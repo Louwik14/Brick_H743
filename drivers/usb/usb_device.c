@@ -53,10 +53,21 @@ void usb_device_start(void) {
     /* 2. Démarrage du driver avec la config USB du projet */
     usbStart(&USBD1, &usbcfg);
 
-    /* 3. Forçage du mode "device" (désactivation VBUS sensing) */
+    /* 3. Forçage du mode "device" (désactivation VBUS sensing).
+     *
+     * Les bits GCCFG varient selon les familles STM32 / versions d’en-têtes :
+     * - F4/F7 : NOVBUSSENS + VBUSBSEN/VBUSASEN
+     * - H7    : VBDEN
+     *
+     * On ne dépend que des macros disponibles pour conserver la compatibilité.
+     */
     if (USB_FORCE_NOVBUS) {
-        USBD1.otg->GCCFG |=  USB_OTG_GCCFG_NOVBUSSENS;
+#if defined(USB_OTG_GCCFG_NOVBUSSENS)
+        USBD1.otg->GCCFG |= USB_OTG_GCCFG_NOVBUSSENS;
         USBD1.otg->GCCFG &= ~(USB_OTG_GCCFG_VBUSBSEN | USB_OTG_GCCFG_VBUSASEN);
+#elif defined(USB_OTG_GCCFG_VBDEN)
+        USBD1.otg->GCCFG &= ~USB_OTG_GCCFG_VBDEN;
+#endif
     }
 
     /* 4. Connexion logique sur le bus */
