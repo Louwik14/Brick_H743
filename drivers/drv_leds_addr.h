@@ -84,9 +84,6 @@ typedef struct {
     led_mode_t  mode;
 } led_state_t;
 
-/* État logique global */
-extern led_state_t drv_leds_addr_state[NUM_ADRESS_LEDS];
-
 /* =======================================================================
  *                              API
  * ======================================================================= */
