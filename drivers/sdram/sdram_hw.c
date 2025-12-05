@@ -6,9 +6,9 @@
 #include "sdram_layout.h"
 
 #define SDRAM_REFRESH_COUNT       (761u)
-#define SDRAM_TIMEOUT_CYCLES      (0xFFFFu)
+#define SDRAM_TIMEOUT_CYCLES      (0x3FFFFu)
 #define SDRAM_MODE_REGISTER_VALUE (0x0032u)
-#define SDRAM_SDSR_BUSY           (1u << 5)
+#define SDRAM_SDSR_BUSY           (1u << 5) /* RM0455: SDSR busy flag (bit 5) */
 
 #define SDRAM_CMD_NORMAL         (0u)
 #define SDRAM_CMD_CLK_ENABLE     (1u)
@@ -37,6 +37,11 @@ static bool fmc_issue_command(uint32_t mode, uint32_t auto_refresh, uint32_t mod
 
   FMC_Bank5_6_R->SDCMR = command;
   return fmc_wait_while_busy(SDRAM_TIMEOUT_CYCLES);
+}
+
+static uint32_t fmc_current_mode(void)
+{
+  return (FMC_Bank5_6_R->SDSR & FMC_SDSR_MODES1_Msk) >> FMC_SDSR_MODES1_Pos;
 }
 
 bool sdram_hw_init_sequence(void)
@@ -99,7 +104,7 @@ bool sdram_hw_init_sequence(void)
     return false;
   }
 
-  const uint32_t mode = (status & FMC_SDSR_MODES1_Msk) >> FMC_SDSR_MODES1_Pos;
+  const uint32_t mode = fmc_current_mode();
   if (mode != 0u) {
     return false;
   }
