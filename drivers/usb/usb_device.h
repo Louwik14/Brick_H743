@@ -30,7 +30,7 @@ extern "C" {
  * - `usbDisconnectBus()` pour forcer la reconnexion hôte,
  * - temporisation courte,
  * - `usbStart(&USBD1, &usbcfg)`,
- * - configuration de l’option `NOVBUSSENS` si nécessaire (voir `USB_FORCE_NOVBUS`),
+ * - configuration des bits de détection VBUS si nécessaire (voir `USB_FORCE_NOVBUS`),
  * - `usbConnectBus()` pour activer le pull-up DP.
  *
  * @note Indispensable sur certaines Nucleo où **VBUS** n’est pas câblé.
