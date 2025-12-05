@@ -126,11 +126,17 @@ bool sdram_configure_mpu_regions(void)
 #endif
 
   ARM_MPU_Disable();
+  __DSB();
+  __ISB();
 
+  /*
+   * Main SDRAM: Normal memory, non-cacheable, shareable (TEX=1,C=0,B=0,S=1)
+   * so that DMA/audio transfers remain deterministic with D-Cache enabled.
+   */
   ARM_MPU_SetRegion(ARM_MPU_RBAR(1u, SDRAM_BASE_ADDRESS),
                     ARM_MPU_RASR(0u,
                                  ARM_MPU_AP_FULL,
-                                 0u,
+                                 1u,
                                  1u,
                                  0u,
                                  0u,
@@ -138,6 +144,10 @@ bool sdram_configure_mpu_regions(void)
                                  ARM_MPU_REGION_SIZE_32MB));
 
 #if (SDRAM_ENABLE_CACHE_RESIDUAL == 1)
+  /*
+   * CPU-only residual: Normal cacheable (non-shareable) for scratch use.
+   * DMA is explicitly forbidden on this window.
+   */
   ARM_MPU_SetRegion(ARM_MPU_RBAR(2u, residual_base),
                     ARM_MPU_RASR(0u,
                                  ARM_MPU_AP_FULL,
@@ -149,8 +159,15 @@ bool sdram_configure_mpu_regions(void)
                                  ARM_MPU_REGION_SIZE_1MB));
 #endif
 
+  __DSB();
+  __ISB();
+
   SCB_InvalidateDCache();
+  __DSB();
+  __ISB();
   ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk);
+  __DSB();
+  __ISB();
 
   return true;
 }
