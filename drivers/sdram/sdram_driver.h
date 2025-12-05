@@ -105,7 +105,8 @@ typedef enum {
  */
 typedef struct {
   sdram_bist_status_t status;        /**< PASS/FAIL/ABORT. */
-  uint32_t words_tested;             /**< Number of 16-bit words tested. */
+  uint32_t words_tested;             /**< Total 16-bit words verified across all patterns. */
+  uint32_t words_covered_unique;     /**< Unique 16-bit words spanned by coverage. */
   uint32_t error_count;              /**< Total detected errors. */
   uintptr_t first_error_address;     /**< Absolute SDRAM address of first failing word (0 if none). */
   sdram_bist_error_t first_error;    /**< Classification of the first error. */
@@ -149,7 +150,8 @@ sdram_error_t sdram_get_error(void);
  *
  * - Executes in thread context only; must not be called from ISR.
  * - Should be launched from a low-priority maintenance thread once SDRAM is
- *   initialized. Audio must be detached from SDRAM during a full BIST.
+ *   initialized. The FULL BIST overwrites all SDRAM regions; callers must
+ *   detach/stop any audio SDRAM usage before invoking it.
  *
  * @param mode Desired BIST mode (quick or full).
  * @param out_result Optional pointer to receive the normalized result report.

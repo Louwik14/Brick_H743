@@ -15,6 +15,24 @@
 #endif
 #endif
 
+#if ((SDRAM_LOOP_BYTES + SDRAM_DELAY_BYTES + SDRAM_FX_BYTES) > SDRAM_TOTAL_BYTES)
+#error "SDRAM region layout exceeds total SDRAM capacity"
+#endif
+
+#if ((SDRAM_BASE_ADDRESS % SDRAM_AUDIO_ALIGNMENT_BYTES) != 0)
+#error "SDRAM base address is not aligned to audio alignment"
+#endif
+
+#if (((SDRAM_LOOP_BYTES % SDRAM_AUDIO_ALIGNMENT_BYTES) != 0) || \
+     ((SDRAM_DELAY_BYTES % SDRAM_AUDIO_ALIGNMENT_BYTES) != 0) || \
+     ((SDRAM_FX_BYTES % SDRAM_AUDIO_ALIGNMENT_BYTES) != 0))
+#error "SDRAM region sizes must align to audio alignment boundary"
+#endif
+
+#if ((SDRAM_ENABLE_CACHE_RESIDUAL == 1) && ((SDRAM_RESIDUAL_BYTES % SDRAM_AUDIO_ALIGNMENT_BYTES) != 0))
+#error "Residual region size must align to audio alignment boundary"
+#endif
+
 const sdram_region_descriptor_t sdram_region_descriptors[] = {
   {
     .id = SDRAM_AUDIO_LOOP,
