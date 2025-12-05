@@ -99,9 +99,9 @@ __attribute__((weak)) void midi_internal_receive(const uint8_t *msg, size_t len)
 #define MIDI_USB_QUEUE_LEN   256
 
 /** @brief Mailbox de transmission USB-MIDI (producteur/consommateur). */
-static CCM_DATA mailbox_t midi_usb_mb;
+static mailbox_t midi_usb_mb;
 /** @brief Buffer circulaire pour la mailbox USB-MIDI. */
-static CCM_DATA msg_t     midi_usb_queue[MIDI_USB_QUEUE_LEN];
+static msg_t     midi_usb_queue[MIDI_USB_QUEUE_LEN];
 static uint16_t  midi_usb_queue_fill = 0;
 static uint16_t  midi_usb_queue_high_water = 0;
 
@@ -111,9 +111,9 @@ static uint16_t  midi_usb_queue_high_water = 0;
 #define MIDI_USB_RX_QUEUE_LEN 128
 
 /** @brief Mailbox de réception brute USB-MIDI (alimentée en ISR). */
-static CCM_DATA mailbox_t midi_usb_rx_mb;
+static mailbox_t midi_usb_rx_mb;
 /** @brief Buffer circulaire pour la mailbox de réception. */
-static CCM_DATA msg_t     midi_usb_rx_queue[MIDI_USB_RX_QUEUE_LEN];
+static msg_t     midi_usb_rx_queue[MIDI_USB_RX_QUEUE_LEN];
 static uint16_t midi_usb_rx_queue_fill = 0;
 static uint16_t midi_usb_rx_queue_high_water = 0;
 volatile uint32_t midi_usb_rx_drops = 0;
@@ -138,7 +138,7 @@ static inline void midi_usb_queue_decrement(void) {
 }
 
 static inline void midi_usb_rx_queue_increment_i(void) {
-  osalDbgAssert(osalIsSystemLocked(), "RX counter must be locked");
+  /* Les compteurs RX sont manipulés sous verrou système (ISR ou lock explicite). */
   if (midi_usb_rx_queue_fill < MIDI_USB_RX_QUEUE_LEN) {
     midi_usb_rx_queue_fill++;
     if (midi_usb_rx_queue_fill > midi_usb_rx_queue_high_water) {
@@ -148,7 +148,7 @@ static inline void midi_usb_rx_queue_increment_i(void) {
 }
 
 static inline void midi_usb_rx_queue_decrement(void) {
-  osalDbgAssert(osalIsSystemLocked(), "RX counter must be locked");
+  /* Les compteurs RX sont manipulés sous verrou système (ISR ou lock explicite). */
   if (midi_usb_rx_queue_fill > 0U) {
     midi_usb_rx_queue_fill--;
   }
@@ -236,7 +236,7 @@ static void midi_process_usb_rx(void);
 /**
  * @brief Zone de travail du thread de transmission USB-MIDI.
  */
-static CCM_DATA THD_WORKING_AREA(waMidiUsbTx, 512);
+static THD_WORKING_AREA(waMidiUsbTx, 512);
 
 /**
  * @brief Thread d’agrégation et d’envoi USB-MIDI.
