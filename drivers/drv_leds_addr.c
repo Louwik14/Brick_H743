@@ -13,10 +13,10 @@
 
 #define WS_DMA_WORKER_STACK_SIZE THD_WORKING_AREA_SIZE(256)
 #define LED_DMA_FORCE_DCACHE_CLEAN 0
+#define LED_DMA_MAX_RETRIES        2U
 
-#define TIMER_CLOCK         200000000U
 #define WS_FREQ             800000U
-#define PERIOD_TICKS        (TIMER_CLOCK / WS_FREQ)
+#define PERIOD_TICKS        (STM32_TIMCLK2 / WS_FREQ)
 
 #define DUTY_0              (PERIOD_TICKS * 3 / 10)
 #define DUTY_1              (PERIOD_TICKS * 7 / 10)
@@ -36,10 +36,13 @@ static led_state_t drv_leds_addr_state[NUM_ADRESS_LEDS];
 static mutex_t leds_mutex;
 static volatile bool led_dma_busy = false;
 static volatile uint32_t led_dma_errors = 0;
+static volatile uint32_t led_dma_retry_exhausted = 0;
 static volatile uint32_t last_frame_time_us = 0;
 static volatile systime_t last_frame_start = 0;
 static volatile bool led_dma_tc_pending = false;
 static volatile bool led_dma_error_pending = false;
+static volatile bool led_dma_enabled = true;
+static uint32_t led_dma_consecutive_errors = 0;
 
 static binary_semaphore_t led_dma_sem;
 static THD_WORKING_AREA(led_dma_thread_wa, WS_DMA_WORKER_STACK_SIZE);
@@ -153,10 +156,13 @@ void drv_leds_addr_init(void) {
     chMtxObjectInit(&leds_mutex);
     led_dma_busy = false;
     led_dma_errors = 0;
+    led_dma_retry_exhausted = 0;
     last_frame_time_us = 0;
     last_frame_start = 0;
     led_dma_tc_pending = false;
     led_dma_error_pending = false;
+    led_dma_enabled = true;
+    led_dma_consecutive_errors = 0;
 
     chBSemObjectInit(&led_dma_sem, true);
 
@@ -173,7 +179,7 @@ void drv_leds_addr_init(void) {
 
 void drv_leds_addr_update(void) {
     chMtxLock(&leds_mutex);
-    if (led_dma_busy) {
+    if (led_dma_busy || !led_dma_enabled) {
         chMtxUnlock(&leds_mutex);
         return;
     }
@@ -221,7 +227,7 @@ void drv_leds_addr_render(void) {
 
     chMtxLock(&leds_mutex);
 
-    if (led_dma_busy) {
+    if (led_dma_busy || !led_dma_enabled) {
         chMtxUnlock(&leds_mutex);
         return;
     }
@@ -263,11 +269,20 @@ static void led_dma_process_events(bool error_pending,
                                    systime_t frame_start_snapshot) {
     if (tc_pending) {
         last_frame_time_us = TIME_I2US(chVTTimeElapsedSinceX(frame_start_snapshot));
+        led_dma_consecutive_errors = 0;
     }
 
     if (error_pending) {
+        led_dma_consecutive_errors++;
+
+        if (led_dma_consecutive_errors > LED_DMA_MAX_RETRIES) {
+            led_dma_enabled = false;
+            led_dma_retry_exhausted++;
+            return;
+        }
+
         chMtxLock(&leds_mutex);
-        if (!led_dma_busy) {
+        if (!led_dma_busy && led_dma_enabled) {
             ws_dma_start_locked();
         }
         chMtxUnlock(&leds_mutex);
@@ -333,4 +348,8 @@ uint32_t drv_leds_addr_error_count(void) {
 
 uint32_t drv_leds_addr_last_frame_time_us(void) {
     return last_frame_time_us;
+}
+
+uint32_t drv_leds_addr_retry_exhausted_count(void) {
+    return led_dma_retry_exhausted;
 }
