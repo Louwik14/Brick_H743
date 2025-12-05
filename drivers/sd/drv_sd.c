@@ -62,9 +62,11 @@ static sd_error_t sd_submit_request(sd_request_t *req) {
     }
     msg_t wait = chBSemWaitTimeout(&req->done, TIME_MS2I(2000));
     if (wait == MSG_TIMEOUT) {
+        req->cancelled = true;
         req->auto_release = true;
-        g_sd_last_error = SD_ERR_FAULT;
-        return SD_ERR_FAULT;
+        req->result = SD_ERR_TIMEOUT;
+        g_sd_last_error = SD_ERR_TIMEOUT;
+        return SD_ERR_TIMEOUT;
     }
     sd_error_t res = req->result;
     drv_sd_thread_release(req);
@@ -185,7 +187,8 @@ sd_error_t drv_sd_save_pattern(const char *project_name,
     req->params.pattern.pattern_name = pattern_name;
     req->params.pattern.input_data = data;
     req->params.pattern.input_size = data_size;
-    req->params.pattern.generation = &generation;
+    req->params.pattern.has_generation = true;
+    req->params.pattern.generation_value = generation;
     return sd_submit_request(req);
 }
 

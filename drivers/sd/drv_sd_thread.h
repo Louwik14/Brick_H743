@@ -38,6 +38,8 @@ typedef struct {
     uint32_t   *generation;
     const uint8_t *input_data;
     size_t      input_size;
+    bool        has_generation;
+    uint32_t    generation_value;
 } sd_pattern_params_t;
 
 typedef struct {
@@ -62,6 +64,7 @@ struct sd_request_s {
     sd_error_t        result;
     binary_semaphore_t done;
     bool              auto_release;
+    bool              cancelled;
     union {
         bool                mount_ro;
         sd_pattern_params_t pattern;
