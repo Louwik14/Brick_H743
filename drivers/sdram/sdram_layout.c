@@ -15,7 +15,7 @@
 #endif
 #endif
 
-static const sdram_region_descriptor_t sdram_region_descriptors[] = {
+const sdram_region_descriptor_t sdram_region_descriptors[] = {
   {
     .id = SDRAM_AUDIO_LOOP,
     .base = SDRAM_BASE_ADDRESS,
