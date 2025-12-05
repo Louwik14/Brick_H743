@@ -6,6 +6,12 @@
 
 #include "brick_config.h"
 
+/*
+ * The calibration helpers operate on caller-provided storage so multiple
+ * instances can coexist (e.g., stack or static). The optional
+ * brick_cal_state below is a convenience global for users that do not want
+ * to manage their own struct lifetime.
+ */
 struct brick_cal_pot {
   uint8_t resolution;
   uint8_t length;

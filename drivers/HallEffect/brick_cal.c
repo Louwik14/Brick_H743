@@ -8,6 +8,10 @@
 struct brick_cal_model brick_cal_state = {0};
 
 static bool channel_valid(struct brick_cal_pot* cal, uint8_t channel) {
+  if (cal == NULL) {
+    return false;
+  }
+
   return channel < cal->length && channel < BRICK_NUM_HALL_SENSORS;
 }
 
@@ -56,6 +60,10 @@ int brick_cal_pot_enable_range(struct brick_cal_pot* cal, uint8_t start, uint8_t
 }
 
 int brick_cal_pot_enable_get(struct brick_cal_pot* cal, uint8_t channel, uint8_t* enable) {
+  if (cal == NULL || enable == NULL) {
+    return 1;
+  }
+
   if (!channel_valid(cal, channel)) {
     return 1;
   }
@@ -65,6 +73,10 @@ int brick_cal_pot_enable_get(struct brick_cal_pot* cal, uint8_t channel, uint8_t
 }
 
 int brick_cal_pot_detent_get(struct brick_cal_pot* cal, uint8_t channel, uint16_t* detent, bool high) {
+  if (cal == NULL || detent == NULL) {
+    return 1;
+  }
+
   if (!channel_valid(cal, channel)) {
     return 1;
   }
@@ -74,6 +86,10 @@ int brick_cal_pot_detent_get(struct brick_cal_pot* cal, uint8_t channel, uint16_
 }
 
 int brick_cal_pot_detent_set(struct brick_cal_pot* cal, uint8_t channel, uint16_t detent, bool high) {
+  if (cal == NULL) {
+    return 1;
+  }
+
   if (!channel_valid(cal, channel)) {
     return 1;
   }
@@ -92,6 +108,10 @@ int brick_cal_pot_detent_set(struct brick_cal_pot* cal, uint8_t channel, uint16_
 }
 
 int brick_cal_pot_min_get(struct brick_cal_pot* cal, uint8_t channel, uint16_t* min_value) {
+  if (cal == NULL || min_value == NULL) {
+    return 1;
+  }
+
   if (!channel_valid(cal, channel)) {
     return 1;
   }
@@ -101,6 +121,10 @@ int brick_cal_pot_min_get(struct brick_cal_pot* cal, uint8_t channel, uint16_t* 
 }
 
 int brick_cal_pot_max_get(struct brick_cal_pot* cal, uint8_t channel, uint16_t* max_value) {
+  if (cal == NULL || max_value == NULL) {
+    return 1;
+  }
+
   if (!channel_valid(cal, channel)) {
     return 1;
   }
@@ -131,6 +155,10 @@ static uint16_t clamp_to_maximum(struct brick_cal_pot* cal, uint16_t value) {
 }
 
 int brick_cal_pot_next(struct brick_cal_pot* cal, uint8_t channel, uint16_t in, uint16_t* out) {
+  if (cal == NULL || out == NULL) {
+    return 1;
+  }
+
   if (!channel_valid(cal, channel)) {
     return 1;
   }
