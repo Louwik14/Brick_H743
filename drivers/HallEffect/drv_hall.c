@@ -73,6 +73,7 @@ static struct brick_asc asc_state[BRICK_NUM_HALL_SENSORS];
 static struct brick_cal_pot cal_state;
 static systime_t velocity_start_time[BRICK_NUM_HALL_SENSORS];
 static bool velocity_armed[BRICK_NUM_HALL_SENSORS];
+static bool hall_initialized;
 /*
  * Concurrency model: drv_hall_task() runs in a single dedicated input thread and
  * is the only writer for the hall_state/velocity arrays. The drv_hall_get_*
@@ -273,6 +274,10 @@ static void update_state(uint8_t index, uint16_t raw_sample, uint16_t filtered_s
 }
 
 void drv_hall_init(void) {
+    if (hall_initialized) {
+        return;
+    }
+
     palSetLineMode(HALL_LINE_ADC1, PAL_MODE_INPUT_ANALOG);
     palSetLineMode(HALL_LINE_ADC2, PAL_MODE_INPUT_ANALOG);
 
@@ -288,6 +293,7 @@ void drv_hall_init(void) {
     adcStart(&ADCD3, NULL);
 
     hall_state_init();
+    hall_initialized = true;
 }
 
 void drv_hall_task(void) {
@@ -335,4 +341,8 @@ bool drv_hall_is_pressed(uint8_t i) {
         return false;
     }
     return hall_state[i].pressed;
+}
+
+bool drv_hall_is_initialized(void) {
+    return hall_initialized;
 }

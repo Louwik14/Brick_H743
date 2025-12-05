@@ -27,6 +27,7 @@ typedef struct {
 } hall_state_t;
 
 void drv_hall_init(void);
+bool drv_hall_is_initialized(void);
 void drv_hall_task(void);
 
 /*
