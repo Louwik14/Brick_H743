@@ -1,6 +1,6 @@
 #include "ch.h"
-#include "hal.h"
 #include "stm32h7xx.h"
+#include "stm32h743xx.h"
 #include "core_cm7.h"
 #include "sdram_driver_priv.h"
 #include "sdram_layout.h"
@@ -18,7 +18,7 @@
 
 static bool fmc_wait_while_busy(uint32_t timeout)
 {
-  while ((FMC_Bank5_6->SDSR & SDRAM_SDSR_BUSY) != 0u) {
+  while ((FMC_Bank5_6_R->SDSR & SDRAM_SDSR_BUSY) != 0u) {
     if (timeout-- == 0u) {
       return false;
     }
@@ -35,7 +35,7 @@ static bool fmc_issue_command(uint32_t mode, uint32_t auto_refresh, uint32_t mod
                             FMC_SDCMR_NRFS_Msk) |
                            ((mode_reg << FMC_SDCMR_MRD_Pos) & FMC_SDCMR_MRD_Msk);
 
-  FMC_Bank5_6->SDCMR = command;
+  FMC_Bank5_6_R->SDCMR = command;
   return fmc_wait_while_busy(SDRAM_TIMEOUT_CYCLES);
 }
 
@@ -62,8 +62,8 @@ bool sdram_hw_init_sequence(void)
                         ((3u - 1u) << FMC_SDTRx_TRP_Pos) |   /* tRP  */
                         ((3u - 1u) << FMC_SDTRx_TRCD_Pos);   /* tRCD */
 
-  FMC_Bank5_6->SDCR[0] = sdcr;
-  FMC_Bank5_6->SDTR[0] = sdtr;
+  FMC_Bank5_6_R->SDCR[0] = sdcr;
+  FMC_Bank5_6_R->SDTR[0] = sdtr;
 
   chThdSleepMicroseconds(200u);
 
@@ -85,16 +85,16 @@ bool sdram_hw_init_sequence(void)
     return false;
   }
 
-  uint32_t sdrtr = FMC_Bank5_6->SDRTR;
+  uint32_t sdrtr = FMC_Bank5_6_R->SDRTR;
   sdrtr &= ~FMC_SDRTR_COUNT_Msk;
   sdrtr |= (SDRAM_REFRESH_COUNT << FMC_SDRTR_COUNT_Pos);
-  FMC_Bank5_6->SDRTR = sdrtr;
+  FMC_Bank5_6_R->SDRTR = sdrtr;
 
   if (!fmc_wait_while_busy(SDRAM_TIMEOUT_CYCLES)) {
     return false;
   }
 
-  const uint32_t status = FMC_Bank5_6->SDSR;
+  const uint32_t status = FMC_Bank5_6_R->SDSR;
   if ((status & FMC_SDSR_RE) != 0u) {
     return false;
   }
