@@ -58,6 +58,9 @@
 /**
  * @enum midi_dest_t
  * @brief Sélectionne la ou les destinations d’envoi MIDI.
+ *
+ * Le paramètre `dest` est appliqué de manière uniforme, y compris pour les
+ * messages System Common / Realtime qui peuvent sinon être diffusés.
  */
 typedef enum {
   MIDI_DEST_NONE = 0,  /**< Aucune sortie */
@@ -120,6 +123,11 @@ typedef struct {
  * le thread responsable de l’envoi USB.
  */
 void midi_init(void);
+
+/**
+ * @brief Indique si le module MIDI a déjà été initialisé.
+ */
+bool midi_is_initialized(void);
 
 /**
  * @brief Configure la destination des messages MIDI entrants (USB → moteur/DIN).

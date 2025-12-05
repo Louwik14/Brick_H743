@@ -10,6 +10,11 @@
 #include "stm32h7xx_hal.h"
 #include "usbh_core.h"
 
+/* Priorité IRQ OTG_FS configurable pour alignement avec la politique globale. */
+#ifndef USBH_OTG_FS_IRQ_PRIO
+#define USBH_OTG_FS_IRQ_PRIO 6
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

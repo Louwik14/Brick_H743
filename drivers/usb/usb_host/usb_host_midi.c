@@ -25,14 +25,16 @@ static thread_t *usb_host_thread_ref = NULL;
 
 static volatile bool device_attached = false;
 static volatile bool midi_ready = false;
-static volatile bool reset_requested = false;
+static volatile bool reset_requested = false; /* Mis à true hors thread host, consommé/clearé uniquement par le thread host. */
 static volatile uint32_t fifo_overflow_total = 0U;
 static volatile uint32_t tx_overflow = 0U;
+static volatile uint32_t tx_write_failures = 0U;
 static volatile uint32_t usb_error_count = 0U;
 static volatile uint32_t usb_recovery_count = 0U;
 static uint32_t overflow_streak = 0U;
 static systime_t last_activity = 0;
 static bool host_started = false;
+static bool host_initialized = false;
 
 static void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id);
 static THD_FUNCTION(usb_host_thread, arg);
@@ -41,12 +43,18 @@ static void usb_host_restart(void);
 static void usb_host_update_activity(void);
 static void usb_host_poll_midi(void);
 
+/* Public API: initialisation idempotente pour tolérer plusieurs appels dans
+   la séquence de boot sans recréer le thread host. */
 void usb_host_midi_init(void)
 {
-  if (usb_host_thread_ref != NULL)
+  if (host_initialized)
   {
     return;
   }
+
+  /* Idempotent init: l’API publique tolère plusieurs appels sans recréer
+     le thread ou réinitialiser le stack USB Host. */
+  host_initialized = true;
 
   USBH_static_mem_reset();
   usb_host_fifo_reset();
@@ -158,6 +166,8 @@ bool usb_host_midi_send(const uint8_t packet[4])
     return true;
   }
 
+  tx_write_failures++;
+
   return false;
 }
 
@@ -169,6 +179,11 @@ uint32_t usb_host_midi_rx_overflow(void)
 uint32_t usb_host_midi_tx_overflow(void)
 {
   return tx_overflow;
+}
+
+uint32_t usb_host_midi_tx_write_failures(void)
+{
+  return tx_write_failures;
 }
 
 uint32_t usb_host_midi_reset_count(void)
@@ -189,6 +204,7 @@ void Error_Handler(void)
 
 static void usb_host_schedule_reset(void)
 {
+  /* Seul le thread host consomme/clear ce flag lors du restart. */
   reset_requested = true;
 }
 

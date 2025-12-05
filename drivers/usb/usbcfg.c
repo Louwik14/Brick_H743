@@ -137,6 +137,8 @@ static const USBDescriptor config_descriptor = {
   config_descriptor_data
 };
 
+/* TODO(PRODUCT): remplacer le VID/PID de test par les valeurs finales. */
+
 /**
  * @brief Descripteurs de chaînes USB (langue, fabricant, produit, série).
  */
@@ -174,6 +176,7 @@ static USBOutEndpointState  ep1_out_state;  /**< État runtime EP1 OUT */
  * @note Aligné sur 32 octets pour compatibilité D-Cache Cortex-M7.
  */
 static uint8_t rx_pkt[MIDI_EP_SIZE] __attribute__((aligned(32)));
+static volatile uint32_t usb_midi_rx_invalid_size = 0U;
 
 /**
  * @brief Callback OUT (EP1) — réarme la réception de paquets MIDI.
@@ -183,6 +186,14 @@ static uint8_t rx_pkt[MIDI_EP_SIZE] __attribute__((aligned(32)));
 static void ep1_out_cb(USBDriver *usbp, usbep_t ep) {
   (void)ep;
   const size_t rx_size = ep1_out_state.rxsize;
+
+  if ((rx_size == 0U) || (rx_size > sizeof rx_pkt)) {
+    usb_midi_rx_invalid_size++;
+    midi_rx_stats.usb_rx_drops++;
+    usbStartReceiveI(usbp, MIDI_EP_OUT, rx_pkt, sizeof rx_pkt);
+    return;
+  }
+
   usb_dcache_invalidate(rx_pkt, rx_size);
   midi_usb_rx_submit_from_isr(rx_pkt, rx_size);
   usbStartReceiveI(usbp, MIDI_EP_OUT, rx_pkt, sizeof rx_pkt);

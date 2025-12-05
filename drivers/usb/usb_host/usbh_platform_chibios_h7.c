@@ -12,10 +12,16 @@
 #define assert_param(expr) ((void)0U)
 #endif
 
+#ifndef USBH_OTG_FS_IRQ_PRIO
+#define USBH_OTG_FS_IRQ_PRIO 6
+#endif
+
 static HCD_HandleTypeDef hhcd_USB_OTG_FS;
 static volatile uint32_t port_reset_count = 0U;
 static const uint32_t cache_line_size = 32U;
 
+/* Les buffers URB peuvent rester en mémoire cacheable : la cohérence est
+   assurée par des opérations de clean/invalidate dans cette couche LL. */
 static void usbh_dcache_clean(const uint8_t *address, uint32_t length)
 {
   if ((address == NULL) || (length == 0U))
@@ -80,7 +86,8 @@ void HAL_HCD_MspInit(HCD_HandleTypeDef *hhcd)
     GPIO_InitStruct.Alternate = GPIO_AF10_OTG1_FS;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-    HAL_NVIC_SetPriority(OTG_FS_IRQn, 6, 0);
+    /* Priorité configurable pour alignement avec la politique audio/SPI. */
+    HAL_NVIC_SetPriority(OTG_FS_IRQn, USBH_OTG_FS_IRQ_PRIO, 0);
     HAL_NVIC_EnableIRQ(OTG_FS_IRQn);
 
     HAL_PWREx_EnableUSBVoltageDetector();
@@ -241,6 +248,7 @@ USBH_StatusTypeDef USBH_LL_SubmitURB(USBH_HandleTypeDef *phost, uint8_t pipe,
                                      uint8_t token, uint8_t *pbuff,
                                      uint16_t length, uint8_t do_ping)
 {
+  /* Maintient la cohérence D-Cache pour les buffers URB avant soumission. */
   if (direction == 0U)
   {
     usbh_dcache_clean(pbuff, length);
