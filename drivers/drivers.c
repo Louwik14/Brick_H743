@@ -11,7 +11,14 @@ mutex_t spi5_mutex;
 void drivers_init_all(void) {
     chMtxObjectInit(&spi5_mutex);
 
+    /* Contrat de démarrage :
+       - drv_display   : init + start (thread de rafraîchissement)
+       - drv_leds_addr : init uniquement (rendu déclenché côté UI)
+       - drv_buttons   : start = init + thread de scan
+       - drv_encoders  : start = init + thread de scan
+       - drv_pots      : start = init + thread de scan */
     drv_display_init();
+    drv_display_start();
     drv_leds_addr_init();
     drv_buttons_start();
     drv_encoders_start();
