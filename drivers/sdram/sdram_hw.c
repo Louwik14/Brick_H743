@@ -50,7 +50,7 @@ bool sdram_hw_init_sequence(void)
                         FMC_SDCRx_NR_1 | /* 13 rows    */
                         FMC_SDCRx_MWID_0 | /* 16-bit bus */
                         FMC_SDCRx_NB | /* 4 internal banks */
-                        FMC_SDCRx_CAS | /* CAS latency = 3 */
+                        ((2u << FMC_SDCRx_CAS_Pos) & FMC_SDCRx_CAS_Msk) | /* CAS latency = 3 */
                         FMC_SDCRx_SDCLK_1 | /* 2 HCLK period */
                         FMC_SDCRx_RBURST; /* enable read burst */
 
@@ -85,7 +85,10 @@ bool sdram_hw_init_sequence(void)
     return false;
   }
 
-  FMC_Bank5_6->SDRTR = (SDRAM_REFRESH_COUNT << FMC_SDRTR_COUNT_Pos);
+  uint32_t sdrtr = FMC_Bank5_6->SDRTR;
+  sdrtr &= ~FMC_SDRTR_COUNT_Msk;
+  sdrtr |= (SDRAM_REFRESH_COUNT << FMC_SDRTR_COUNT_Pos);
+  FMC_Bank5_6->SDRTR = sdrtr;
 
   if (!fmc_wait_while_busy(SDRAM_TIMEOUT_CYCLES)) {
     return false;
@@ -96,7 +99,8 @@ bool sdram_hw_init_sequence(void)
     return false;
   }
 
-  if ((status & FMC_SDSR_MODES1_Msk) != 0u) {
+  const uint32_t mode = (status & FMC_SDSR_MODES1_Msk) >> FMC_SDSR_MODES1_Pos;
+  if (mode != 0u) {
     return false;
   }
 
