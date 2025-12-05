@@ -37,6 +37,8 @@
  */
 extern volatile bool usb_midi_tx_ready;
 
+static bool midi_initialized = false;
+
 static inline bool midi_usb_ready(void) {
   bool ready;
   osalSysLock();
@@ -321,6 +323,14 @@ static THD_FUNCTION(thdMidiUsbTx, arg) {
  * - Démarre le thread de transmission USB-MIDI.
  */
 void midi_init(void) {
+  osalSysLock();
+  if (midi_initialized) {
+    osalSysUnlock();
+    return;
+  }
+  midi_initialized = true;
+  osalSysUnlock();
+
   static const SerialConfig uart_cfg = { 31250, 0, 0, 0 };
   sdStart(MIDI_UART, &uart_cfg);
   midi_usb_queue_fill = 0;
@@ -334,6 +344,16 @@ void midi_init(void) {
   chBSemObjectInit(&sof_sem, true);
   chThdCreateStatic(waMidiUsbTx, sizeof(waMidiUsbTx),
                     MIDI_USB_TX_PRIO, thdMidiUsbTx, NULL);
+}
+
+bool midi_is_initialized(void) {
+  bool initialized;
+
+  osalSysLock();
+  initialized = midi_initialized;
+  osalSysUnlock();
+
+  return initialized;
 }
 
 /* ====================================================================== */
@@ -657,15 +677,13 @@ void midi_song_select(midi_dest_t d,uint8_t s){
 }
 
 void midi_tune_request(midi_dest_t d){
-  (void)d;
   uint8_t m[1]={0xF6};
-  midi_send(MIDI_DEST_BOTH,m,1);
+  midi_send(d,m,1);
 }
 
 void midi_clock(midi_dest_t d){
-  (void)d;
   uint8_t m[1]={0xF8};
-  midi_send(MIDI_DEST_BOTH,m,1);
+  midi_send(d,m,1);
 }
 
 void midi_start(midi_dest_t d){
@@ -684,15 +702,13 @@ void midi_stop(midi_dest_t d){
 }
 
 void midi_active_sensing(midi_dest_t d){
-  (void)d;
   uint8_t m[1]={0xFE};
-  midi_send(MIDI_DEST_BOTH,m,1);
+  midi_send(d,m,1);
 }
 
 void midi_system_reset(midi_dest_t d){
-  (void)d;
   uint8_t m[1]={0xFF};
-  midi_send(MIDI_DEST_BOTH,m,1);
+  midi_send(d,m,1);
 }
 
 // --- FIX: centraliser les Channel Mode messages (All Notes Off & cie) dans midi.c ---

@@ -59,6 +59,10 @@ extern "C" {
  * - Mise à `true` lors de l’événement `USB_EVENT_CONFIGURED`.
  * - Repassée à `false` lors d’un `RESET`, `SUSPEND` ou `UNCONFIGURED`.
  * - Cette variable est modifiée dans les callbacks de `usbcfg.c`.
+ * - Les buffers USB-MIDI sont invalidés/cleanés lorsqu’ils sont utilisés par
+ *   le contrôleur OTG FS (D-Cache actif sur H7).
+ * - Les callbacks ISR se limitent à la signalisation (sémaphores/réarmement
+ *   des EP) ; aucune logique lourde ne doit y être ajoutée.
  */
 extern volatile bool usb_midi_tx_ready;
 
