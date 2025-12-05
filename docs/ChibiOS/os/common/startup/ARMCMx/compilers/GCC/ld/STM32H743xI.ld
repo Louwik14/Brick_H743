@@ -130,8 +130,11 @@ SECTIONS
     .ram_d2 (NOLOAD) :
     {
         . = ALIGN(32);
+        __ram_d2_start__ = .;
         *(.ram_d2)
         . = ALIGN(32);
+        __ram_d2_end__ = .;
+        __ram_d2_size__ = __ram_d2_end__ - __ram_d2_start__;
     } >RAM_D2
 }
 
