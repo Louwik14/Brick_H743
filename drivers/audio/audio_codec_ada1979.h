@@ -13,12 +13,12 @@
 /**
  * @brief Initialise l'interface de contrôle I2C et les deux codecs ADAU1979.
  */
-void adau1979_init(void);
+msg_t adau1979_init(void);
 
 /**
  * @brief Configuration par défaut : TDM 8 canaux, 24 bits, 48 kHz, codecs esclaves.
  */
-void adau1979_set_default_config(void);
+msg_t adau1979_set_default_config(void);
 
 /**
  * @brief Met les deux codecs en mute numérique (ou réactive).

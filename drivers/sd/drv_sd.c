@@ -8,6 +8,7 @@
 #include "drv_sd_hal.h"
 #include "drv_sd_fs.h"
 #include "drv_sd_project.h"
+#include "mpu_config.h"
 #include <string.h>
 
 sd_state_t g_sd_state = SD_STATE_INITIALIZING;
@@ -97,6 +98,7 @@ sd_error_t drv_sd_init(void) {
         sd_record_rejection(SD_ERR_CONTEXT);
         return SD_ERR_CONTEXT;
     }
+    (void)mpu_config_init_once();
     sd_ensure_thread_started();
     sd_request_t *req = drv_sd_thread_alloc();
     if (req == NULL) {

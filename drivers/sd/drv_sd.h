@@ -15,8 +15,8 @@
 
 /*
  * Buffers marked with this attribute MUST live in an MPU non-cacheable region
- * (linker section .ram_d2). TODO: add a build-time assert tied to the global
- * MPU configuration to guarantee the non-cacheable mapping.
+ * (linker section .ram_d2). Call mpu_config_init_once() during bring-up so the
+ * region is explicitly marked non-cacheable.
  */
 #define SD_DMA_BUFFER_ATTR __attribute__((section(".ram_d2"), aligned(32)))
 

@@ -6,7 +6,15 @@
 #include "drv_audio.h"
 #include "audio_codec_ada1979.h"
 #include "audio_codec_pcm4104.h"
+#include "mpu_config.h"
 #include <string.h>
+
+typedef enum {
+    AUDIO_STOPPED = 0,
+    AUDIO_READY,
+    AUDIO_RUNNING,
+    AUDIO_FAULT
+} audio_state_t;
 
 /* -------------------------------------------------------------------------- */
 /* Buffers ping/pong                                                          */
@@ -36,9 +44,6 @@ static volatile uint8_t audio_sync_half = 0xFFU;
 static drv_spilink_pull_cb_t spilink_pull_cb = NULL;
 static drv_spilink_push_cb_t spilink_push_cb = NULL;
 
-/* Volume maître flottant (0.0 -> silence, 1.0 -> unity). */
-static float audio_master_volume = 1.0f;
-
 typedef struct {
     float gain_main;
     float gain_cue;
@@ -46,7 +51,17 @@ typedef struct {
     bool  to_cue;
 } audio_route_t;
 
-static audio_route_t g_audio_routes[4];
+typedef struct {
+    float            master_volume;
+    audio_route_t    routes[4];
+} audio_control_snapshot_t;
+
+static struct {
+    mutex_t                 lock;
+    audio_control_snapshot_t state;
+} audio_control;
+
+static audio_control_snapshot_t audio_control_cached;
 
 /* -------------------------------------------------------------------------- */
 /* Synchronisation des DMA                                                    */
@@ -56,6 +71,9 @@ static binary_semaphore_t audio_dma_sem;
 
 static const stm32_dma_stream_t *sai_rx_dma = NULL;
 static const stm32_dma_stream_t *sai_tx_dma = NULL;
+static thread_t *audio_thread = NULL;
+static audio_state_t audio_state = AUDIO_STOPPED;
+static bool audio_initialized = false;
 
 /* Nombre d'échantillons transférés par transaction (ping + pong). */
 #define AUDIO_DMA_IN_SAMPLES   (AUDIO_FRAMES_PER_BUFFER * AUDIO_NUM_INPUT_CHANNELS * 2U)
@@ -75,6 +93,8 @@ static void audio_hw_configure_sai(void);
 static void audio_dma_start(void);
 static void audio_dma_stop(void);
 static void audio_routes_reset_defaults(void);
+static void audio_control_init(void);
+static void audio_control_get_snapshot(audio_control_snapshot_t *dst);
 static float soft_clip(float x);
 static void audio_dma_sync_mark(uint8_t half, uint8_t flag);
 
@@ -89,10 +109,25 @@ static THD_FUNCTION(audioThread, arg);
 /* -------------------------------------------------------------------------- */
 
 void drv_audio_init(void) {
+    if (audio_initialized) {
+        return;
+    }
+
+    if (!mpu_config_init_once()) {
+        audio_state = AUDIO_FAULT;
+        return;
+    }
+
     chBSemObjectInit(&audio_dma_sem, FALSE);
 
+    audio_control_init();
+
     /* Prépare le bus I2C et les codecs. */
-    adau1979_init();
+    msg_t codec_status = adau1979_init();
+    if (codec_status != HAL_RET_SUCCESS) {
+        audio_state = AUDIO_FAULT;
+        return;
+    }
     audio_codec_pcm4104_init();
 
     audio_in_ready_index = 0xFFU;
@@ -108,20 +143,66 @@ void drv_audio_init(void) {
 
     /* Les GPIO SAI sont déjà configurés via board.h. */
     audio_hw_configure_sai();
+
+    audio_state = AUDIO_READY;
+    audio_initialized = true;
 }
 
 void drv_audio_start(void) {
+    if (audio_state == AUDIO_RUNNING) {
+        return;
+    }
+
+    if (!audio_initialized) {
+        drv_audio_init();
+    }
+
+    if (audio_state == AUDIO_FAULT) {
+        audio_codec_pcm4104_set_mute(true);
+        return;
+    }
+
     audio_codec_pcm4104_set_mute(true);
-    adau1979_set_default_config();
+
+    msg_t codec_status = adau1979_set_default_config();
+    if (codec_status != HAL_RET_SUCCESS) {
+        audio_state = AUDIO_FAULT;
+        return;
+    }
+
+    audio_in_ready_index = 0xFFU;
+    audio_out_ready_index = 0xFFU;
+    audio_sync_mask = 0U;
+    audio_sync_half = 0xFFU;
 
     audio_dma_start();
-    chThdCreateStatic(audioThreadWA, sizeof(audioThreadWA), AUDIO_THREAD_PRIORITY, audioThread, NULL);
+    if (audio_thread == NULL) {
+        audio_thread = chThdCreateStatic(audioThreadWA,
+                                         sizeof(audioThreadWA),
+                                         AUDIO_THREAD_PRIORITY,
+                                         audioThread,
+                                         NULL);
+    }
+    audio_state = AUDIO_RUNNING;
     audio_codec_pcm4104_set_mute(false);
 }
 
 void drv_audio_stop(void) {
-    audio_dma_stop();
+    if ((audio_state != AUDIO_RUNNING) && (audio_state != AUDIO_READY)) {
+        return;
+    }
+
     audio_codec_pcm4104_set_mute(true);
+    audio_dma_stop();
+
+    if (audio_thread != NULL) {
+        chThdTerminate(audio_thread);
+        chBSemSignal(&audio_dma_sem);
+        chThdWait(audio_thread);
+        audio_thread = NULL;
+    }
+
+    audio_state = AUDIO_STOPPED;
 }
 
 const int32_t* drv_audio_get_input_buffer(uint8_t *index, size_t *frames) {
@@ -190,7 +271,9 @@ void drv_audio_set_master_volume(float vol) {
     if (vol < 0.0f) {
         vol = 0.0f;
     }
-    audio_master_volume = vol;
+    chMtxLock(&audio_control.lock);
+    audio_control.state.master_volume = vol;
+    chMtxUnlock(&audio_control.lock);
 }
 
 void drv_audio_set_route(uint8_t track, bool to_main, bool to_cue) {
@@ -198,8 +281,10 @@ void drv_audio_set_route(uint8_t track, bool to_main, bool to_cue) {
         return;
     }
 
-    g_audio_routes[track].to_main = to_main;
-    g_audio_routes[track].to_cue = to_cue;
+    chMtxLock(&audio_control.lock);
+    audio_control.state.routes[track].to_main = to_main;
+    audio_control.state.routes[track].to_cue = to_cue;
+    chMtxUnlock(&audio_control.lock);
 }
 
 static float clamp_0_1(float v) {
@@ -212,22 +297,42 @@ static float clamp_0_1(float v) {
     return v;
 }
 
+static void audio_control_init(void) {
+    chMtxObjectInit(&audio_control.lock);
+    audio_routes_reset_defaults();
+}
+
+static void audio_control_get_snapshot(audio_control_snapshot_t *dst) {
+    if (dst == NULL) {
+        return;
+    }
+    chMtxLock(&audio_control.lock);
+    *dst = audio_control.state;
+    chMtxUnlock(&audio_control.lock);
+}
+
 void drv_audio_set_route_gain(uint8_t track, float gain_main, float gain_cue) {
     if (track >= 4U) {
         return;
     }
 
-    g_audio_routes[track].gain_main = clamp_0_1(gain_main);
-    g_audio_routes[track].gain_cue = clamp_0_1(gain_cue);
+    chMtxLock(&audio_control.lock);
+    audio_control.state.routes[track].gain_main = clamp_0_1(gain_main);
+    audio_control.state.routes[track].gain_cue = clamp_0_1(gain_cue);
+    chMtxUnlock(&audio_control.lock);
 }
 
 static void audio_routes_reset_defaults(void) {
+    chMtxLock(&audio_control.lock);
+    audio_control.state.master_volume = 1.0f;
     for (uint8_t t = 0U; t < 4U; ++t) {
-        g_audio_routes[t].gain_main = 1.0f;
-        g_audio_routes[t].gain_cue = 1.0f;
-        g_audio_routes[t].to_main = true;
-        g_audio_routes[t].to_cue = false;
+        audio_control.state.routes[t].gain_main = 1.0f;
+        audio_control.state.routes[t].gain_cue = 1.0f;
+        audio_control.state.routes[t].to_main = true;
+        audio_control.state.routes[t].to_cue = false;
     }
+    audio_control_cached = audio_control.state;
+    chMtxUnlock(&audio_control.lock);
 }
 
 static float soft_clip(float x) {
@@ -277,7 +382,8 @@ void __attribute__((weak)) drv_audio_process_block(const int32_t              *a
     (void)spi_in;
 
     const float inv_scale = 1.0f / AUDIO_INT24_MAX_F;
-    float master = audio_master_volume;
+    const audio_control_snapshot_t *ctrl = &audio_control_cached;
+    float master = ctrl->master_volume;
     if (master < 0.0f) {
         master = 0.0f;
     }
@@ -292,7 +398,7 @@ void __attribute__((weak)) drv_audio_process_block(const int32_t              *a
         float cue_r  = 0.0f;
 
         for (uint8_t track = 0U; track < 4U; ++track) {
-            const audio_route_t *route = &g_audio_routes[track];
+            const audio_route_t *route = &ctrl->routes[track];
             size_t base = (size_t)track * 2U;
             float in_l = (float)adc_ptr[base] * inv_scale;
             float in_r = (float)adc_ptr[base + 1U] * inv_scale;
@@ -365,6 +471,10 @@ static THD_FUNCTION(audioThread, arg) {
         } else {
             memset((void *)spi_in_buffers, 0, sizeof(spi_in_buffers));
         }
+
+        audio_control_snapshot_t ctrl_snapshot;
+        audio_control_get_snapshot(&ctrl_snapshot);
+        audio_control_cached = ctrl_snapshot;
 
         drv_audio_process_block(in_buf,
                                  (int32_t (*)[AUDIO_FRAMES_PER_BUFFER][4])spi_in_buffers,
