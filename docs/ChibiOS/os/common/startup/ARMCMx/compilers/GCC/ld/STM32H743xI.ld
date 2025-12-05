@@ -136,6 +136,9 @@ SECTIONS
         __ram_d2_end__ = .;
         __ram_d2_size__ = __ram_d2_end__ - __ram_d2_start__;
     } >RAM_D2
+    ASSERT(((__ram_d2_start__ & 0x1F) == 0), ".ram_d2 start must be 32-byte aligned")
+    ASSERT((__ram_d2_end__ >= __ram_d2_start__), ".ram_d2 end precedes start")
+    ASSERT((__ram_d2_size__ <= LENGTH(RAM_D2)), ".ram_d2 exceeds RAM_D2 region size")
 }
 
 /* Code rules inclusion.*/

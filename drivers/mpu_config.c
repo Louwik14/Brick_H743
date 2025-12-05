@@ -12,10 +12,6 @@
 #include "core_cm7.h"
 #include "mpu_armv7.h"
 
-#define MPU_STATIC_ASSERT(cond, name) typedef char static_assert_##name[(cond) ? 1 : -1]
-
-MPU_STATIC_ASSERT((((uintptr_t)&__ram_d2_start__) & 0x1FU) == 0U, ram_d2_start_alignment_32_bytes);
-
 static bool mpu_compute_region_size(uintptr_t base,
                                     uintptr_t size,
                                     uint32_t *encoded_size,
@@ -55,6 +51,10 @@ bool mpu_config_init_once(void) {
 
     if (initialized) {
         return true;
+    }
+
+    if (((ram_d2_base & 0x1FU) != 0U) || (ram_d2_size == 0U)) {
+        return false;
     }
 
     if (!mpu_compute_region_size(ram_d2_base, ram_d2_size,
