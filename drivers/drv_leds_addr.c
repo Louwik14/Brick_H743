@@ -9,7 +9,10 @@
 #define TIM_WS_CH           2
 
 #define WS_DMA_STREAM_ID    STM32_DMA_STREAM_ID(2, 1)
-#define WS_DMA_PRIORITY     STM32_IRQ_EXTI0_PRIORITY
+#define WS_DMA_PRIORITY     13  /* Bas dans la hiérarchie : audio/SPI au-dessus */
+
+#define WS_DMA_WORKER_STACK_SIZE THD_WORKING_AREA_SIZE(256)
+#define LED_DMA_FORCE_DCACHE_CLEAN 0
 
 #define TIMER_CLOCK         200000000U
 #define WS_FREQ             800000U
@@ -28,13 +31,19 @@
 
 static uint16_t LED_DMA_BUFFER_ATTR pwm_buffer[LED_PWM_BUFFER_SIZE];
 static led_color_t led_buffer[NUM_ADRESS_LEDS];
-led_state_t drv_leds_addr_state[NUM_ADRESS_LEDS];
+static led_state_t drv_leds_addr_state[NUM_ADRESS_LEDS];
 
 static mutex_t leds_mutex;
 static volatile bool led_dma_busy = false;
 static volatile uint32_t led_dma_errors = 0;
 static volatile uint32_t last_frame_time_us = 0;
 static volatile systime_t last_frame_start = 0;
+static volatile bool led_dma_tc_pending = false;
+static volatile bool led_dma_error_pending = false;
+
+static binary_semaphore_t led_dma_sem;
+static THD_WORKING_AREA(led_dma_thread_wa, WS_DMA_WORKER_STACK_SIZE);
+static THD_FUNCTION(led_dma_thread, arg);
 
 _Static_assert((LED_TOTAL_SLOTS <= (sizeof(pwm_buffer) / sizeof(pwm_buffer[0]))),
                "pwm_buffer too small for configured LED payload");
@@ -127,21 +136,11 @@ static inline void ws_dma_start_locked(void) {
     dmaStreamSetTransactionSize(ws_dma_stream, LED_TOTAL_SLOTS);
     dmaStreamSetMode(ws_dma_stream, ws_dma_mode);
 
+#if LED_DMA_FORCE_DCACHE_CLEAN
     const size_t pwm_bytes = LED_PWM_BUFFER_SIZE * sizeof(uint16_t);
+    /* pwm_buffer est en .ram_d2 non-cacheable via MPU, ce clean est généralement inutile. */
     SCB_CleanDCache_by_Addr((uint32_t *)pwm_buffer, (int32_t)((pwm_bytes + 31U) & ~31U));
-
-    led_dma_busy = true;
-    last_frame_start = chVTGetSystemTimeX();
-    dmaStreamEnable(ws_dma_stream);
-}
-
-static inline void ws_dma_restart_i(void) {
-    dmaStreamDisable(ws_dma_stream);
-    ws_tim_resync();
-
-    dmaStreamSetMemory0(ws_dma_stream, pwm_buffer);
-    dmaStreamSetTransactionSize(ws_dma_stream, LED_TOTAL_SLOTS);
-    dmaStreamSetMode(ws_dma_stream, ws_dma_mode);
+#endif
 
     led_dma_busy = true;
     last_frame_start = chVTGetSystemTimeX();
@@ -156,10 +155,20 @@ void drv_leds_addr_init(void) {
     led_dma_errors = 0;
     last_frame_time_us = 0;
     last_frame_start = 0;
+    led_dma_tc_pending = false;
+    led_dma_error_pending = false;
+
+    chBSemObjectInit(&led_dma_sem, true);
 
     ws_tim_init();
     ws_dma_init();
     drv_leds_addr_clear();
+
+    chThdCreateStatic(led_dma_thread_wa,
+                      WS_DMA_WORKER_STACK_SIZE,
+                      NORMALPRIO,
+                      led_dma_thread,
+                      NULL);
 }
 
 void drv_leds_addr_update(void) {
@@ -249,6 +258,45 @@ void drv_leds_addr_render(void) {
     chMtxUnlock(&leds_mutex);
 }
 
+static void led_dma_process_events(bool error_pending,
+                                   bool tc_pending,
+                                   systime_t frame_start_snapshot) {
+    if (tc_pending) {
+        last_frame_time_us = TIME_I2US(chVTTimeElapsedSinceX(frame_start_snapshot));
+    }
+
+    if (error_pending) {
+        chMtxLock(&leds_mutex);
+        if (!led_dma_busy) {
+            ws_dma_start_locked();
+        }
+        chMtxUnlock(&leds_mutex);
+    }
+}
+
+static THD_FUNCTION(led_dma_thread, arg) {
+    (void)arg;
+    chRegSetThreadName("led-dma");
+
+    while (true) {
+        chBSemWait(&led_dma_sem);
+
+        bool error_pending;
+        bool tc_pending;
+        systime_t frame_start_snapshot;
+
+        chSysLock();
+        error_pending = led_dma_error_pending;
+        tc_pending = led_dma_tc_pending;
+        led_dma_error_pending = false;
+        led_dma_tc_pending = false;
+        frame_start_snapshot = last_frame_start;
+        chSysUnlock();
+
+        led_dma_process_events(error_pending, tc_pending, frame_start_snapshot);
+    }
+}
+
 static void ws_dma_callback(void *p, uint32_t flags) {
     (void)p;
 
@@ -259,15 +307,18 @@ static void ws_dma_callback(void *p, uint32_t flags) {
     if ((flags & error_flags) != 0U) {
         chSysLockFromISR();
         led_dma_errors++;
+        led_dma_busy = false;
+        led_dma_error_pending = true;
+        chBSemSignalI(&led_dma_sem);
         chSysUnlockFromISR();
-        ws_dma_restart_i();
         return;
     }
 
     if ((flags & STM32_DMA_ISR_TCIF) != 0U) {
         chSysLockFromISR();
         led_dma_busy = false;
-        last_frame_time_us = TIME_I2US(chVTTimeElapsedSinceX(last_frame_start));
+        led_dma_tc_pending = true;
+        chBSemSignalI(&led_dma_sem);
         chSysUnlockFromISR();
     }
 }
