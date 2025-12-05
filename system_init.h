@@ -8,14 +8,15 @@
 extern "C" {
 #endif
 
+/*
+ * Les drivers audio/USB démarrent sans feedback d'erreur code, seuls les
+ * problèmes détectables sont exposés ici.
+ */
 typedef enum {
   SYS_OK = 0,
   SYS_ERR_MPU,
   SYS_ERR_SDRAM,
-  SYS_ERR_AUDIO,
-  SYS_ERR_SD,
-  SYS_ERR_USB_DEVICE,
-  SYS_ERR_USB_HOST
+  SYS_ERR_SD
 } sys_status_t;
 
 sys_status_t system_init_early(void);
