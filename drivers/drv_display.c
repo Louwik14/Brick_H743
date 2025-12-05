@@ -32,6 +32,7 @@ static const SPIConfig spicfg = {
 
 static uint8_t buffer[BRICK_OLED_WIDTH * BRICK_OLED_HEIGHT / 8];
 static const font_t *current_font = NULL;
+static thread_t *display_tp = NULL;
 
 /* ====================================================================== */
 /*                              UTILITAIRES GPIO                          */
@@ -47,6 +48,9 @@ static inline void dc_data(void) { palSetLine  (LINE_SPI5_DC_OLED); }
 static void send_cmd(uint8_t cmd) {
     chMtxLock(&spi5_mutex);
 
+    /* SPI5 est partagé, la config est appliquée par transaction sous mutex. */
+    spiStart(&SPID5, &spicfg);
+
     dc_cmd();
     palClearLine(LINE_SPI5_CS_OLED);
     spiSend(&SPID5, 1, &cmd);
@@ -57,6 +61,9 @@ static void send_cmd(uint8_t cmd) {
 
 static void send_data(const uint8_t *data, size_t len) {
     chMtxLock(&spi5_mutex);
+
+    /* SPI5 est partagé, la config est appliquée par transaction sous mutex. */
+    spiStart(&SPID5, &spicfg);
 
     dc_data();
     palClearLine(LINE_SPI5_CS_OLED);
@@ -99,9 +106,6 @@ void drv_display_init(void) {
     chThdSleepMilliseconds(10);
     palSetLine(LINE_SPI5_RES_OLED);
     chThdSleepMilliseconds(10);
-
-    /* Démarrage SPI */
-    spiStart(&SPID5, &spicfg);
 
     /* Séquence init SSD1309 / SSD1306 */
     send_cmd(0xAE);
@@ -236,14 +240,35 @@ static THD_FUNCTION(displayThread, arg) {
     (void)arg;
     chRegSetThreadName("Display");
 
-    while (true) {
+    while (!chThdShouldTerminateX()) {
         drv_display_update();
         chThdSleepMilliseconds(33);
     }
+
+    chThdExit(MSG_OK);
 }
 
 void drv_display_start(void) {
+    if (display_tp != NULL) {
+        if (chThdTerminatedX(display_tp)) {
+            chThdWait(display_tp);
+            display_tp = NULL;
+        } else {
+            return;
+        }
+    }
+
     drv_display_init();
-    chThdCreateStatic(waDisplay, sizeof(waDisplay),
-                      NORMALPRIO, displayThread, NULL);
+
+    display_tp = chThdCreateStatic(waDisplay, sizeof(waDisplay),
+                                   NORMALPRIO, displayThread, NULL);
+}
+
+void drv_display_stop(void) {
+    if (display_tp == NULL)
+        return;
+
+    chThdTerminate(display_tp);
+    chThdWait(display_tp);
+    display_tp = NULL;
 }

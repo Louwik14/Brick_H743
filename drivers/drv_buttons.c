@@ -49,6 +49,7 @@ static const SPIConfig spicfg_buttons = {
 
 static volatile uint8_t  buttons_raw[3];
 static volatile uint32_t buttons_mask = 0;
+static thread_t *buttons_tp = NULL;
 
 /* ====================================================================== */
 /*                       LECTURE SHIFT REGISTER                           */
@@ -65,6 +66,9 @@ static void buttons_read_shiftreg(void) {
     uint8_t rx[3] = {0};
 
     chMtxLock(&spi5_mutex);
+
+    /* SPI5 est partagé, la config est appliquée par transaction sous mutex. */
+    spiStart(&SPID5, &spicfg_buttons);
 
     /* CS actif bas */
     palClearLine(LINE_SPI5_CS_SR);
@@ -100,12 +104,12 @@ static THD_FUNCTION(buttonThread, arg) {
     (void)arg;
     chRegSetThreadName("buttons");
 
-    spiStart(&SPID5, &spicfg_buttons);
-
-    while (true) {
+    while (!chThdShouldTerminateX()) {
         buttons_read_shiftreg();
         chThdSleepMilliseconds(2);  /* 500 Hz */
     }
+
+    chThdExit(MSG_OK);
 }
 
 /* ====================================================================== */
@@ -120,10 +124,28 @@ void drv_buttons_init(void) {
 }
 
 void drv_buttons_start(void) {
+    if (buttons_tp != NULL) {
+        if (chThdTerminatedX(buttons_tp)) {
+            chThdWait(buttons_tp);
+            buttons_tp = NULL;
+        } else {
+            return;
+        }
+    }
+
     drv_buttons_init();
 
-    chThdCreateStatic(waButtons, sizeof(waButtons),
-                      NORMALPRIO, buttonThread, NULL);
+    buttons_tp = chThdCreateStatic(waButtons, sizeof(waButtons),
+                                   NORMALPRIO, buttonThread, NULL);
+}
+
+void drv_buttons_stop(void) {
+    if (buttons_tp == NULL)
+        return;
+
+    chThdTerminate(buttons_tp);
+    chThdWait(buttons_tp);
+    buttons_tp = NULL;
 }
 
 bool drv_button_get(uint8_t index) {
