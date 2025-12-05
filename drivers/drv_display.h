@@ -20,6 +20,7 @@ void drv_display_clear(void);
 void drv_display_update(void);
 uint8_t* drv_display_get_buffer(void);
 void drv_display_start(void);
+void drv_display_stop(void);
 
 /* ====================================================================== */
 /*                           GESTION DES POLICES                          */
