@@ -70,9 +70,11 @@ include $(CHIBIOS)/tools/mk/autobuild.mk
 ##############################################################################
 CSRC = $(ALLCSRC) \
        main.c \
+       system_init.c \
        $(wildcard drivers/*.c) \
        $(wildcard drivers/HallEffect/*.c) \
        $(wildcard drivers/audio/*.c) \
+       $(wildcard drivers/midi/*.c) \
        $(wildcard drivers/sdram/*.c) \
        $(wildcard ui/*.c)
 
@@ -139,6 +141,7 @@ INCDIR += $(CONFDIR) $(ALLINC)
 INCDIR += drivers
 INCDIR += drivers/HallEffect
 INCDIR += drivers/audio
+INCDIR += drivers/midi
 INCDIR += drivers/sdram
 INCDIR += drivers/usb
 INCDIR += drivers/usb/usb_host
