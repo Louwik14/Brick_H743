@@ -82,19 +82,22 @@ static msg_t adau1979_broadcast_write(uint8_t reg, uint8_t value) {
     return st;
 }
 
-static void adau1979_verify_devid(void) {
+static msg_t adau1979_verify_devid(void) {
     for (size_t i = 0; i < 2; ++i) {
         uint8_t devid = 0U;
-        if (adau1979_read_reg(adau1979_addresses[i], ADAU1979_REG_DEVID0, &devid) != HAL_RET_SUCCESS) {
-            chSysHalt("ADAU1979 DEVID read");
+        msg_t st = adau1979_read_reg(adau1979_addresses[i], ADAU1979_REG_DEVID0, &devid);
+        if (st != HAL_RET_SUCCESS) {
+            return st;
         }
         if (devid != ADAU1979_DEVID0_EXPECTED) {
-            chSysHalt("ADAU1979 DEVID mismatch");
+            return MSG_RESET;
         }
     }
+
+    return HAL_RET_SUCCESS;
 }
 
-static void adau1979_wait_pll_locked(void) {
+static msg_t adau1979_wait_pll_locked(void) {
     systime_t start = chVTGetSystemTimeX();
     const systime_t timeout = TIME_MS2I(ADAU1979_PLL_LOCK_TIMEOUT_MS);
 
@@ -102,9 +105,9 @@ static void adau1979_wait_pll_locked(void) {
         bool locked = true;
         for (size_t i = 0; i < 2; ++i) {
             uint8_t pll1 = 0U;
-            if (adau1979_read_reg(adau1979_addresses[i], ADAU1979_REG_PLL_CTRL1, &pll1) != HAL_RET_SUCCESS) {
-                locked = false;
-                break;
+            msg_t st = adau1979_read_reg(adau1979_addresses[i], ADAU1979_REG_PLL_CTRL1, &pll1);
+            if (st != HAL_RET_SUCCESS) {
+                return st;
             }
             if ((pll1 & ADAU1979_PLL_LOCKED) == 0U) {
                 locked = false;
@@ -113,11 +116,11 @@ static void adau1979_wait_pll_locked(void) {
         }
 
         if (locked) {
-            return;
+            return HAL_RET_SUCCESS;
         }
 
         if (chVTTimeElapsedSinceX(start) >= timeout) {
-            chSysHalt("ADAU1979 PLL unlock");
+            return MSG_TIMEOUT;
         }
         chThdSleepMilliseconds(1);
     }
@@ -127,17 +130,17 @@ static void adau1979_wait_pll_locked(void) {
 /* API publique                                                               */
 /* -------------------------------------------------------------------------- */
 
-void adau1979_init(void) {
+msg_t adau1979_init(void) {
     if (audio_i2c->state == I2C_STOP) {
         i2cStart(audio_i2c, &adau1979_default_i2c_cfg);
     }
-    adau1979_verify_devid();
+    return adau1979_verify_devid();
 }
 
-void adau1979_set_default_config(void) {
+msg_t adau1979_set_default_config(void) {
     /* Réinitialise l'alimentation SAI/ADC pour éviter toute capture parasite. */
-    adau1979_broadcast_write(ADAU1979_REG_BLOCK_POWER_SAI, 0x00U);
-    adau1979_broadcast_write(ADAU1979_REG_BLOCK_POWER_ADC, 0x00U);
+    msg_t st = adau1979_broadcast_write(ADAU1979_REG_BLOCK_POWER_SAI, 0x00U);
+    st |= adau1979_broadcast_write(ADAU1979_REG_BLOCK_POWER_ADC, 0x00U);
 
     /*
      * Horloge : MCLK = 12.288 MHz fourni par SAI (256 × Fs avec Fs = 48 kHz, ratio choisi pour
@@ -145,38 +148,46 @@ void adau1979_set_default_config(void) {
      * Datasheet Table 9 (PLL and Clock) : MCS = 0b001 pour 256 × Fs => MCLKIN = 12.288 MHz.
      * PLL_CONTROL[6] laissé à 1 (mute sur déverrouillage) ; source PLL = MCLK (CLK_S = 0).
      */
-    adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL0, ADAU1979_PLL_MASTER_POWER);
-    adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL1,
-                             (uint8_t)(ADAU1979_PLL_MUTE_ON_UNLOCK | ADAU1979_PLL_MCS_256FS));
-    adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL2, 0x00U);
-    adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL3, 0x00U);
-    adau1979_wait_pll_locked();
+    st |= adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL0, ADAU1979_PLL_MASTER_POWER);
+    st |= adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL1,
+                                  (uint8_t)(ADAU1979_PLL_MUTE_ON_UNLOCK | ADAU1979_PLL_MCS_256FS));
+    st |= adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL2, 0x00U);
+    st |= adau1979_broadcast_write(ADAU1979_REG_PLL_CTRL3, 0x00U);
+    if (st != HAL_RET_SUCCESS) {
+        return st;
+    }
+
+    st = adau1979_wait_pll_locked();
+    if (st != HAL_RET_SUCCESS) {
+        return st;
+    }
 
     /* Les ADAU1979 sont esclaves : le H743 génère BCLK/LRCLK. Mode TDM 8 slots, 24 bits MSB-first. */
-    adau1979_broadcast_write(ADAU1979_REG_SAI_CTRL0,
-                             ADAU1979_SAI_MODE_TDM | ADAU1979_SAI_WORD24);
+    st |= adau1979_broadcast_write(ADAU1979_REG_SAI_CTRL0,
+                                   ADAU1979_SAI_MODE_TDM | ADAU1979_SAI_WORD24);
 
     /* Slot mapping :
      *  - Codec 0 -> slots 0,2,4,6
      *  - Codec 1 -> slots 1,3,5,7
      * Registres SAI_SLOTn codent "slot number" dans les bits [7:4] et canal dans [3:0].
      */
-    adau1979_write_reg(adau1979_addresses[0], ADAU1979_REG_SAI_SLOT0, 0x00U);
-    adau1979_write_reg(adau1979_addresses[0], ADAU1979_REG_SAI_SLOT1, 0x21U);
-    adau1979_write_reg(adau1979_addresses[0], ADAU1979_REG_SAI_SLOT2, 0x42U);
-    adau1979_write_reg(adau1979_addresses[0], ADAU1979_REG_SAI_SLOT3, 0x63U);
+    st |= adau1979_write_reg(adau1979_addresses[0], ADAU1979_REG_SAI_SLOT0, 0x00U);
+    st |= adau1979_write_reg(adau1979_addresses[0], ADAU1979_REG_SAI_SLOT1, 0x21U);
+    st |= adau1979_write_reg(adau1979_addresses[0], ADAU1979_REG_SAI_SLOT2, 0x42U);
+    st |= adau1979_write_reg(adau1979_addresses[0], ADAU1979_REG_SAI_SLOT3, 0x63U);
 
-    adau1979_write_reg(adau1979_addresses[1], ADAU1979_REG_SAI_SLOT0, 0x10U);
-    adau1979_write_reg(adau1979_addresses[1], ADAU1979_REG_SAI_SLOT1, 0x31U);
-    adau1979_write_reg(adau1979_addresses[1], ADAU1979_REG_SAI_SLOT2, 0x52U);
-    adau1979_write_reg(adau1979_addresses[1], ADAU1979_REG_SAI_SLOT3, 0x73U);
+    st |= adau1979_write_reg(adau1979_addresses[1], ADAU1979_REG_SAI_SLOT0, 0x10U);
+    st |= adau1979_write_reg(adau1979_addresses[1], ADAU1979_REG_SAI_SLOT1, 0x31U);
+    st |= adau1979_write_reg(adau1979_addresses[1], ADAU1979_REG_SAI_SLOT2, 0x52U);
+    st |= adau1979_write_reg(adau1979_addresses[1], ADAU1979_REG_SAI_SLOT3, 0x73U);
 
     /* Active les ADC et la section SAI après le mapping. */
-    adau1979_broadcast_write(ADAU1979_REG_BLOCK_POWER_ADC, ADAU1979_ADC_ENABLE_ALL);
-    adau1979_broadcast_write(ADAU1979_REG_BLOCK_POWER_SAI, 0x0FU);
+    st |= adau1979_broadcast_write(ADAU1979_REG_BLOCK_POWER_ADC, ADAU1979_ADC_ENABLE_ALL);
+    st |= adau1979_broadcast_write(ADAU1979_REG_BLOCK_POWER_SAI, 0x0FU);
 
     /* Démute le flux numérique. */
-    adau1979_broadcast_write(ADAU1979_REG_MISC_CTRL, ADAU1979_MISC_UNMUTE);
+    st |= adau1979_broadcast_write(ADAU1979_REG_MISC_CTRL, ADAU1979_MISC_UNMUTE);
+    return st;
 }
 
 void adau1979_mute(bool en) {

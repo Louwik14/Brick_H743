@@ -4,6 +4,7 @@
 #include "core_cm7.h"
 #include "sdram_driver_priv.h"
 #include "sdram_layout.h"
+#include "mpu_map.h"
 
 #define SDRAM_REFRESH_COUNT       (761u)
 #define SDRAM_TIMEOUT_CYCLES      (0x3FFFFu)
@@ -133,7 +134,7 @@ bool sdram_configure_mpu_regions(void)
    * Main SDRAM: Normal memory, non-cacheable, shareable (TEX=1,C=0,B=0,S=1)
    * so that DMA/audio transfers remain deterministic with D-Cache enabled.
    */
-  ARM_MPU_SetRegion(ARM_MPU_RBAR(1u, SDRAM_BASE_ADDRESS),
+  ARM_MPU_SetRegion(ARM_MPU_RBAR(MPU_REGION_SDRAM_MAIN, SDRAM_BASE_ADDRESS),
                     ARM_MPU_RASR(0u,
                                  ARM_MPU_AP_FULL,
                                  1u,
@@ -148,7 +149,7 @@ bool sdram_configure_mpu_regions(void)
    * CPU-only residual: Normal cacheable (non-shareable) for scratch use.
    * DMA is explicitly forbidden on this window.
    */
-  ARM_MPU_SetRegion(ARM_MPU_RBAR(2u, residual_base),
+  ARM_MPU_SetRegion(ARM_MPU_RBAR(MPU_REGION_SDRAM_RESIDUAL, residual_base),
                     ARM_MPU_RASR(0u,
                                  ARM_MPU_AP_FULL,
                                  0u,
