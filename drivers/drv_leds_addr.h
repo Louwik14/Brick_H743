@@ -10,6 +10,12 @@
 /* Nombre total de LEDs adressables */
 #define NUM_ADRESS_LEDS   BRICK_NUM_WS2812_LEDS
 
+/*
+ * Les buffers DMA WS2812 vivent en section .ram_d2 (délimitée par le linker),
+ * configurée non-cacheable par mpu_config_init_once() pour garantir la
+ * cohérence mémoire DMA.
+ */
+
 /* =======================================================================
  *                              TYPES & COULEURS
  * ======================================================================= */
@@ -116,5 +122,6 @@ void drv_leds_addr_render(void);
 bool drv_leds_addr_is_busy(void);
 uint32_t drv_leds_addr_error_count(void);
 uint32_t drv_leds_addr_last_frame_time_us(void);
+uint32_t drv_leds_addr_retry_exhausted_count(void);
 
 #endif /* DRV_LEDS_ADDR_H */
