@@ -1,17 +1,30 @@
 #include "drv_encoders.h"
+#include <stdbool.h>
 #include "ch.h"
 #include "hal.h"
 
+BRICK_STATIC_ASSERT(BRICK_NUM_ENCODERS == 4, encoder_timer_mapping_assumes_four_encoders);
+
 /* Dernières valeurs pour calcul de delta */
-static int16_t last_val[4] = {0};
+static int16_t last_val[ENCODER_COUNT] = {0};
 
 /* Pointeurs sur les registres timers (H7 = ok) */
-static TIM_TypeDef *timers[4] = {
+static TIM_TypeDef *timers[ENCODER_COUNT] = {
     TIM3,  /* ENC1 */
     TIM2,  /* ENC2 */
     TIM5,  /* ENC3 */
     TIM4   /* ENC4 */
 };
+
+/* La configuration GPIO/Alternate Function des pins encodeurs est gérée
+ * ailleurs (board.c / code d'initialisation GPIO dédié), ce driver
+ * manipule uniquement les périphériques timers. */
+
+static bool encoder_id_valid(encoder_id_t id) {
+    return ((unsigned)id < ENCODER_COUNT);
+}
+
+static bool encoders_started = false;
 
 /* --------------------------------------------------------------------- */
 /*              Activation clocks RCC – STM32H743                        */
@@ -60,6 +73,9 @@ static void encoder_tim_init(TIM_TypeDef *tim) {
 
 void drv_encoders_start(void) {
 
+    if (encoders_started)
+        return;
+
     enable_rcc();
 
     encoder_tim_init(TIM3);
@@ -67,20 +83,31 @@ void drv_encoders_start(void) {
     encoder_tim_init(TIM5);
     encoder_tim_init(TIM4);
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < ENCODER_COUNT; i++)
         last_val[i] = 0;
+
+    encoders_started = true;
 }
 
 int16_t drv_encoder_get(encoder_id_t id) {
+    if (!encoder_id_valid(id))
+        return 0;
+
     return (int16_t)timers[id]->CNT;
 }
 
 void drv_encoder_reset(encoder_id_t id) {
+    if (!encoder_id_valid(id))
+        return;
+
     timers[id]->CNT = 0;
     last_val[id] = 0;
 }
 
 int16_t drv_encoder_get_delta(encoder_id_t id) {
+    if (!encoder_id_valid(id))
+        return 0;
+
     int16_t now   = (int16_t)timers[id]->CNT;
     int16_t delta = now - last_val[id];
     last_val[id]  = now;
