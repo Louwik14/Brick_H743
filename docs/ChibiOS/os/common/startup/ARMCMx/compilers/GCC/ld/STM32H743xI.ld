@@ -37,7 +37,7 @@ MEMORY
     flash7 (rx) : org = 0x00000000, len = 0
     ram0   (wx) : org = 0x24000000, len = 512k      /* AXI SRAM */
     ram1   (wx) : org = 0x30000000, len = 256k      /* AHB SRAM1+SRAM2 */
-    RAM_D2 (xrw) : ORIGIN = 0x30040000, LENGTH = 32K
+    RAM_D2 (xrw) : ORIGIN = 0x30000000, LENGTH = 128K
     ram2   (wx) : org = 0x38000000, len = 64k       /* AHB SRAM4 */
     ram3   (wx) : org = 0x20000000, len = 128k      /* DTCM-RAM */
     ram4   (wx) : org = 0x00000000, len = 64k       /* ITCM-RAM */

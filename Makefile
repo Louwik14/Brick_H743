@@ -21,6 +21,7 @@ USE_COPT =
 USE_CPPOPT = -fno-rtti
 USE_LINK_GC = yes
 USE_LDOPT =
+USE_LDOPT += --specs=nosys.specs
 USE_LTO = no
 USE_VERBOSE_COMPILE = no
 USE_SMART_BUILD = yes
@@ -76,7 +77,9 @@ CSRC = $(ALLCSRC) \
        $(wildcard drivers/audio/*.c) \
        $(wildcard drivers/midi/*.c) \
        $(wildcard drivers/sdram/*.c) \
-       $(wildcard ui/*.c)
+       $(wildcard ui/*.c) \
+       drivers/usb/usb_device.c \
+       drivers/usb/usbcfg.c
 
 # FatFS / SD drivers
 CSRC += $(wildcard drivers/sd/*.c)
@@ -123,7 +126,8 @@ $(STM32_HAL_DIR)/Src/stm32h7xx_hal_pwr_ex.c \
 $(STM32_HAL_DIR)/Src/stm32h7xx_hal_hcd.c \
 $(STM32_HAL_DIR)/Src/stm32h7xx_hal_flash.c \
 $(STM32_HAL_DIR)/Src/stm32h7xx_hal_flash_ex.c \
-$(STM32_HAL_DIR)/Src/stm32h7xx_hal_cortex.c
+$(STM32_HAL_DIR)/Src/stm32h7xx_hal_cortex.c \
+$(STM32_HAL_DIR)/Src/stm32h7xx_ll_usb.c
 
 ##############################################################################
 # CMSIS (TES CHEMINS)
