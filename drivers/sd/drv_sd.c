@@ -39,6 +39,22 @@ static bool sd_context_forbidden(void) {
     return false;
 }
 
+static bool sd_request_has_user_ptrs(const sd_request_t *req) {
+    if (req == NULL) {
+        return false;
+    }
+    switch (req->type) {
+    case SD_REQ_LOAD_PATTERN:
+    case SD_REQ_SAVE_PATTERN:
+    case SD_REQ_LOAD_SAMPLE:
+    case SD_REQ_LIST_PROJECTS:
+    case SD_REQ_GET_STATS:
+        return true;
+    default:
+        return false;
+    }
+}
+
 static void sd_record_rejection(sd_error_t err) {
     g_sd_last_error = err;
     g_sd_stats.ops_total++;
@@ -66,6 +82,9 @@ static sd_error_t sd_submit_request(sd_request_t *req) {
         req->auto_release = true;
         req->result = SD_ERR_TIMEOUT;
         g_sd_last_error = SD_ERR_TIMEOUT;
+        if (sd_request_has_user_ptrs(req)) {
+            (void)chBSemWaitTimeout(&req->done, TIME_INFINITE);
+        }
         return SD_ERR_TIMEOUT;
     }
     sd_error_t res = req->result;
