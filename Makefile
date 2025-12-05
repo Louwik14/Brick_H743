@@ -70,6 +70,7 @@ include $(CHIBIOS)/tools/mk/autobuild.mk
 ##############################################################################
 CSRC = $(ALLCSRC) \
        main.c \
+       syscalls.c \
        system_init.c \
        $(wildcard drivers/*.c) \
        $(wildcard drivers/HallEffect/*.c) \
