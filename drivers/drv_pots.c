@@ -2,6 +2,7 @@
 #include "ch.h"
 #include "hal.h"
 #include "brick_config.h"
+#include <stdbool.h>
 
 /* ====================================================================== */
 /*                        CONFIGURATION ADC (ADCv4 H743)                  */
@@ -11,6 +12,16 @@ static adcsample_t adc_sample;
 
 /* Compteur d'erreurs ADC (diagnostic interne) */
 static uint32_t adc_error_count;
+
+typedef enum {
+    POTS_STOPPED = 0,
+    POTS_RUNNING,
+    POTS_FAULT
+} pots_state_t;
+
+static volatile pots_state_t pots_state = POTS_STOPPED;
+static thread_t            *pots_thread;
+static volatile bool        stop_requested;
 
 /*
  * Groupe de conversion ADC — STM32H743 / ChibiOS ADCv4
@@ -70,7 +81,7 @@ static THD_FUNCTION(potReaderThread, arg) {
 
     adcStart(&ADCD1, NULL);
 
-    while (true) {
+    while (!stop_requested) {
 
         for (uint8_t i = 0; i < BRICK_POT_MUX_COUNT; i++) {
 
@@ -80,6 +91,7 @@ static THD_FUNCTION(potReaderThread, arg) {
             msg_t ret = adcConvert(&ADCD1, &adcgrpcfg, &adc_sample, 1);
             if (ret != MSG_OK) {
                 adc_error_count++;
+                pots_state = POTS_FAULT;
                 continue;
             }
 
@@ -94,6 +106,12 @@ static THD_FUNCTION(potReaderThread, arg) {
 
         chThdSleepMilliseconds(5);
     }
+
+    palClearLine(LINE_MUX_POT_S0);
+    palClearLine(LINE_MUX_POT_S1);
+    palClearLine(LINE_MUX_POT_S2);
+
+    adcStop(&ADCD1);
 }
 
 /* ====================================================================== */
@@ -116,9 +134,31 @@ void drv_pots_init(void) {
 }
 
 void drv_pots_start(void) {
+    if (pots_state == POTS_RUNNING ||
+        (pots_thread != NULL && chThdTerminatedX(pots_thread) == false)) {
+        return;
+    }
+
+    stop_requested = false;
     drv_pots_init();
-    chThdCreateStatic(waPotReader, sizeof(waPotReader),
-                      NORMALPRIO, potReaderThread, NULL);
+
+    pots_thread = chThdCreateStatic(waPotReader, sizeof(waPotReader),
+                                    NORMALPRIO, potReaderThread, NULL);
+    if (pots_thread != NULL) {
+        pots_state = POTS_RUNNING;
+    }
+}
+
+void drv_pots_stop(void) {
+    if (pots_thread == NULL) {
+        pots_state = POTS_STOPPED;
+        return;
+    }
+
+    stop_requested = true;
+    chThdWait(pots_thread);
+    pots_thread   = NULL;
+    pots_state    = POTS_STOPPED;
 }
 
 /* ====================================================================== */
@@ -130,4 +170,8 @@ uint16_t drv_pots_get_raw(uint8_t index) {
         return 0;
 
     return pots_raw[index];
+}
+
+uint32_t drv_pots_get_error_count(void) {
+    return adc_error_count;
 }
