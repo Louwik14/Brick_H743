@@ -68,6 +68,7 @@ static void sd_stats_record(sd_error_t res, uint32_t latency_us) {
     case SD_ERR_FULL: g_sd_stats.err_full++; break;
     case SD_ERR_CORRUPTED: g_sd_stats.err_corrupted++; break;
     case SD_ERR_FAULT: g_sd_stats.err_fault++; break;
+    case SD_ERR_TIMEOUT: g_sd_stats.err_timeout++; break;
     case SD_ERR_BUSY: g_sd_stats.err_busy++; break;
     case SD_ERR_CONTEXT: g_sd_stats.err_context++; break;
     default: break;
@@ -144,7 +145,7 @@ static sd_error_t sd_handle_pattern_save(sd_request_t *req) {
                                        req->params.pattern.pattern_name,
                                        req->params.pattern.input_data,
                                        req->params.pattern.input_size,
-                                       req->params.pattern.generation == NULL ? 0U : *req->params.pattern.generation);
+                                       req->params.pattern.has_generation ? req->params.pattern.generation_value : 0U);
 }
 
 static sd_error_t sd_handle_sample_load(sd_request_t *req) {
@@ -212,6 +213,18 @@ static THD_FUNCTION(sdThread, arg) {
         }
         sd_request_t *req = (sd_request_t *)msg;
         systime_t start = chVTGetSystemTimeX();
+        if (req->cancelled) {
+            sd_error_t cancel_res = (req->result != SD_OK) ? req->result : SD_ERR_TIMEOUT;
+            req->result = cancel_res;
+            g_sd_last_error = cancel_res;
+            uint32_t latency_us = (uint32_t)TIME_I2US(chVTTimeElapsedSinceX(start));
+            sd_stats_record(cancel_res, latency_us);
+            chBSemSignal(&req->done);
+            if (req->auto_release) {
+                drv_sd_thread_release(req);
+            }
+            continue;
+        }
         sd_state_t prev_state = g_sd_state;
         bool io_request = (req->type != SD_REQ_INIT && req->type != SD_REQ_GET_STATS && req->type != SD_REQ_CLEAR_STATS);
         if (io_request) {

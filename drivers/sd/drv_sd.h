@@ -13,6 +13,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+/*
+ * Buffers marked with this attribute MUST live in an MPU non-cacheable region
+ * (linker section .ram_d2). TODO: add a build-time assert tied to the global
+ * MPU configuration to guarantee the non-cacheable mapping.
+ */
 #define SD_DMA_BUFFER_ATTR __attribute__((section(".ram_d2"), aligned(32)))
 
 #define SD_PATTERN_MAGIC   0x42525450UL /* 'PBRT' */
@@ -44,6 +49,7 @@ typedef enum {
     SD_ERR_FULL,
     SD_ERR_CORRUPTED,
     SD_ERR_FAULT,
+    SD_ERR_TIMEOUT,
     SD_ERR_CONTEXT
 } sd_error_t;
 
@@ -69,6 +75,7 @@ typedef struct {
     uint32_t err_full;
     uint32_t err_corrupted;
     uint32_t err_fault;
+    uint32_t err_timeout;
     uint32_t err_busy;
     uint32_t err_context;
     uint32_t busy_rejections;
