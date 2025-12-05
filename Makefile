@@ -21,7 +21,6 @@ USE_COPT =
 USE_CPPOPT = -fno-rtti
 USE_LINK_GC = yes
 USE_LDOPT =
-USE_LDOPT += --specs=nosys.specs
 USE_LTO = no
 USE_VERBOSE_COMPILE = no
 USE_SMART_BUILD = yes
@@ -165,3 +164,6 @@ UADEFS =
 RULESPATH = $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk
 include $(RULESPATH)/arm-none-eabi.mk
 include $(RULESPATH)/rules.mk
+
+# Linker driver options
+LDFLAGS += --specs=nosys.specs
