@@ -126,7 +126,7 @@ build/obj/drv_sd.o: drivers/sd/drv_sd.c drivers/sd/drv_sd.h \
  docs/ChibiOS/os/hal/include/hal_usb_cdc.h drivers/sd/ff16/ff.h \
  drivers/sd/ff16/ffconf.h drivers/sd/drv_sd_thread.h \
  drivers/sd/drv_sd_hal.h drivers/sd/drv_sd_fs.h \
- drivers/sd/drv_sd_project.h \
+ drivers/sd/drv_sd_project.h drivers/mpu_config.h drivers/mpu_map.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\string.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_ansi.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\newlib.h \
@@ -287,6 +287,8 @@ drivers/sd/drv_sd_thread.h:
 drivers/sd/drv_sd_hal.h:
 drivers/sd/drv_sd_fs.h:
 drivers/sd/drv_sd_project.h:
+drivers/mpu_config.h:
+drivers/mpu_map.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\string.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_ansi.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\newlib.h:

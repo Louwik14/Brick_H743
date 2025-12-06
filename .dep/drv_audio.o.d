@@ -126,6 +126,7 @@ build/obj/drv_audio.o: drivers/audio/drv_audio.c \
  docs/ChibiOS/os/hal/include/hal_serial_usb.h \
  docs/ChibiOS/os/hal/include/hal_usb_cdc.h drivers/audio/audio_conf.h \
  drivers/audio/audio_codec_ada1979.h drivers/audio/audio_codec_pcm4104.h \
+ drivers/mpu_config.h drivers/mpu_map.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\string.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_ansi.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\newlib.h \
@@ -283,6 +284,8 @@ docs/ChibiOS/os/hal/include/hal_usb_cdc.h:
 drivers/audio/audio_conf.h:
 drivers/audio/audio_codec_ada1979.h:
 drivers/audio/audio_codec_pcm4104.h:
+drivers/mpu_config.h:
+drivers/mpu_map.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\string.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_ansi.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\newlib.h:

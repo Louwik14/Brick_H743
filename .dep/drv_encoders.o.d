@@ -6,6 +6,8 @@ build/obj/drv_encoders.o: drivers/drv_encoders.c drivers/drv_encoders.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_newlib_version.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_intsup.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_stdint.h \
+ drivers/brick_config.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdbool.h \
  docs/ChibiOS/os/rt/include/ch.h docs/ChibiOS/os/license/chlicense.h \
  docs/ChibiOS/os/license/chversion.h docs/ChibiOS/os/license/chcustomer.h \
  cfg/chconf.h docs/ChibiOS/os/rt/include/chchecks.h \
@@ -13,7 +15,6 @@ build/obj/drv_encoders.o: drivers/drv_encoders.c drivers/drv_encoders.h \
  docs/ChibiOS/os/rt/include/chearly.h \
  docs/ChibiOS/os/common/ports/ARM-common/include/chtypes.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stddef.h \
- c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdbool.h \
  docs/ChibiOS/os/common/portability/GCC/ccportab.h \
  docs/ChibiOS/os/rt/include/chrfcu.h docs/ChibiOS/os/rt/include/chdebug.h \
  docs/ChibiOS/os/rt/include/chtime.h docs/ChibiOS/os/rt/include/chalign.h \
@@ -132,6 +133,8 @@ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\inclu
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_newlib_version.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_intsup.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_stdint.h:
+drivers/brick_config.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdbool.h:
 docs/ChibiOS/os/rt/include/ch.h:
 docs/ChibiOS/os/license/chlicense.h:
 docs/ChibiOS/os/license/chversion.h:
@@ -142,7 +145,6 @@ docs/ChibiOS/os/rt/include/chrestrictions.h:
 docs/ChibiOS/os/rt/include/chearly.h:
 docs/ChibiOS/os/common/ports/ARM-common/include/chtypes.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stddef.h:
-c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\lib\gcc\arm-none-eabi\11.3.1\include\stdbool.h:
 docs/ChibiOS/os/common/portability/GCC/ccportab.h:
 docs/ChibiOS/os/rt/include/chrfcu.h:
 docs/ChibiOS/os/rt/include/chdebug.h:

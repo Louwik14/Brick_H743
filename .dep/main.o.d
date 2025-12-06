@@ -126,7 +126,7 @@ build/obj/main.o: main.c docs/ChibiOS/os/rt/include/ch.h \
  docs/ChibiOS/os/hal/include/hal_usb_cdc.h drivers/drivers.h \
  drivers/brick_config.h drivers/drv_display.h ui/font.h \
  drivers/drv_leds_addr.h drivers/drv_buttons.h drivers/drv_encoders.h \
- drivers/drv_pots.h
+ drivers/drv_pots.h system_init.h
 docs/ChibiOS/os/rt/include/ch.h:
 docs/ChibiOS/os/license/chlicense.h:
 docs/ChibiOS/os/license/chversion.h:
@@ -274,3 +274,4 @@ drivers/drv_leds_addr.h:
 drivers/drv_buttons.h:
 drivers/drv_encoders.h:
 drivers/drv_pots.h:
+system_init.h:

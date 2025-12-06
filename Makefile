@@ -48,6 +48,16 @@ BUILDDIR := ./build
 DEPDIR   := ./.dep
 
 ##############################################################################
+# Link map + RAM reporting helpers
+##############################################################################
+ELF := $(BUILDDIR)/.elf
+
+# Génère un map file pour analyser la répartition réelle de la RAM/Flash.
+# On passe par USE_LDOPT car le système ChibiOS concatène proprement cela
+# dans la commande de link via le driver GCC.
+USE_LDOPT += -Map=$(BUILDDIR)/firmware.map
+
+##############################################################################
 # Includes ChibiOS
 ##############################################################################
 include $(CHIBIOS)/os/license/license.mk
@@ -166,5 +176,30 @@ RULESPATH = $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk
 include $(RULESPATH)/arm-none-eabi.mk
 include $(RULESPATH)/rules.mk
 
-# Linker driver options
-LDFLAGS += --specs=nosys.specs
+##############################################################################
+# Mémoire: rapport lisible "H7-friendly"
+#
+# IMPORTANT:
+# On change le prefix de recette UNIQUEMENT APRÈS avoir inclus les rules ChibiOS
+# pour ne pas casser leurs recettes basées sur TAB.
+##############################################################################
+.RECIPEPREFIX := >
+
+.PHONY: memreport
+memreport: $(ELF)
+> @echo ""
+> @echo "=============================="
+> @echo " Build memory summary"
+> @echo "=============================="
+> @$(SIZE) $<
+> @echo ""
+> @echo "---- Section sizes (size -A) ----"
+> @$(SIZE) -A -x $<
+> @echo ""
+> @echo "---- Key RAM sections ----"
+> @$(SIZE) -A $< | egrep "\.(bss|data|ram_d2|nocache|eth|mstack|pstack)" || true
+> @echo ""
+> @echo "---- Top 30 RAM symbols ----"
+> @$(NM) -S --size-sort -t dec $< | tail -30
+> @echo ""
+> @echo "Map file: $(BUILDDIR)/firmware.map"
