@@ -420,7 +420,8 @@
  * @note    Mutexes are recommended.
  */
 #if !defined(CH_CFG_USE_HEAP)
-#define CH_CFG_USE_HEAP                     TRUE
+/* No dynamic allocation policy: ChibiOS heap disabled and newlib _sbrk stubbed. */
+#define CH_CFG_USE_HEAP                     FALSE
 #endif
 
 /**
